@@ -54,7 +54,7 @@
 }
 
 html{font-size:16px;-webkit-font-smoothing:antialiased}
-body{background:var(--bk);color:var(--tl);font-family:'Crimson Text',Georgia,serif;overflow-x:clip}
+body{background:var(--bk);color:var(--tl);font-family:'Crimson Text',Georgia,serif;overflow-x:hidden;overflow-x:clip}
 img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 
 /* ═══════ NAV ═══════ */
@@ -131,7 +131,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   flex-flow:row;justify-content:space-between;align-items:center;
   padding:0 0 0 var(--pad);
   display:flex;
-  overflow-x:clip;overflow-y:visible;
+  overflow-x:hidden;overflow-x:clip;overflow-y:visible;
   min-height:100vh;min-height:100dvh;
 }
 
@@ -198,18 +198,16 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 .slide-dots{
   display:flex;gap:0;justify-content:center;
   padding-top:var(--sp-sm);
-  position:absolute;bottom:clamp(-10px,0.5vw,0px);left:0;right:0;
+  position:absolute;bottom:0;left:0;right:0;
 }
 .slide-dot{
   width:clamp(10px,1vw,12px);height:clamp(10px,1vw,12px);
-  border-radius:50%;background:rgba(255,255,255,0.4);border:none;
+  border-radius:50%;border:none;
   cursor:pointer;transition:background .3s;padding:0;
   /* Touch target: visible dot is small, but tap area meets 44px via min-size below */
   min-width:var(--touch);min-height:var(--touch);
   display:flex;align-items:center;justify-content:center;
-  background-clip:content-box;
   box-sizing:content-box;
-  /* Re-draw the visible dot via box-shadow instead */
   background:transparent;
   position:relative;
 }
@@ -480,7 +478,6 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   .hero-bottom-div{flex-direction:column;align-items:flex-start;gap:var(--sp-sm)}
   .hero-bottom-left{width:100%}
   .hero-bottom-right-div{align-self:flex-end}
-  .hero-bottom-text-div p br{display:none}
 
   .slider-frame{width:min(75vw, 400px);height:min(103vw, 550px)}
   .slide img{width:92%;margin-left:4%}
@@ -488,7 +485,6 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 }
 
 @media(max-width:480px){
-  .hero-bottom-text-div p br{display:none}
   .slider-frame{width:min(68vw, 280px);height:min(108vw, 460px)}
   .slider-arrow{font-size:1.25rem;min-width:var(--touch);padding:var(--sp-xs) 2px}
   .et-left{gap:clamp(20px, 3vw, 40px)}
@@ -705,6 +701,24 @@ Sanguis</div>
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
+  // Guard: if GSAP CDN failed to load, enable basic navigation and bail
+  if(typeof gsap==='undefined'){
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener('click',function(e){
+        var href=a.getAttribute('href');
+        if(!href||href==='#') return;
+        e.preventDefault();
+        try{var t=document.querySelector(href);if(t)t.scrollIntoView({behavior:'smooth'})}catch(ex){}
+      });
+    });
+    var hbFallback=document.querySelector('.hb');
+    if(hbFallback)hbFallback.addEventListener('click',function(){
+      this.classList.toggle('active');
+      var mmFb=document.getElementById('mm');if(mmFb)mmFb.classList.toggle('open');
+    });
+    console.warn('GSAP not loaded — animations disabled, basic navigation active.');
+    return;
+  }
   gsap.registerPlugin(ScrollTrigger,ScrollToPlugin);
   
   // Entrance anims
@@ -740,26 +754,32 @@ document.addEventListener('DOMContentLoaded',function(){
     });
   })();
 
+  // Cached nav refs
+  var mm=document.getElementById('mm');
+  var hb=document.querySelector('.hb');
+
   // Smooth scroll — use offsetTop for sticky sections that stay at top:0
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    var href=a.getAttribute('href');
+    if(!href||href==='#') return; // skip bare "#" anchors (e.g. Kickstarter button)
     a.addEventListener('click',function(e){
       e.preventDefault();
-      var t=document.querySelector(a.getAttribute('href'));
+      try{var t=document.querySelector(href)}catch(ex){return}
       if(t){
         var y=t.offsetTop-60;
         gsap.to(window,{scrollTo:{y:Math.max(0,y),autoKill:false},duration:.8,ease:'power2.inOut'});
-        document.getElementById('mm').classList.remove('open');
-        var hb=document.querySelector('.hb');if(hb)hb.classList.remove('active');
+        if(mm)mm.classList.remove('open');
+        if(hb)hb.classList.remove('active');
       }
     });
   });
 
   // Mobile menu
-  var hb=document.querySelector('.hb');
-  if(hb)hb.addEventListener('click',function(){this.classList.toggle('active');document.getElementById('mm').classList.toggle('open')});
+  if(hb)hb.addEventListener('click',function(){this.classList.toggle('active');if(mm)mm.classList.toggle('open')});
 
   // Et Tamen comic slider
   var track=document.getElementById('sTrack');
+  if(!track) return; // guard: bail if slider not in DOM
   var slides=track.querySelectorAll('.slide');
   var dotsC=document.getElementById('sDots');
   var cur=0;var total=slides.length;
@@ -768,27 +788,37 @@ document.addEventListener('DOMContentLoaded',function(){
     var d=document.createElement('button');
     d.className='slide-dot'+(i===0?' active':'');
     d.dataset.i=i;
-    d.addEventListener('click',function(){goTo(parseInt(this.dataset.i))});
+    d.addEventListener('click',function(){goTo(parseInt(this.dataset.i,10))});
     dotsC.appendChild(d);
   }
+  var allDots=dotsC.querySelectorAll('.slide-dot'); // cache once after building
   function goTo(n){
-    cur=Math.max(0,Math.min(n,total-1));
+    cur=((n%total)+total)%total; // wrap around consistently
     track.style.transform='translateX(-'+(cur*100)+'%)';
-    var dots=dotsC.querySelectorAll('.slide-dot');
-    dots.forEach(function(d,i){d.classList.toggle('active',i===cur)});
+    allDots.forEach(function(d,i){d.classList.toggle('active',i===cur)});
   }
-  document.getElementById('sPrev').addEventListener('click',function(){goTo(cur-1)});
-  document.getElementById('sNext').addEventListener('click',function(){goTo(cur+1)});
-  // Auto-play
-  var autoIv=setInterval(function(){goTo(cur>=total-1?0:cur+1)},6000);
+  document.getElementById('sPrev').addEventListener('click',function(){etStopAuto();goTo(cur-1);etStartAuto()});
+  document.getElementById('sNext').addEventListener('click',function(){etStopAuto();goTo(cur+1);etStartAuto()});
+  // Auto-play (safe start/stop prevents interval stacking)
+  var etAutoIv=null;
+  function etStartAuto(){clearInterval(etAutoIv);etAutoIv=setInterval(function(){goTo(cur+1)},6000)}
+  function etStopAuto(){clearInterval(etAutoIv);etAutoIv=null}
+  etStartAuto();
   // Touch swipe
   var sx=0;
   var frame=document.getElementById('sFrame');
-  frame.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;clearInterval(autoIv)},{passive:true});
+  frame.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;etStopAuto()},{passive:true});
   frame.addEventListener('touchend',function(e){
     var dx=sx-e.changedTouches[0].clientX;
     if(Math.abs(dx)>40){dx>0?goTo(cur+1):goTo(cur-1)}
-    autoIv=setInterval(function(){goTo(cur>=total-1?0:cur+1)},6000);
+    etStartAuto();
+  },{passive:true});
+  // Pause on hover (desktop)
+  frame.addEventListener('mouseenter',function(){etStopAuto()});
+  frame.addEventListener('mouseleave',function(){etStartAuto()});
+  // Pause when tab hidden
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){etStopAuto()}else{etStartAuto()}
   });
 
 
@@ -858,16 +888,16 @@ document.addEventListener('DOMContentLoaded',function(){
       .to(label,{opacity:0,duration:.12,onComplete:function(){label.textContent=cfg.labelDef}},.15)
       .to(label,{opacity:1,duration:.12},.35);
 
-    gsap.from('#'+cfg.panel,{y:40,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:'#'+cfg.section,start:'top 70%',toggleActions:'play none none reverse'}});
-    gsap.from(chars1,{opacity:0,y:80,scale:0.5,duration:.8,stagger:{each:.04,from:'random'},ease:'back.out(1.7)',scrollTrigger:{trigger:'#'+cfg.section,start:'top 65%',toggleActions:'play none none reverse'}});
+    gsap.from('#'+cfg.panel,{y:40,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:'#'+cfg.section,start:'top 70%',once:true}});
+    gsap.from(chars1,{opacity:0,y:80,scale:0.5,duration:.8,stagger:{each:.04,from:'random'},ease:'back.out(1.7)',scrollTrigger:{trigger:'#'+cfg.section,start:'top 65%',once:true}});
 
     btn.addEventListener('click',function(){
       if(busy)return;
       busy=true;
       isActive=!isActive;
       var tl=isActive?tlForward:tlReverse;
-      tl.restart();
       tl.eventCallback('onComplete',function(){busy=false});
+      tl.restart();
     });
   }
 
@@ -963,7 +993,7 @@ document.addEventListener('DOMContentLoaded',function(){
       btn.dataset.i=i;
       btn.innerHTML='<svg viewBox="0 0 10 16" fill="none"><path d="M1 1l8 7-8 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       btn.addEventListener('click',function(){
-        var idx=parseInt(this.dataset.i);
+        var idx=parseInt(this.dataset.i,10);
         if(idx!==acCur) goToSlide(idx>acCur?1:-1,idx);
       });
       indicatorWrap.appendChild(btn);
