@@ -113,6 +113,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   background-color:var(--g);
   background-image:url("images/05-image.jpg");
   background-position:50% 0;background-size:cover;
+  min-height:100vh;min-height:100dvh;
 }
 
 /* Main layout: left text + right slider, aligned at bottom */
@@ -215,9 +216,18 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 
 /* ═══════ THE NOVEL — z-index layered panel ═══════ */
 #novel{
-  z-index:2;position:relative;
+  z-index:2;position:sticky;top:0;
   background-color:var(--g);
-  padding:var(--sp-lg) var(--pad) var(--sp-xl);
+  height:100vh;height:100dvh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 var(--pad);
+}
+#novel2{
+  z-index:3;position:relative;
+  background-color:var(--g);
+  min-height:100vh;min-height:100dvh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 var(--pad);
 }
 .snap-panel{
   border-radius:clamp(8px, 1vw, 16px);
@@ -303,7 +313,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 .btn-snap-visible{justify-content:flex-end;padding-right:clamp(10px,1vw,16px)}
 .btn-snap-hidden{
   justify-content:flex-start;padding-left:clamp(10px,1vw,16px);
-  opacity:0;color:var(--bk);z-index:2;
+  opacity:0;color:var(--lt);z-index:2;
 }
 .snap-label{
   color:var(--lt);font-family:Queering,Arial,sans-serif;
@@ -319,10 +329,10 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 
 /* ═══════ ALL OTHER SECTIONS — must cover hero ═══════ */
 .section-after{
-  position:relative;z-index:2;
+  position:relative;z-index:4;
   background-color:var(--bk);
 }
-.ph{min-height:50vh;display:flex;flex-direction:column;align-items:center;justify-content:center;border-top:1px solid rgba(255,255,255,0.04)}
+.ph{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;border-top:1px solid rgba(255,255,255,0.04)}
 .ph h2{font-family:Queering,serif;font-size:var(--fs-h2);color:var(--g);margin-bottom:var(--sp-xs)}
 .ph p{color:rgba(255,255,255,0.35);font-style:italic;font-size:var(--fs-small)}
 
@@ -499,6 +509,30 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
     </div>
   </div>
 </section>
+<!-- THE NOVEL 2 — duplicate panel, scrolls over #novel -->
+<section id="novel2">
+  <div class="snap-panel" id="novel2Panel">
+    <img class="img-cover default" src="images/24-img-cover.jpg" alt="The Novel">
+    <img class="img-cover alt" src="images/23-novelpanel.jpg" alt="Hand-drawn art">
+    <div class="novel-heading-layer">
+      <div class="novel-heading-text s1" id="novel2S1">The Novel</div>
+      <div class="novel-heading-text s2" id="novel2S2">Hand-Drawn Art</div>
+    </div>
+    <div class="snap-bottom">
+      <div class="novel-desc-wrap">
+        <div class="snap-desc s1" id="novel2Desc1">Every page in Apokrif has been hand-crafted from concept to illustration.<br>Aron's signature style brings the world to life to stunning effect.</div>
+        <div class="snap-desc s2" id="novel2Desc2">Every page in Apokrif has been hand-crafted from and onto<br>concept to illustration.<br>Aron's signature style brings the world to life.</div>
+      </div>
+      <div class="btn-snap" id="novel2Btn">
+        <div class="btn-circle" id="novel2Circle"></div>
+        <div class="btn-snap-visible" id="novel2BtnVis"><span>Early Concept</span></div>
+        <div class="btn-snap-hidden" id="novel2BtnHid"><span>Hand-drawn</span></div>
+      </div>
+      <div class="snap-label" id="novel2Label">From concept to hand-drawn art</div>
+    </div>
+  </div>
+</section>
+
 <section id="factions" class="section-after ph"><h2>Factions</h2><p>Coming next</p></section>
 <section id="timeline" class="section-after ph"><h2>Timeline</h2><p>Coming next</p></section>
 <section id="team" class="section-after ph"><h2>Team</h2><p>Coming next</p></section>
@@ -589,86 +623,67 @@ document.addEventListener('DOMContentLoaded',function(){
   gsap.from('.et-cta',{opacity:0,duration:.4,delay:.35,scrollTrigger:{trigger:'#et',start:'top 65%',toggleActions:'play none none reverse'}});
   gsap.from('.slider-frame',{x:80,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:'#et',start:'top 60%',toggleActions:'play none none reverse'}});
 
-  // ═══════ THE NOVEL — Fluid Letter-Stagger Toggle (GSAP Timeline) ═══════
-  (function(){
-    // Split heading text into individual character spans
+  // ═══════ THE NOVEL — Reusable Fluid Letter-Stagger Toggle ═══════
+  function initNovelToggle(cfg){
     function splitChars(el){
-      var text=el.textContent;
-      el.textContent='';
+      var text=el.textContent;el.textContent='';
       for(var i=0;i<text.length;i++){
-        var span=document.createElement('span');
-        span.className='char';
-        span.textContent=text[i]===' '?'\u00A0':text[i];
-        el.appendChild(span);
+        var span=document.createElement('span');span.className='char';
+        span.textContent=text[i]===' '?'\u00A0':text[i];el.appendChild(span);
       }
       return el.querySelectorAll('.char');
     }
 
-    var btn=document.getElementById('novelBtn');
-    var circle=document.getElementById('novelCircle');
-    var visTxt=document.getElementById('novelBtnVis');
-    var hidTxt=document.getElementById('novelBtnHid');
-    var imgDef=document.querySelector('#novelPanel .img-cover.default');
-    var imgAlt=document.querySelector('#novelPanel .img-cover.alt');
-    var s1=document.getElementById('novelS1');
-    var s2=document.getElementById('novelS2');
-    var desc1=document.getElementById('novelDesc1');
-    var desc2=document.getElementById('novelDesc2');
-    var label=document.getElementById('novelLabel');
+    var btn=document.getElementById(cfg.btn);
+    var circle=document.getElementById(cfg.circle);
+    var visTxt=document.getElementById(cfg.btnVis);
+    var hidTxt=document.getElementById(cfg.btnHid);
+    var imgDef=document.querySelector('#'+cfg.panel+' .img-cover.default');
+    var imgAlt=document.querySelector('#'+cfg.panel+' .img-cover.alt');
+    var s1=document.getElementById(cfg.s1);
+    var s2=document.getElementById(cfg.s2);
+    var desc1=document.getElementById(cfg.desc1);
+    var desc2=document.getElementById(cfg.desc2);
+    var label=document.getElementById(cfg.label);
 
-    // Split both titles into character spans
     var chars1=splitChars(s1);
     var chars2=splitChars(s2);
-    // Set initial state for s2 chars (hidden, offset)
     gsap.set(chars2,{opacity:0,y:50,scale:0.6,rotateX:-60});
     gsap.set(s2,{opacity:1});
 
     var isActive=false;
     var busy=false;
 
-    // Forward: "The Novel" out → "Hand-Drawn Art" in
     var tlForward=gsap.timeline({paused:true,defaults:{ease:'power3.out'}});
     tlForward
       .to(circle,{x:function(){return btn.offsetWidth-circle.offsetWidth-8},duration:.45,ease:'power2.inOut'},0)
       .to(visTxt,{opacity:0,duration:.2},0)
       .to(hidTxt,{opacity:1,duration:.2},.15)
-      // Background crossfade
       .to(imgDef,{opacity:0,duration:.6,ease:'power2.inOut'},.05)
       .to(imgAlt,{opacity:1,duration:.6,ease:'power2.inOut'},.05)
-      // s1 chars fly out: stagger upward + scale + rotate
       .to(chars1,{opacity:0,y:-60,scale:0.4,rotateX:90,duration:.5,stagger:{each:.03,from:'center'},ease:'power3.in'},.05)
-      // s2 chars fly in: stagger from below + scale + rotate
       .to(chars2,{opacity:1,y:0,scale:1,rotateX:0,duration:.6,stagger:{each:.035,from:'edges'},ease:'back.out(1.4)'},.25)
-      // Description swap
       .to(desc1,{opacity:0,y:-15,duration:.35},.15)
       .to(desc2,{opacity:1,y:0,duration:.4},.3)
-      // Label swap
-      .to(label,{opacity:0,duration:.12,onComplete:function(){label.textContent='From hand-drawn art to concept'}},.15)
+      .to(label,{opacity:0,duration:.12,onComplete:function(){label.textContent=cfg.labelAlt}},.15)
       .to(label,{opacity:1,duration:.12},.35);
 
-    // Reverse: "Hand-Drawn Art" out → "The Novel" in
     var tlReverse=gsap.timeline({paused:true,defaults:{ease:'power3.out'}});
     tlReverse
       .to(circle,{x:0,duration:.45,ease:'power2.inOut'},0)
       .to(hidTxt,{opacity:0,duration:.2},0)
       .to(visTxt,{opacity:1,duration:.2},.15)
-      // Background back
       .to(imgAlt,{opacity:0,duration:.6,ease:'power2.inOut'},.05)
       .to(imgDef,{opacity:1,duration:.6,ease:'power2.inOut'},.05)
-      // s2 chars fly out: stagger downward
       .to(chars2,{opacity:0,y:50,scale:0.6,rotateX:-60,duration:.5,stagger:{each:.03,from:'center'},ease:'power3.in'},.05)
-      // s1 chars fly back in: stagger from edges
       .to(chars1,{opacity:1,y:0,scale:1,rotateX:0,duration:.6,stagger:{each:.035,from:'edges'},ease:'back.out(1.4)'},.25)
-      // Description back
       .to(desc2,{opacity:0,y:15,duration:.35},.15)
       .to(desc1,{opacity:1,y:0,duration:.4},.3)
-      // Label back
-      .to(label,{opacity:0,duration:.12,onComplete:function(){label.textContent='From concept to hand-drawn art'}},.15)
+      .to(label,{opacity:0,duration:.12,onComplete:function(){label.textContent=cfg.labelDef}},.15)
       .to(label,{opacity:1,duration:.12},.35);
 
-    // Entrance: stagger chars of s1 on scroll
-    gsap.from('#novelPanel',{y:40,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:'#novel',start:'top 70%',toggleActions:'play none none reverse'}});
-    gsap.from(chars1,{opacity:0,y:80,scale:0.5,duration:.8,stagger:{each:.04,from:'random'},ease:'back.out(1.7)',scrollTrigger:{trigger:'#novel',start:'top 65%',toggleActions:'play none none reverse'}});
+    gsap.from('#'+cfg.panel,{y:40,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:'#'+cfg.section,start:'top 70%',toggleActions:'play none none reverse'}});
+    gsap.from(chars1,{opacity:0,y:80,scale:0.5,duration:.8,stagger:{each:.04,from:'random'},ease:'back.out(1.7)',scrollTrigger:{trigger:'#'+cfg.section,start:'top 65%',toggleActions:'play none none reverse'}});
 
     btn.addEventListener('click',function(){
       if(busy)return;
@@ -678,7 +693,29 @@ document.addEventListener('DOMContentLoaded',function(){
       tl.restart();
       tl.eventCallback('onComplete',function(){busy=false});
     });
-  })();
+  }
+
+  // Init both novel panels
+  initNovelToggle({
+    section:'novel',panel:'novelPanel',
+    btn:'novelBtn',circle:'novelCircle',
+    btnVis:'novelBtnVis',btnHid:'novelBtnHid',
+    s1:'novelS1',s2:'novelS2',
+    desc1:'novelDesc1',desc2:'novelDesc2',
+    label:'novelLabel',
+    labelAlt:'From hand-drawn art to concept',
+    labelDef:'From concept to hand-drawn art'
+  });
+  initNovelToggle({
+    section:'novel2',panel:'novel2Panel',
+    btn:'novel2Btn',circle:'novel2Circle',
+    btnVis:'novel2BtnVis',btnHid:'novel2BtnHid',
+    s1:'novel2S1',s2:'novel2S2',
+    desc1:'novel2Desc1',desc2:'novel2Desc2',
+    label:'novel2Label',
+    labelAlt:'From hand-drawn art to concept',
+    labelDef:'From concept to hand-drawn art'
+  });
 });
 </script>
 </body>
