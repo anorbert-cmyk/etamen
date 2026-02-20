@@ -224,6 +224,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 }
 #novel2{
   z-index:3;position:relative;
+  background-color:var(--g);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:0 var(--pad);
   min-height:100vh;min-height:100dvh;
@@ -578,13 +579,17 @@ document.addEventListener('DOMContentLoaded',function(){
     });
   })();
 
-  // Smooth scroll
+  // Smooth scroll — use offsetTop for sticky sections that stay at top:0
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
     a.addEventListener('click',function(e){
-      e.preventDefault();var t=document.querySelector(a.getAttribute('href'));
-      if(t){gsap.to(window,{scrollTo:{y:t,offsetY:60},duration:.8,ease:'power2.inOut'});
+      e.preventDefault();
+      var t=document.querySelector(a.getAttribute('href'));
+      if(t){
+        var y=t.offsetTop-60;
+        gsap.to(window,{scrollTo:{y:Math.max(0,y),autoKill:false},duration:.8,ease:'power2.inOut'});
         document.getElementById('mm').classList.remove('open');
-        var hb=document.querySelector('.hb');if(hb)hb.classList.remove('active');}
+        var hb=document.querySelector('.hb');if(hb)hb.classList.remove('active');
+      }
     });
   });
 
