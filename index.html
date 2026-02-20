@@ -123,14 +123,14 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   flex-flow:row;justify-content:space-between;align-items:center;
   padding:0 0 0 var(--pad);
   display:flex;
-  overflow:hidden;
+  overflow-x:clip;overflow-y:visible;
   min-height:100vh;min-height:100dvh;
 }
 
 /* Left column */
 .et-left{
   gap:clamp(30px, 4vw, 56px);flex-flow:column;display:flex;
-  flex-shrink:0;
+  flex-shrink:0;min-height:0;
   width:clamp(240px, 30vw, 420px);
   padding-left:var(--sp-sm);
 }
@@ -156,7 +156,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 .et-cta:hover{filter:brightness(1.1)}
 
 /* Right column: slider — centered in its column */
-.et-right{flex:1;overflow:visible;min-width:0;display:flex;justify-content:center}
+.et-right{flex:1;overflow:visible;min-width:0;min-height:0;display:flex;justify-content:center}
 .slider-wrap{
   position:relative;display:flex;align-items:center;gap:0;
   max-width:fit-content;
@@ -225,17 +225,18 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 #novel2{
   z-index:3;position:relative;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:var(--sp-xl) var(--pad);
+  padding:0 var(--pad);
+  min-height:100vh;min-height:100dvh;
 }
 .snap-panel{
   border-radius:clamp(8px, 1vw, 16px);
   width:100%;height:clamp(400px, 55vw, 80vh);
   position:relative;overflow:hidden;
 }
-/* Layer 0: Background images */
+/* Layer 0: Background images — must perfectly overlap */
 .snap-panel .img-cover{
   position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;transition:none;z-index:0;
+  object-fit:cover;object-position:center;transition:none;z-index:0;
 }
 .snap-panel .img-cover.alt{opacity:0}
 /* Layer 1: Big heading — BEHIND the character */
@@ -343,7 +344,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 
   .hero-bottom-text-div p br{display:none}
 
-  /* Et Tamen: stack vertically */
+  /* Et Tamen: stack vertically — keep 100dvh min but allow growth via visible overflow */
   .et-main{flex-flow:column;align-items:center;justify-content:center;padding:var(--sp-xl) var(--pad);min-height:100vh;min-height:100dvh}
   .et-left{
     max-width:100%;width:100%;text-align:center;align-items:center;
@@ -551,7 +552,7 @@ document.addEventListener('DOMContentLoaded',function(){
   gsap.from('.hero-bottom-div',{opacity:0,y:20,duration:.6,delay:1.1});
 
   // Nav scroll-progress fill
-  var tabMap={'et':'#et','novel':'#novel','factions':'#factions','timeline':'#timeline','team':'#team'};
+  var tabMap={'et':'#et','factions':'#factions','timeline':'#timeline','team':'#team'};
   Object.keys(tabMap).forEach(function(key){
     var link=document.querySelector('.nav-link.tab-link[data-s="'+key+'"]');
     var bg=link?link.querySelector('.nav-link-bg'):null;
@@ -563,6 +564,19 @@ document.addEventListener('DOMContentLoaded',function(){
       onLeaveBack:function(){bg.style.width='0%'}
     });
   });
+  // The Novel progress spans both #novel and #novel2
+  (function(){
+    var link=document.querySelector('.nav-link.tab-link[data-s="novel"]');
+    var bg=link?link.querySelector('.nav-link-bg'):null;
+    if(!link||!bg)return;
+    ScrollTrigger.create({
+      trigger:'#novel',start:'top top',
+      endTrigger:'#novel2',end:'bottom top',
+      onUpdate:function(self){bg.style.width=(self.progress*100)+'%'},
+      onLeave:function(){bg.style.width='100%'},
+      onLeaveBack:function(){bg.style.width='0%'}
+    });
+  })();
 
   // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(function(a){
