@@ -338,7 +338,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 .fac-bg-img{
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;object-position:center;
-  opacity:0;will-change:opacity;
+  opacity:0;
 }
 .fac-bg-img.active{opacity:1}
 
@@ -642,9 +642,9 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 <section id="factions" aria-label="Factions">
   <!-- Background layer: stacked images, GSAP crossfade -->
   <div class="fac-bg">
-    <img class="fac-bg-img active" src="images/gallerybg1.png" alt="Ex Sanguis">
-    <img class="fac-bg-img" src="images/gallerybg2.png" alt="Cradle">
-    <img class="fac-bg-img" src="images/gallerybg3.png" alt="House Mallat">
+    <img class="fac-bg-img active" src="images/gallerybg1.png" alt="Ex Sanguis" loading="lazy" decoding="async">
+    <img class="fac-bg-img" src="images/gallerybg2.png" alt="Cradle" loading="lazy" decoding="async">
+    <img class="fac-bg-img" src="images/gallerybg3.png" alt="House Mallat" loading="lazy" decoding="async">
   </div>
   <!-- Info card overlay -->
   <div class="fac-card">
@@ -972,6 +972,11 @@ document.addEventListener('DOMContentLoaded',function(){
     // Pause auto-play on hover
     facEl.addEventListener('mouseenter',function(){facStopAuto()});
     facEl.addEventListener('mouseleave',function(){facStartAuto()});
+
+    // Pause when tab hidden (prevents queued transitions)
+    document.addEventListener('visibilitychange',function(){
+      if(document.hidden){facStopAuto()}else{facStartAuto()}
+    });
 
     // ScrollTrigger entrance
     gsap.from('.fac-card-inner',{y:50,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'}});
