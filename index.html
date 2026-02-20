@@ -329,6 +329,106 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   .snap-bottom{padding-bottom:var(--sp-md);gap:var(--sp-sm);height:clamp(140px, 35%, 280px)}
 }
 
+/* ═══════ FACTIONS CAROUSEL ═══════ */
+#factions{
+  position:relative;z-index:4;background-color:var(--bk);
+  height:100vh;height:100dvh;min-height:580px;overflow:hidden;
+}
+.fac-bg{position:absolute;inset:0;z-index:0}
+.fac-bg-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  opacity:0;will-change:opacity;
+}
+.fac-bg-img.active{opacity:1}
+
+/* Info card */
+.fac-card{
+  position:relative;z-index:2;
+  padding:var(--sp-xl) var(--pad) 0;
+  padding-top:calc(var(--sp-xl) + var(--touch) + var(--sp-sm));
+}
+.fac-card-inner{
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-radius:clamp(8px,1vw,16px);
+  padding:var(--sp-lg);
+  display:flex;flex-direction:column;gap:var(--sp-md);
+}
+.fac-card-top{
+  display:flex;align-items:flex-start;gap:var(--sp-lg);
+}
+.fac-name-wrap{flex-shrink:0;min-width:0}
+.fac-name{
+  font-family:Queering,Arial,sans-serif;
+  font-size:clamp(2rem,4vw + 0.5rem,4.5rem);
+  color:var(--tl);line-height:1;font-weight:400;
+}
+.fac-desc-wrap{flex:1;min-width:0;display:flex;align-items:center}
+.fac-desc{
+  font-family:'Crimson Text',Georgia,serif;
+  font-size:var(--fs-body);color:rgba(255,255,255,0.7);
+  line-height:1.5;
+}
+.fac-icon-wrap{
+  flex-shrink:0;
+  width:clamp(36px,5vw,64px);
+  display:flex;align-items:center;justify-content:center;
+}
+.fac-icon{width:100%;height:auto;opacity:0.85}
+.fac-icon path{fill:var(--tl)}
+
+/* Card bottom: indicators + arrows */
+.fac-card-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:var(--sp-xs);
+}
+.fac-indicators{display:flex;gap:2px}
+.fac-dot{
+  width:clamp(18px,1.8vw,24px);height:clamp(18px,1.8vw,24px);
+  border:none;background:none;cursor:pointer;padding:0;
+  min-width:var(--touch);min-height:var(--touch);
+  display:flex;align-items:center;justify-content:center;
+}
+.fac-dot svg{width:clamp(14px,1.2vw,18px);height:clamp(14px,1.2vw,18px)}
+.fac-dot svg path{
+  fill:none;stroke:rgba(255,255,255,0.35);stroke-width:2;
+  transition:fill .3s,stroke .3s;
+}
+.fac-dot.active svg path{fill:var(--tl);stroke:var(--tl)}
+.fac-nav{display:flex;gap:var(--sp-xs)}
+.fac-arrow{
+  width:var(--touch);height:var(--touch);
+  border:1px solid rgba(255,255,255,0.25);border-radius:50%;
+  background:rgba(0,0,0,0.3);color:var(--tl);
+  font-size:clamp(0.75rem,1vw,1rem);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .3s,border-color .3s;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.fac-arrow:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.5)}
+.fac-arrow svg{width:16px;height:16px}
+.fac-arrow svg path{fill:none;stroke:var(--tl);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* Factions responsive */
+@media(max-width:1024px){
+  .fac-card-top{flex-direction:column;gap:var(--sp-sm)}
+  .fac-name{font-size:clamp(1.75rem,6vw,3.5rem)}
+  .fac-icon-wrap{position:absolute;top:var(--sp-lg);right:var(--sp-lg);width:clamp(32px,6vw,50px)}
+  .fac-card-inner{position:relative}
+}
+@media(max-width:768px){
+  .fac-card{padding-top:calc(var(--sp-lg) + var(--touch))}
+  .fac-card-inner{padding:var(--sp-md)}
+  .fac-name{font-size:clamp(1.5rem,7vw,2.5rem)}
+  .fac-desc{font-size:var(--fs-small)}
+}
+@media(max-width:480px){
+  .fac-card-inner{padding:var(--sp-sm)}
+  .fac-name{font-size:clamp(1.25rem,6vw,2rem)}
+  .fac-card-bottom{gap:var(--sp-xs)}
+}
+
 /* ═══════ ALL OTHER SECTIONS — must cover hero ═══════ */
 .section-after{
   position:relative;z-index:4;
@@ -538,7 +638,55 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   </div>
 </section>
 
-<section id="factions" class="section-after ph"><h2>Factions</h2><p>Coming next</p></section>
+<!-- FACTIONS CAROUSEL -->
+<section id="factions" aria-label="Factions">
+  <!-- Background layer: stacked images, GSAP crossfade -->
+  <div class="fac-bg">
+    <img class="fac-bg-img active" src="images/gallerybg1.png" alt="Ex Sanguis">
+    <img class="fac-bg-img" src="images/gallerybg2.png" alt="Cradle">
+    <img class="fac-bg-img" src="images/gallerybg3.png" alt="House Mallat">
+  </div>
+  <!-- Info card overlay -->
+  <div class="fac-card">
+    <div class="fac-card-inner">
+      <div class="fac-card-top" aria-live="polite">
+        <div class="fac-name-wrap">
+          <h2 class="fac-name" id="facName">Ex Sanguis</h2>
+        </div>
+        <div class="fac-desc-wrap">
+          <p class="fac-desc" id="facDesc">A militaristic order devoted to rooting out vampiric corruption. Forged in fire and bound by oath, they believe light reveals all sin.</p>
+        </div>
+        <div class="fac-icon-wrap" id="facIconWrap">
+          <!-- Ex Sanguis icon: 8-pointed star -->
+          <svg class="fac-icon" id="facIcon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+            <path d="M32 2l6 18h18l-14 11 5 18-15-11-15 11 5-18L8 20h18z"/>
+          </svg>
+        </div>
+      </div>
+      <div class="fac-card-bottom">
+        <div class="fac-indicators" id="facDots">
+          <button class="fac-dot active" data-i="0" aria-label="Ex Sanguis">
+            <svg viewBox="0 0 16 16"><path d="M4 2l8 6-8 6z"/></svg>
+          </button>
+          <button class="fac-dot" data-i="1" aria-label="Cradle">
+            <svg viewBox="0 0 16 16"><path d="M4 2l8 6-8 6z"/></svg>
+          </button>
+          <button class="fac-dot" data-i="2" aria-label="House Mallat">
+            <svg viewBox="0 0 16 16"><path d="M4 2l8 6-8 6z"/></svg>
+          </button>
+        </div>
+        <div class="fac-nav">
+          <button class="fac-arrow" id="facPrev" aria-label="Previous faction">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button class="fac-arrow" id="facNext" aria-label="Next faction">
+            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 <section id="timeline" class="section-after ph"><h2>Timeline</h2><p>Coming next</p></section>
 <section id="team" class="section-after ph"><h2>Team</h2><p>Coming next</p></section>
 <section id="community" class="section-after ph"><h2>Community</h2><p>Coming next</p></section>
@@ -732,6 +880,106 @@ document.addEventListener('DOMContentLoaded',function(){
     labelAlt:'From hand-drawn art to concept',
     labelDef:'From concept to hand-drawn art'
   });
+
+  // ═══════ FACTIONS CAROUSEL ═══════
+  (function(){
+    var factions=[
+      {
+        name:'Ex Sanguis',
+        desc:'A militaristic order devoted to rooting out vampiric corruption. Forged in fire and bound by oath, they believe light reveals all sin.',
+        icon:'<path d="M32 2l6 18h18l-14 11 5 18-15-11-15 11 5-18L8 20h18z"/>'
+      },
+      {
+        name:'Cradle',
+        desc:'Survivors who built from nothing, Cradle represents human resilience. They protect what remains and fight for every scrap of hope.',
+        icon:'<path d="M32 6a26 26 0 1 0 0 52 26 26 0 0 0 0-52zm0 8a18 18 0 1 1 0 36 18 18 0 0 1 0-36z"/><path d="M30 22h4v12h-4z"/><path d="M26 30h12v4H26z"/>'
+      },
+      {
+        name:'House Mallat',
+        desc:'An ancient house of the night, they walk in shadow and lead through fear and tradition. Their reach extends far beyond what the eye can see.',
+        icon:'<path d="M32 8c-6 0-12 4-16 10-3 4-8 6-12 6 4 6 10 10 16 14h2c-4-6-6-12-4-18 2 6 6 12 10 16h8c4-4 8-10 10-16 2 6 0 12-4 18h2c6-4 12-8 16-14-4 0-9-2-12-6C44 12 38 8 32 8z"/>'
+      }
+    ];
+    var facCur=0;
+    var facTotal=factions.length;
+    var facBusy=false;
+    var bgs=document.querySelectorAll('.fac-bg-img');
+    var nameEl=document.getElementById('facName');
+    var descEl=document.getElementById('facDesc');
+    var iconEl=document.getElementById('facIcon');
+    var dots=document.querySelectorAll('.fac-dot');
+
+    function facGoTo(n){
+      if(facBusy)return;
+      var next=((n%facTotal)+facTotal)%facTotal;
+      if(next===facCur)return;
+      facBusy=true;
+      var prev=facCur;
+      facCur=next;
+
+      var tl=gsap.timeline({onComplete:function(){facBusy=false}});
+
+      // Crossfade backgrounds
+      tl.to(bgs[prev],{opacity:0,duration:.7,ease:'power2.inOut'},0);
+      tl.to(bgs[facCur],{opacity:1,duration:.7,ease:'power2.inOut'},0);
+
+      // Fade out text
+      tl.to(nameEl,{opacity:0,y:-20,duration:.25,ease:'power2.in'},0);
+      tl.to(descEl,{opacity:0,y:-12,duration:.25,ease:'power2.in'},.05);
+      tl.to(iconEl,{opacity:0,scale:0.7,duration:.2,ease:'power2.in'},.05);
+
+      // Swap content mid-transition
+      tl.call(function(){
+        nameEl.textContent=factions[facCur].name;
+        descEl.textContent=factions[facCur].desc;
+        iconEl.innerHTML=factions[facCur].icon;
+      },null,.35);
+
+      // Fade in new text
+      tl.fromTo(nameEl,{opacity:0,y:20},{opacity:1,y:0,duration:.4,ease:'power2.out'},.4);
+      tl.fromTo(descEl,{opacity:0,y:12},{opacity:1,y:0,duration:.4,ease:'power2.out'},.45);
+      tl.fromTo(iconEl,{opacity:0,scale:0.7},{opacity:0.85,scale:1,duration:.35,ease:'back.out(1.4)'},.45);
+
+      // Update indicators
+      dots.forEach(function(d,i){d.classList.toggle('active',i===facCur)});
+    }
+
+    // Arrow handlers
+    document.getElementById('facPrev').addEventListener('click',function(){facGoTo(facCur-1)});
+    document.getElementById('facNext').addEventListener('click',function(){facGoTo(facCur+1)});
+
+    // Dot handlers
+    dots.forEach(function(d){
+      d.addEventListener('click',function(){facGoTo(parseInt(this.dataset.i))});
+    });
+
+    // Auto-play (safe start/stop to prevent multiple concurrent intervals)
+    var facAutoIv=null;
+    function facStartAuto(){clearInterval(facAutoIv);facAutoIv=setInterval(function(){facGoTo(facCur+1)},7000)}
+    function facStopAuto(){clearInterval(facAutoIv);facAutoIv=null}
+    facStartAuto();
+
+    // Touch swipe
+    var facSx=0;
+    var facEl=document.getElementById('factions');
+    facEl.addEventListener('touchstart',function(e){facSx=e.touches[0].clientX;facStopAuto()},{passive:true});
+    facEl.addEventListener('touchend',function(e){
+      var dx=facSx-e.changedTouches[0].clientX;
+      if(Math.abs(dx)>40){dx>0?facGoTo(facCur+1):facGoTo(facCur-1)}
+      facStartAuto();
+    });
+
+    // Pause auto-play on hover
+    facEl.addEventListener('mouseenter',function(){facStopAuto()});
+    facEl.addEventListener('mouseleave',function(){facStartAuto()});
+
+    // ScrollTrigger entrance
+    gsap.from('.fac-card-inner',{y:50,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'}});
+    bgs.forEach(function(bg,i){
+      if(i>0) return;
+      gsap.from(bg,{scale:1.1,duration:1.2,ease:'power2.out',scrollTrigger:{trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'}});
+    });
+  })();
 });
 </script>
 </body>
