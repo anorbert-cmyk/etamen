@@ -342,79 +342,105 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 }
 .fac-bg-img.active{opacity:1}
 
-/* Info card */
+/* Info card — glass overlay panel */
 .fac-card{
   position:relative;z-index:2;
   padding:var(--sp-xl) var(--pad) 0;
   padding-top:calc(var(--sp-xl) + var(--touch) + var(--sp-sm));
 }
 .fac-card-inner{
-  background:rgba(0,0,0,0.5);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  border-radius:clamp(8px,1vw,16px);
-  padding:var(--sp-lg);
-  display:flex;flex-direction:column;gap:var(--sp-md);
+  background:rgba(0,0,0,0.52);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-radius:clamp(8px,1vw,14px);
+  padding:clamp(1.25rem, 2vw, 2rem) clamp(1.25rem, 2.5vw, 2.5rem);
+  display:flex;flex-direction:column;gap:clamp(1rem, 1.5vw, 1.5rem);
 }
+
+/* Top row: name | divider | description | icon */
 .fac-card-top{
-  display:flex;align-items:flex-start;gap:var(--sp-lg);
+  display:flex;align-items:stretch;gap:0;min-height:clamp(48px,5vw,80px);
 }
-.fac-name-wrap{flex-shrink:0;min-width:0}
+.fac-name-wrap{
+  flex-shrink:0;min-width:0;
+  display:flex;align-items:center;
+  padding-right:clamp(1rem, 2vw, 2rem);
+}
 .fac-name{
   font-family:Queering,Arial,sans-serif;
   font-size:clamp(2rem,4vw + 0.5rem,4.5rem);
   color:var(--tl);line-height:1;font-weight:400;
+  white-space:nowrap;
 }
-.fac-desc-wrap{flex:1;min-width:0;display:flex;align-items:center}
+/* Vertical divider between name and description */
+.fac-divider{
+  width:1px;align-self:stretch;flex-shrink:0;
+  background:rgba(255,255,255,0.18);
+}
+.fac-desc-wrap{
+  flex:1;min-width:0;
+  display:flex;align-items:center;
+  padding:0 clamp(1rem, 2vw, 2rem);
+}
 .fac-desc{
   font-family:'Crimson Text',Georgia,serif;
-  font-size:var(--fs-body);color:rgba(255,255,255,0.7);
-  line-height:1.5;
+  font-size:var(--fs-body);color:rgba(255,255,255,0.65);
+  line-height:1.55;letter-spacing:.3px;
+}
+/* Right column: icon + arrows stacked */
+.fac-right-col{
+  flex-shrink:0;
+  display:flex;flex-direction:column;align-items:center;
+  gap:clamp(0.5rem, 0.8vw, 0.75rem);
+  padding-left:clamp(0.75rem, 1.5vw, 1.5rem);
 }
 .fac-icon-wrap{
   flex-shrink:0;
-  width:clamp(36px,5vw,64px);
+  width:clamp(40px,5vw,68px);
   display:flex;align-items:center;justify-content:center;
 }
 .fac-icon{width:100%;height:auto;opacity:0.85}
 .fac-icon path{fill:var(--tl)}
-
-/* Card bottom: indicators + arrows */
-.fac-card-bottom{
-  display:flex;justify-content:space-between;align-items:center;
-  padding-top:var(--sp-xs);
+/* Green nav arrows — stacked under icon */
+.fac-nav-right{display:flex;gap:clamp(4px, 0.5vw, 8px)}
+.fac-arrow{
+  width:clamp(32px, 2.5vw, 40px);height:clamp(32px, 2.5vw, 40px);
+  border:none;border-radius:0;
+  background:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:opacity .3s;
+  padding:0;
 }
-.fac-indicators{display:flex;gap:2px}
+.fac-arrow:hover{opacity:.7}
+.fac-arrow svg{width:clamp(18px, 1.6vw, 24px);height:clamp(18px, 1.6vw, 24px)}
+.fac-arrow svg path{fill:none;stroke:var(--g);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* Bottom row: fang indicators left */
+.fac-card-bottom{
+  display:flex;justify-content:flex-start;align-items:center;
+  padding-top:0;
+}
+.fac-indicators{display:flex;gap:clamp(2px, 0.3vw, 4px);align-items:center}
 .fac-dot{
-  width:clamp(18px,1.8vw,24px);height:clamp(18px,1.8vw,24px);
+  width:clamp(16px,1.4vw,22px);height:clamp(22px,2vw,30px);
   border:none;background:none;cursor:pointer;padding:0;
   min-width:var(--touch);min-height:var(--touch);
   display:flex;align-items:center;justify-content:center;
 }
-.fac-dot svg{width:clamp(14px,1.2vw,18px);height:clamp(14px,1.2vw,18px)}
+.fac-dot svg{width:clamp(12px,1vw,16px);height:clamp(18px,1.6vw,24px)}
 .fac-dot svg path{
-  fill:none;stroke:rgba(255,255,255,0.35);stroke-width:2;
-  transition:fill .3s,stroke .3s;
+  fill:rgba(255,255,255,0.15);stroke:none;
+  transition:fill .35s;
 }
-.fac-dot.active svg path{fill:var(--tl);stroke:var(--tl)}
-.fac-nav{display:flex;gap:var(--sp-xs)}
-.fac-arrow{
-  width:var(--touch);height:var(--touch);
-  border:1px solid rgba(255,255,255,0.25);border-radius:50%;
-  background:rgba(0,0,0,0.3);color:var(--tl);
-  font-size:clamp(0.75rem,1vw,1rem);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:background .3s,border-color .3s;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-.fac-arrow:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.5)}
-.fac-arrow svg{width:16px;height:16px}
-.fac-arrow svg path{fill:none;stroke:var(--tl);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fac-dot.active svg path{fill:var(--g)}
 
 /* Factions responsive */
 @media(max-width:1024px){
-  .fac-card-top{flex-direction:column;gap:var(--sp-sm)}
+  .fac-card-top{flex-wrap:wrap;gap:var(--sp-sm)}
+  .fac-name-wrap{padding-right:0}
+  .fac-divider{display:none}
+  .fac-desc-wrap{padding:0;flex-basis:100%;order:3}
   .fac-name{font-size:clamp(1.75rem,6vw,3.5rem)}
-  .fac-icon-wrap{position:absolute;top:var(--sp-lg);right:var(--sp-lg);width:clamp(32px,6vw,50px)}
+  .fac-right-col{position:absolute;top:clamp(1.25rem, 2vw, 2rem);right:clamp(1.25rem, 2.5vw, 2.5rem);padding-left:0}
   .fac-card-inner{position:relative}
 }
 @media(max-width:768px){
@@ -649,38 +675,43 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   <!-- Info card overlay -->
   <div class="fac-card">
     <div class="fac-card-inner">
+      <!-- Top row: Name | Divider | Description | Icon + Arrows -->
       <div class="fac-card-top" aria-live="polite">
         <div class="fac-name-wrap">
           <h2 class="fac-name" id="facName">Ex Sanguis</h2>
         </div>
+        <div class="fac-divider"></div>
         <div class="fac-desc-wrap">
-          <p class="fac-desc" id="facDesc">A militaristic order devoted to rooting out vampiric corruption. Forged in fire and bound by oath, they believe light reveals all sin.</p>
+          <p class="fac-desc" id="facDesc">A militaristic order devoted to rooting out vampiric corruption. Forged in fire and bound by oath, they believe light reveals all sin. Others revel in opacity. Not them.</p>
         </div>
-        <div class="fac-icon-wrap" id="facIconWrap">
-          <!-- Ex Sanguis icon: 8-pointed star -->
-          <svg class="fac-icon" id="facIcon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 2l6 18h18l-14 11 5 18-15-11-15 11 5-18L8 20h18z"/>
-          </svg>
+        <!-- Right column: faction icon stacked above green arrows -->
+        <div class="fac-right-col">
+          <div class="fac-icon-wrap" id="facIconWrap">
+            <svg class="fac-icon" id="facIcon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <path d="M32 2l6 18h18l-14 11 5 18-15-11-15 11 5-18L8 20h18z"/>
+            </svg>
+          </div>
+          <div class="fac-nav-right">
+            <button class="fac-arrow" id="facPrev" aria-label="Previous faction">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="fac-arrow" id="facNext" aria-label="Next faction">
+              <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
         </div>
       </div>
+      <!-- Bottom row: Fang indicators (left-aligned) -->
       <div class="fac-card-bottom">
         <div class="fac-indicators" id="facDots">
           <button class="fac-dot active" data-i="0" aria-label="Ex Sanguis">
-            <svg viewBox="0 0 16 16"><path d="M4 2l8 6-8 6z"/></svg>
+            <svg viewBox="0 0 10 16"><path d="M1 1l8 7-8 7z"/></svg>
           </button>
           <button class="fac-dot" data-i="1" aria-label="Cradle">
-            <svg viewBox="0 0 16 16"><path d="M4 2l8 6-8 6z"/></svg>
+            <svg viewBox="0 0 10 16"><path d="M1 1l8 7-8 7z"/></svg>
           </button>
           <button class="fac-dot" data-i="2" aria-label="House Mallat">
-            <svg viewBox="0 0 16 16"><path d="M4 2l8 6-8 6z"/></svg>
-          </button>
-        </div>
-        <div class="fac-nav">
-          <button class="fac-arrow" id="facPrev" aria-label="Previous faction">
-            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button class="fac-arrow" id="facNext" aria-label="Next faction">
-            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+            <svg viewBox="0 0 10 16"><path d="M1 1l8 7-8 7z"/></svg>
           </button>
         </div>
       </div>
@@ -886,17 +917,17 @@ document.addEventListener('DOMContentLoaded',function(){
     var factions=[
       {
         name:'Ex Sanguis',
-        desc:'A militaristic order devoted to rooting out vampiric corruption. Forged in fire and bound by oath, they believe light reveals all sin.',
+        desc:'A militaristic order devoted to rooting out vampiric corruption. Forged in fire and bound by oath, they believe light reveals all sin. Others revel in opacity. Not them.',
         icon:'<path d="M32 2l6 18h18l-14 11 5 18-15-11-15 11 5-18L8 20h18z"/>'
       },
       {
         name:'Cradle',
-        desc:'Survivors who built from nothing, Cradle represents human resilience. They protect what remains and fight for every scrap of hope.',
+        desc:'Survivors who built from nothing, Cradle stands for human resilience. They protect what remains and fight for every scrap of hope. This place is all they got, so they dig deep and stick together.',
         icon:'<path d="M32 6a26 26 0 1 0 0 52 26 26 0 0 0 0-52zm0 8a18 18 0 1 1 0 36 18 18 0 0 1 0-36z"/><path d="M30 22h4v12h-4z"/><path d="M26 30h12v4H26z"/>'
       },
       {
         name:'House Mallat',
-        desc:'An ancient house of the night, they walk in shadow and lead through fear and tradition. Their reach extends far beyond what the eye can see.',
+        desc:'An ancient house of the night, they walk in shadow and lead through fear and tradition. Their reach extends far beyond what the eye can see. They follow the path that leads home. To darkness.',
         icon:'<path d="M32 8c-6 0-12 4-16 10-3 4-8 6-12 6 4 6 10 10 16 14h2c-4-6-6-12-4-18 2 6 6 12 10 16h8c4-4 8-10 10-16 2 6 0 12-4 18h2c6-4 12-8 16-14-4 0-9-2-12-6C44 12 38 8 32 8z"/>'
       }
     ];
@@ -923,7 +954,7 @@ document.addEventListener('DOMContentLoaded',function(){
       tl.to(bgs[prev],{opacity:0,duration:.7,ease:'power2.inOut'},0);
       tl.to(bgs[facCur],{opacity:1,duration:.7,ease:'power2.inOut'},0);
 
-      // Fade out text
+      // Fade out text + icon
       tl.to(nameEl,{opacity:0,y:-20,duration:.25,ease:'power2.in'},0);
       tl.to(descEl,{opacity:0,y:-12,duration:.25,ease:'power2.in'},.05);
       tl.to(iconEl,{opacity:0,scale:0.7,duration:.2,ease:'power2.in'},.05);
@@ -935,7 +966,7 @@ document.addEventListener('DOMContentLoaded',function(){
         iconEl.innerHTML=factions[facCur].icon;
       },null,.35);
 
-      // Fade in new text
+      // Fade in new text + icon
       tl.fromTo(nameEl,{opacity:0,y:20},{opacity:1,y:0,duration:.4,ease:'power2.out'},.4);
       tl.fromTo(descEl,{opacity:0,y:12},{opacity:1,y:0,duration:.4,ease:'power2.out'},.45);
       tl.fromTo(iconEl,{opacity:0,scale:0.7},{opacity:0.85,scale:1,duration:.35,ease:'back.out(1.4)'},.45);
