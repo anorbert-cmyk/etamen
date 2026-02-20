@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Apokrif Universe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +46,7 @@
 }
 
 html{font-size:16px;-webkit-font-smoothing:antialiased}
-body{background:var(--bk);color:var(--tl);font-family:'Crimson Text',Georgia,serif;overflow-x:hidden}
+body{background:var(--bk);color:var(--tl);font-family:'Crimson Text',Georgia,serif;overflow-x:clip}
 img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 
 /* ═══════ NAV ═══════ */
@@ -78,6 +78,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   background-image:url("images/03-image.jpg");
   background-position:40% 0;background-size:cover;
   position:-webkit-sticky;position:sticky;top:0;height:100vh;height:100dvh;min-height:580px;
+  transform:translate3d(0,0,0);
 }
 .main-container{z-index:2;width:100%;padding:0 var(--pad);position:relative}
 .master-hero-section{
@@ -114,6 +115,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   background-image:url("images/05-image.jpg");
   background-position:50% 0;background-size:cover;
   min-height:100vh;min-height:100dvh;
+  transform:translate3d(0,0,0);
 }
 
 /* Main layout: left text + right slider, aligned at bottom */
@@ -233,9 +235,10 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 #novel{
   z-index:2;position:-webkit-sticky;position:sticky;top:0;
   background-color:var(--g);
-  height:100vh;height:100dvh;
+  min-height:100vh;min-height:100dvh;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:0 var(--pad);
+  transform:translate3d(0,0,0);
 }
 #novel2{
   z-index:3;position:relative;
@@ -377,15 +380,15 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   .hero-bottom-right-div{align-self:flex-end}
   .hero-bottom-text-div p br{display:none}
 
-  .slider-frame{width:min(80vw, 400px);height:min(110vw, 550px)}
+  .slider-frame{width:min(75vw, 400px);height:min(103vw, 550px)}
   .slide img{width:92%;margin-left:4%}
   .slider-arrow{font-size:1.5rem}
 }
 
 @media(max-width:480px){
   .hero-bottom-text-div p br{display:none}
-  .slider-frame{width:min(78vw, 340px);height:min(108vw, 460px)}
-  .slider-arrow{font-size:1.25rem;min-width:36px;padding:var(--sp-xs) 2px}
+  .slider-frame{width:min(68vw, 280px);height:min(108vw, 460px)}
+  .slider-arrow{font-size:1.25rem;min-width:var(--touch);padding:var(--sp-xs) 2px}
   .et-left{gap:clamp(20px, 3vw, 40px)}
   .novel-heading-text{font-size:clamp(2rem, 10vw, 3.5rem)}
   .snap-desc{font-size:clamp(0.875rem, 1.2vw + 0.25rem, 1.5rem)}
