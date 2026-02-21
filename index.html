@@ -349,6 +349,17 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 .faction-main-container._2{background-image:url('images/gallerybg2.webp')}
 .faction-main-container._3{background-image:url('images/gallerybg3.webp')}
 
+/* ─── COLOR OVERLAY a háttérkép fölött ─── */
+.faction-main-container::after{
+  content:'';position:absolute;inset:0;
+  z-index:0;pointer-events:none;
+  opacity:0;
+}
+.faction-main-container.active::after{opacity:1}
+.faction-main-container.ex::after{background-color:rgba(107,79,46,0.55)}
+.faction-main-container._2::after{background-color:rgba(140,120,70,0.55)}
+.faction-main-container._3::after{background-color:rgba(44,62,80,0.6)}
+
 /* ─── VEZÉRLŐ PANEL (szürke sáv) ─── */
 .div-block-9{
   background-color:#4E4D4E;
@@ -663,7 +674,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
         </div>
       </div>
       <div class="div-block-19">
-        <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c732_apokrif_web_landing_4_factions_layere14.png" alt="Ex Sanguis warrior">
+        <img src="images/gallerybg1.webp" alt="Ex Sanguis warrior">
       </div>
     </div>
 
@@ -684,11 +695,11 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
           <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c730_apokrif_web_landing_4_factions_layere12.png" alt="">
         </div>
         <div class="div-block-15">
-          <div class="meta-desc">Survivors who built from nothing, Cradle stands for human resilience. They protect what remains and fight for every scrap of hope. This place is all they got, so they dig deep and stick together.</div>
+          <div class="meta-desc">A small settlement nestled in the ageing shell of a hydroelectric dam, Cradle is home to a few thousand survivors whose days are spent sourcing the food, energy, and materials they need to get through the day. Life isn't easy here, but they've found a sense of community and camaraderie here that has made this place home.</div>
         </div>
         <div class="div-block-12">
           <div class="top-indicator">
-            <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c731_apokrif_web_landing_4_factions_layere13.png" alt="">
+            <img src="images/cradle.png" alt="Cradle logo">
           </div>
           <div class="div-block-13">
             <div class="div-block-18" id="facPrev2"><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c735_apokrif_web_landing_4_factions_layered17.png" alt="Previous"></div>
@@ -697,7 +708,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
         </div>
       </div>
       <div class="div-block-19">
-        <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c732_apokrif_web_landing_4_factions_layere14.png" alt="Cradle warrior">
+        <img src="images/gallerybg2.webp" alt="Cradle warrior">
       </div>
     </div>
 
@@ -718,11 +729,11 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
           <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c730_apokrif_web_landing_4_factions_layere12.png" alt="">
         </div>
         <div class="div-block-15">
-          <div class="meta-desc">An ancient house of the night, they walk in shadow and lead through fear and tradition. Their reach extends far beyond what the eye can see. They follow the path that leads home. To darkness.</div>
+          <div class="meta-desc">An ancient aristocratic house that once ruled over all the vampiric bloodlines, House Mallat has been left grasping the dregs of their former glory, having been unseated by the great Emperor Kastus, then decimated during the Purge. Now, they have vacated the small holding they maintained in North America, and seem to be in the midst of an exodus to the north of the continent.</div>
         </div>
         <div class="div-block-12">
           <div class="top-indicator">
-            <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c731_apokrif_web_landing_4_factions_layere13.png" alt="">
+            <img src="images/mallat.png" alt="House Mallat logo">
           </div>
           <div class="div-block-13">
             <div class="div-block-18" id="facPrev3"><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c735_apokrif_web_landing_4_factions_layered17.png" alt="Previous"></div>
@@ -731,7 +742,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
         </div>
       </div>
       <div class="div-block-19">
-        <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c732_apokrif_web_landing_4_factions_layere14.png" alt="House Mallat warrior">
+        <img src="images/gallerybg3.webp" alt="House Mallat warrior">
       </div>
     </div>
 
@@ -993,23 +1004,44 @@ document.addEventListener('DOMContentLoaded',function(){
       var prev=facCur;
       facCur=next;
 
+      var prevOverlay=slides[prev].querySelector('::after')||slides[prev];
+      var nextPanel=slides[facCur].querySelector('.div-block-9');
+      var nextFront=slides[facCur].querySelector('.div-block-19');
+      var prevFront=slides[prev].querySelector('.div-block-19');
+
       var tl=gsap.timeline({onComplete:function(){facBusy=false}});
 
-      // Fade out current slide
-      tl.to(slides[prev],{opacity:0,duration:.7,ease:'power2.inOut'},0);
-      // Fade in next slide
-      tl.set(slides[facCur],{zIndex:3,pointerEvents:'auto'},0);
-      tl.to(slides[facCur],{opacity:1,duration:.7,ease:'power2.inOut'},0);
+      // 1. Kilépő slide: előtér kép scale-down + fade, majd az egész slide fade-out
+      tl.to(prevFront,{scale:0.95,opacity:0,duration:.4,ease:'power2.in'},0);
+      tl.to(slides[prev],{opacity:0,duration:.6,ease:'power2.inOut'},0.2);
 
-      // Reset previous slide
-      tl.set(slides[prev],{zIndex:1,pointerEvents:'none',clearProps:''},0.7);
+      // 2. Belépő slide: háttér megjelenik először
+      tl.set(slides[facCur],{zIndex:3,pointerEvents:'auto',opacity:0},0);
+      tl.to(slides[facCur],{opacity:1,duration:.7,ease:'power2.out'},0.15);
 
-      // Update active class and dots
+      // 3. Belépő slide overlay fade-in (a ::after-t CSS kezeli az .active class-on keresztül)
+      // De a belépő slide panel és előtér kép késleltetve animálódik
+      if(nextPanel){
+        gsap.set(nextPanel,{y:30,opacity:0});
+        tl.to(nextPanel,{y:0,opacity:1,duration:.5,ease:'power2.out'},0.35);
+      }
+      if(nextFront){
+        gsap.set(nextFront,{y:40,opacity:0,scale:1.03});
+        tl.to(nextFront,{y:0,opacity:1,scale:1,duration:.6,ease:'power2.out'},0.4);
+      }
+
+      // 4. Reset kilépő slide
+      tl.set(slides[prev],{zIndex:1,pointerEvents:'none'},0.85);
+      tl.call(function(){
+        gsap.set(prevFront,{clearProps:'scale,opacity'});
+      },null,0.85);
+
+      // 5. Update active class és dots
       tl.call(function(){
         slides[prev].classList.remove('active');
         slides[facCur].classList.add('active');
         updateDots();
-      },null,0);
+      },null,0.1);
     }
 
     // Arrow handlers — bind all prev/next buttons across all slides
@@ -1047,9 +1079,14 @@ document.addEventListener('DOMContentLoaded',function(){
       if(document.hidden){facStopAuto()}else{facStartAuto()}
     });
 
-    // ScrollTrigger entrance
-    gsap.from('.div-block-9',{y:50,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'}});
-    gsap.from(slides[0],{scale:1.05,duration:1.2,ease:'power2.out',scrollTrigger:{trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'}});
+    // ScrollTrigger entrance — layered reveal
+    var stConfig={trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'};
+    // Háttérkép scale-down belépés
+    gsap.from(slides[0],{scale:1.1,duration:1.4,ease:'power2.out',scrollTrigger:stConfig});
+    // Szürke panel slide-up + fade
+    gsap.from('.faction-main-container.active .div-block-9',{y:50,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:Object.assign({},stConfig,{start:'top 70%'})});
+    // Előtér kép parallax felemelkedés
+    gsap.from('.faction-main-container.active .div-block-19',{y:60,opacity:0,scale:1.05,duration:1,ease:'power2.out',scrollTrigger:Object.assign({},stConfig,{start:'top 65%'})});
   })();
 });
 </script>
