@@ -75,10 +75,14 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 /* ═══════ HERO ═══════ */
 #hero{
   z-index:0;background-color:var(--bk);
+  position:-webkit-sticky;position:sticky;top:0;height:100vh;height:100dvh;min-height:580px;
+  transform:translate3d(0,0,0);overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:-8%;
   background-image:url("images/03-image.jpg");
   background-position:40% 0;background-size:cover;
-  position:-webkit-sticky;position:sticky;top:0;height:100vh;height:100dvh;min-height:580px;
-  transform:translate3d(0,0,0);
+  will-change:transform;z-index:0;
 }
 .main-container{z-index:2;width:100%;padding:0 var(--pad);position:relative}
 .master-hero-section{
@@ -356,9 +360,9 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   opacity:0;
 }
 .faction-main-container.active::after{opacity:1}
-.faction-main-container.ex::after{background-color:rgba(107,79,46,0.55)}
-.faction-main-container._2::after{background-color:rgba(140,120,70,0.55)}
-.faction-main-container._3::after{background-color:rgba(44,62,80,0.6)}
+.faction-main-container.ex::after{background-color:rgba(107,79,46,0.35)}
+.faction-main-container._2::after{background-color:rgba(140,120,70,0.35)}
+.faction-main-container._3::after{background-color:rgba(44,62,80,0.38)}
 
 /* ─── VEZÉRLŐ PANEL (szürke sáv) ─── */
 .div-block-9{
@@ -528,6 +532,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 
 <!-- HERO (sticky — stays behind) -->
 <section id="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
   <div class="main-container">
     <div class="master-hero-section">
       <div class="master-hero-top-div">
@@ -779,6 +784,24 @@ document.addEventListener('DOMContentLoaded',function(){
   gsap.from('.heading-405',{opacity:0,y:40,duration:.8,ease:'power3.out',delay:.5});
   gsap.from('.kickstarter-button',{opacity:0,x:-30,duration:.5,delay:.9});
   gsap.from('.hero-bottom-div',{opacity:0,y:20,duration:.6,delay:1.1});
+
+  // Hero background — Ken Burns + scroll parallax
+  var heroBg=document.querySelector('.hero-bg');
+  if(heroBg){
+    // Entrance: lassú zoom-in homályból
+    gsap.from(heroBg,{scale:1.14,opacity:0.55,duration:2.8,ease:'power3.out'});
+    // Ken Burns légzés — ismétlődő lassú pan+zoom (entrance után indul)
+    gsap.to(heroBg,{
+      scale:1.07,x:'-1.8%',y:'-0.8%',
+      duration:16,ease:'sine.inOut',
+      repeat:-1,yoyo:true,delay:2.8
+    });
+    // Scroll parallax — a háttér lassan felfelé csúszik görgetéskor
+    gsap.to(heroBg,{
+      y:'18%',ease:'none',
+      scrollTrigger:{trigger:'#hero',start:'top top',end:'bottom top',scrub:1.5}
+    });
+  }
 
   // Nav scroll-progress fill
   var tabMap={'et':'#et','factions':'#factions','timeline':'#timeline','team':'#team'};
