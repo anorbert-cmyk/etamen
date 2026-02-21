@@ -327,130 +327,100 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   .snap-bottom{padding-bottom:var(--sp-md);gap:var(--sp-sm);height:clamp(140px, 35%, 280px)}
 }
 
-/* ═══════ FACTIONS CAROUSEL ═══════ */
-#factions{
-  position:relative;z-index:4;background-color:var(--bk);
-  height:100vh;height:100dvh;min-height:580px;overflow:hidden;
+/* ═══════ FACTIONS CAROUSEL (section-3) ═══════ */
+.section-3{
+  background-color:#000;position:relative;z-index:4;
+  width:100%;height:100vh;height:100dvh;min-height:580px;overflow:visible;
 }
-.fac-bg{position:absolute;inset:0;z-index:0}
-.fac-bg-img{
-  position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;object-position:center;
-  opacity:0;
+.scroll-container{
+  position:relative;width:100%;height:100%;overflow:hidden;display:flex;
 }
-.fac-bg-img.active{opacity:1}
+/* ─── EGY SLIDE ─── */
+.faction-main-container{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  z-index:1;opacity:0;pointer-events:none;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  display:flex;flex-direction:column;
+  padding:80px 30px 30px;gap:20px;
+  color:#ADA47F;font-family:Queering,Arial,sans-serif;font-size:16px;letter-spacing:-0.2px;
+}
+.faction-main-container.active{opacity:1;pointer-events:auto;z-index:3}
+.faction-main-container.ex{background-image:url('images/gallerybg1.webp')}
+.faction-main-container._2{background-image:url('images/gallerybg2.webp')}
+.faction-main-container._3{background-image:url('images/gallerybg3.webp')}
 
-/* Info card — glass overlay panel */
-.fac-card{
-  position:relative;z-index:2;
-  padding:var(--sp-xl) var(--pad) 0;
-  padding-top:calc(var(--sp-xl) + var(--touch) + var(--sp-sm));
+/* ─── VEZÉRLŐ PANEL (szürke sáv) ─── */
+.div-block-9{
+  background-color:#4E4D4E;
+  display:flex;flex-direction:row;align-items:stretch;
+  width:100%;max-width:1140px;height:173px;
+  padding:15px 15px 10px;gap:29px;
+  margin:0 auto;position:relative;z-index:2;
 }
-.fac-card-inner{
-  background:rgba(0,0,0,0.52);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  border-radius:clamp(8px,1vw,14px);
-  padding:clamp(1.25rem, 2vw, 2rem) clamp(1.25rem, 2.5vw, 2.5rem);
-  display:flex;flex-direction:column;gap:clamp(1rem, 1.5vw, 1.5rem);
+/* BAL OSZLOP: cím + pont-indikátorok */
+.div-block-14{
+  width:75px;display:flex;flex-direction:column;justify-content:space-between;
+  gap:5px;margin-right:40px;flex-shrink:0;
 }
-
-/* Top row: name | divider | description | icon */
-.fac-card-top{
-  display:flex;align-items:stretch;gap:0;min-height:clamp(48px,5vw,80px);
+.div-block-10{width:75px;height:86px;overflow:visible}
+.meta-title{
+  color:#DEA468;font-size:40px;font-family:Queering,Arial,sans-serif;
+  font-weight:400;line-height:38px;letter-spacing:-1px;margin:0;
 }
-.fac-name-wrap{
-  flex-shrink:0;min-width:0;
-  display:flex;align-items:center;
-  padding-right:clamp(1rem, 2vw, 2rem);
+/* PONT INDIKÁTOROK */
+.div-block-11{display:flex;flex-direction:row;gap:2px;align-items:center}
+.div-block-11 img{width:15px;height:13px;display:block}
+/* ELVÁLASZTÓ: vékony vonal + csillag logó PNG */
+.fac-divider-col{flex-shrink:0;display:flex;align-items:center}
+.fac-divider-col img{width:4px;height:120px;object-fit:fill}
+/* LEÍRÓ SZÖVEG */
+.div-block-15{flex:1;height:148px;margin:0 40px;overflow:hidden;display:flex;align-items:center}
+.meta-desc{
+  color:#ADA47F;font-size:20px;font-family:Queering,Arial,sans-serif;
+  font-weight:400;line-height:24px;margin:0;
 }
-.fac-name{
-  font-family:Queering,Arial,sans-serif;
-  font-size:clamp(2rem,4vw + 0.5rem,4.5rem);
-  color:var(--tl);line-height:1;font-weight:400;
-  white-space:nowrap;
+/* JOBB PANEL: indikátor + nyilak */
+.div-block-12{
+  display:flex;flex-direction:column;width:85px;height:148px;
+  gap:18px;flex-shrink:0;
 }
-/* Vertical divider between name and description */
-.fac-divider{
-  width:1px;align-self:stretch;flex-shrink:0;
-  background:rgba(255,255,255,0.18);
+.top-indicator img{width:85px;height:96px;display:block}
+.div-block-13{
+  display:flex;flex-direction:row;gap:7px;justify-content:space-around;
+  align-items:center;height:34px;
 }
-.fac-desc-wrap{
-  flex:1;min-width:0;
-  display:flex;align-items:center;
-  padding:0 clamp(1rem, 2vw, 2rem);
+.div-block-18,.arrow-right{
+  width:20px;height:34px;cursor:pointer;display:flex;align-items:center;
 }
-.fac-desc{
-  font-family:'Crimson Text',Georgia,serif;
-  font-size:var(--fs-body);color:rgba(255,255,255,0.65);
-  line-height:1.55;letter-spacing:.3px;
-}
-/* Right column: icon + arrows stacked */
-.fac-right-col{
-  flex-shrink:0;
-  display:flex;flex-direction:column;align-items:center;
-  gap:clamp(0.5rem, 0.8vw, 0.75rem);
-  padding-left:clamp(0.75rem, 1.5vw, 1.5rem);
-}
-.fac-icon-wrap{
-  flex-shrink:0;
-  width:clamp(40px,5vw,68px);
-  display:flex;align-items:center;justify-content:center;
-}
-.fac-icon{width:100%;height:auto;opacity:0.85}
-.fac-icon path{fill:var(--tl)}
-/* Green nav arrows — stacked under icon */
-.fac-nav-right{display:flex;gap:clamp(4px, 0.5vw, 8px)}
-.fac-arrow{
-  width:clamp(32px, 2.5vw, 40px);height:clamp(32px, 2.5vw, 40px);
-  border:none;border-radius:0;
-  background:none;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:opacity .3s;
-  padding:0;
-}
-.fac-arrow:hover{opacity:.7}
-.fac-arrow svg{width:clamp(18px, 1.6vw, 24px);height:clamp(18px, 1.6vw, 24px)}
-.fac-arrow svg path{fill:none;stroke:var(--g);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-
-/* Bottom row: fang indicators left */
-.fac-card-bottom{
-  display:flex;justify-content:flex-start;align-items:center;
-  padding-top:0;
-}
-.fac-indicators{display:flex;gap:clamp(2px, 0.3vw, 4px);align-items:center}
-.fac-dot{
-  width:clamp(16px,1.4vw,22px);height:clamp(22px,2vw,30px);
-  border:none;background:none;cursor:pointer;padding:0;
-  min-width:var(--touch);min-height:var(--touch);
-  display:flex;align-items:center;justify-content:center;
-}
-.fac-dot svg{width:clamp(12px,1vw,16px);height:clamp(18px,1.6vw,24px)}
-.fac-dot svg path{
-  fill:rgba(255,255,255,0.15);stroke:none;
-  transition:fill .35s;
-}
-.fac-dot.active svg path{fill:var(--g)}
+.div-block-18 img,.arrow-right img{width:10px;height:20px;display:block}
+/* NAGY ELŐTÉR KÉP */
+.div-block-19{width:100%;flex:1;display:flex;align-items:flex-end;justify-content:center;position:relative;z-index:1}
+.div-block-19 img{width:100%;max-width:1756px;height:auto;display:block;object-fit:fill}
 
 /* Factions responsive */
 @media(max-width:1024px){
-  .fac-card-top{flex-wrap:wrap;gap:var(--sp-sm)}
-  .fac-name-wrap{padding-right:0}
-  .fac-divider{display:none}
-  .fac-desc-wrap{padding:0;flex-basis:100%;order:3}
-  .fac-name{font-size:clamp(1.75rem,6vw,3.5rem)}
-  .fac-right-col{position:absolute;top:clamp(1.25rem, 2vw, 2rem);right:clamp(1.25rem, 2.5vw, 2.5rem);padding-left:0}
-  .fac-card-inner{position:relative}
+  .div-block-9{height:auto;min-height:140px;gap:15px}
+  .div-block-14{width:60px;margin-right:20px}
+  .meta-title{font-size:30px;line-height:30px}
+  .div-block-15{margin:0 20px;height:auto}
+  .meta-desc{font-size:16px;line-height:20px}
 }
 @media(max-width:768px){
-  .fac-card{padding-top:calc(var(--sp-lg) + var(--touch))}
-  .fac-card-inner{padding:var(--sp-md)}
-  .fac-name{font-size:clamp(1.5rem,7vw,2.5rem)}
-  .fac-desc{font-size:var(--fs-small)}
+  .faction-main-container{padding:60px 15px 15px}
+  .div-block-9{flex-wrap:wrap;height:auto;padding:10px;gap:10px}
+  .div-block-14{width:100%;flex-direction:row;margin-right:0;align-items:center;gap:10px}
+  .div-block-10{width:auto;height:auto}
+  .meta-title{font-size:24px;line-height:24px}
+  .fac-divider-col{display:none}
+  .div-block-15{margin:0;height:auto}
+  .meta-desc{font-size:14px;line-height:18px}
+  .div-block-12{width:100%;flex-direction:row;height:auto;gap:10px;align-items:center}
+  .top-indicator img{width:42px;height:48px}
 }
 @media(max-width:480px){
-  .fac-card-inner{padding:var(--sp-sm)}
-  .fac-name{font-size:clamp(1.25rem,6vw,2rem)}
-  .fac-card-bottom{gap:var(--sp-xs)}
+  .faction-main-container{padding:50px 10px 10px}
+  .meta-title{font-size:20px;line-height:22px}
+  .meta-desc{font-size:13px;line-height:16px}
 }
 
 /* ═══════ ALL OTHER SECTIONS — must cover hero ═══════ */
@@ -660,57 +630,111 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   </div>
 </section>
 
-<section id="factions" aria-label="Factions">
-  <!-- Background layer: stacked images, GSAP crossfade -->
-  <div class="fac-bg">
-    <img class="fac-bg-img active" src="images/gallerybg1.webp" alt="Ex Sanguis" loading="lazy" decoding="async">
-    <img class="fac-bg-img" src="images/gallerybg2.webp" alt="Cradle" loading="lazy" decoding="async">
-    <img class="fac-bg-img" src="images/gallerybg3.webp" alt="House Mallat" loading="lazy" decoding="async">
-  </div>
-  <!-- Info card overlay -->
-  <div class="fac-card">
-    <div class="fac-card-inner">
-      <!-- Top row: Name | Divider | Description | Icon + Arrows -->
-      <div class="fac-card-top" aria-live="polite">
-        <div class="fac-name-wrap">
-          <h2 class="fac-name" id="facName">Ex Sanguis</h2>
-        </div>
-        <div class="fac-divider"></div>
-        <div class="fac-desc-wrap">
-          <p class="fac-desc" id="facDesc">A militaristic order devoted to rooting out vampiric corruption. Forged in fire and bound by oath, they believe light reveals all sin. Others revel in opacity. Not them.</p>
-        </div>
-        <!-- Right column: faction icon stacked above green arrows -->
-        <div class="fac-right-col">
-          <div class="fac-icon-wrap" id="facIconWrap">
-            <svg class="fac-icon" id="facIcon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-              <path d="M32 2l6 18h18l-14 11 5 18-15-11-15 11 5-18L8 20h18z"/>
-            </svg>
+<section id="factions" class="section-3" aria-label="Factions">
+  <div class="scroll-container">
+
+    <!-- SLIDE 1: Ex Sanguis -->
+    <div id="firstslide" class="faction-main-container ex active">
+      <div class="div-block-9">
+        <div class="div-block-14">
+          <div class="div-block-10">
+            <h3 class="meta-title">Ex<br>Sanguis</h3>
           </div>
-          <div class="fac-nav-right">
-            <button class="fac-arrow" id="facPrev" aria-label="Previous faction">
-              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-            </button>
-            <button class="fac-arrow" id="facNext" aria-label="Next faction">
-              <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
-            </button>
+          <div class="div-block-11" id="facDots1">
+            <div><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c737_apokrif_web_landing_4_factions_layered19.png" alt=""></div>
+            <div><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c734_apokrif_web_landing_4_factions_layered16.png" alt=""></div>
+            <div><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c734_apokrif_web_landing_4_factions_layered16.png" alt=""></div>
+          </div>
+        </div>
+        <div class="fac-divider-col">
+          <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c730_apokrif_web_landing_4_factions_layere12.png" alt="">
+        </div>
+        <div class="div-block-15">
+          <div class="meta-desc">Ex Sanguis is a religious cult founded during the madness of the Purge that has sworn to destroy all of vampirekind. The Peace provides sustenance and spiritual guidance to all who seek it, while the warlike knights and Inquisitors of the Path hunt down every vampiric whisper, stopping at nothing to cleanse the world of their corruption.</div>
+        </div>
+        <div class="div-block-12">
+          <div class="top-indicator">
+            <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c731_apokrif_web_landing_4_factions_layere13.png" alt="">
+          </div>
+          <div class="div-block-13">
+            <div class="div-block-18" id="facPrev1"><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c735_apokrif_web_landing_4_factions_layered17.png" alt="Previous"></div>
+            <div class="arrow-right" id="facNext1"><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c736_apokrif_web_landing_4_factions_layered18.png" alt="Next"></div>
           </div>
         </div>
       </div>
-      <!-- Bottom row: Fang indicators (left-aligned) -->
-      <div class="fac-card-bottom">
-        <div class="fac-indicators" id="facDots">
-          <button class="fac-dot active" data-i="0" aria-label="Ex Sanguis">
-            <svg viewBox="0 0 10 16"><path d="M1 1l8 7-8 7z"/></svg>
-          </button>
-          <button class="fac-dot" data-i="1" aria-label="Cradle">
-            <svg viewBox="0 0 10 16"><path d="M1 1l8 7-8 7z"/></svg>
-          </button>
-          <button class="fac-dot" data-i="2" aria-label="House Mallat">
-            <svg viewBox="0 0 10 16"><path d="M1 1l8 7-8 7z"/></svg>
-          </button>
-        </div>
+      <div class="div-block-19">
+        <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c732_apokrif_web_landing_4_factions_layere14.png" alt="Ex Sanguis warrior">
       </div>
     </div>
+
+    <!-- SLIDE 2: Cradle -->
+    <div id="secondslide" class="faction-main-container _2">
+      <div class="div-block-9">
+        <div class="div-block-14">
+          <div class="div-block-10">
+            <h3 class="meta-title">Cradle</h3>
+          </div>
+          <div class="div-block-11" id="facDots2">
+            <div><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c734_apokrif_web_landing_4_factions_layered16.png" alt=""></div>
+            <div><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c737_apokrif_web_landing_4_factions_layered19.png" alt=""></div>
+            <div><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c734_apokrif_web_landing_4_factions_layered16.png" alt=""></div>
+          </div>
+        </div>
+        <div class="fac-divider-col">
+          <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c730_apokrif_web_landing_4_factions_layere12.png" alt="">
+        </div>
+        <div class="div-block-15">
+          <div class="meta-desc">Survivors who built from nothing, Cradle stands for human resilience. They protect what remains and fight for every scrap of hope. This place is all they got, so they dig deep and stick together.</div>
+        </div>
+        <div class="div-block-12">
+          <div class="top-indicator">
+            <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c731_apokrif_web_landing_4_factions_layere13.png" alt="">
+          </div>
+          <div class="div-block-13">
+            <div class="div-block-18" id="facPrev2"><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c735_apokrif_web_landing_4_factions_layered17.png" alt="Previous"></div>
+            <div class="arrow-right" id="facNext2"><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c736_apokrif_web_landing_4_factions_layered18.png" alt="Next"></div>
+          </div>
+        </div>
+      </div>
+      <div class="div-block-19">
+        <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c732_apokrif_web_landing_4_factions_layere14.png" alt="Cradle warrior">
+      </div>
+    </div>
+
+    <!-- SLIDE 3: House Mallat -->
+    <div id="thirdslide" class="faction-main-container _3">
+      <div class="div-block-9">
+        <div class="div-block-14">
+          <div class="div-block-10">
+            <h3 class="meta-title">House<br>Mallat</h3>
+          </div>
+          <div class="div-block-11" id="facDots3">
+            <div><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c734_apokrif_web_landing_4_factions_layered16.png" alt=""></div>
+            <div><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c734_apokrif_web_landing_4_factions_layered16.png" alt=""></div>
+            <div><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c737_apokrif_web_landing_4_factions_layered19.png" alt=""></div>
+          </div>
+        </div>
+        <div class="fac-divider-col">
+          <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c730_apokrif_web_landing_4_factions_layere12.png" alt="">
+        </div>
+        <div class="div-block-15">
+          <div class="meta-desc">An ancient house of the night, they walk in shadow and lead through fear and tradition. Their reach extends far beyond what the eye can see. They follow the path that leads home. To darkness.</div>
+        </div>
+        <div class="div-block-12">
+          <div class="top-indicator">
+            <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c731_apokrif_web_landing_4_factions_layere13.png" alt="">
+          </div>
+          <div class="div-block-13">
+            <div class="div-block-18" id="facPrev3"><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c735_apokrif_web_landing_4_factions_layered17.png" alt="Previous"></div>
+            <div class="arrow-right" id="facNext3"><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c736_apokrif_web_landing_4_factions_layered18.png" alt="Next"></div>
+          </div>
+        </div>
+      </div>
+      <div class="div-block-19">
+        <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c732_apokrif_web_landing_4_factions_layere14.png" alt="House Mallat warrior">
+      </div>
+    </div>
+
   </div>
 </section>
 <section id="timeline" class="section-after ph"><h2>Timeline</h2><p>Coming next</p></section>
@@ -941,33 +965,25 @@ document.addEventListener('DOMContentLoaded',function(){
     labelDef:'From concept to hand-drawn art'
   });
 
-  // ═══════ FACTIONS CAROUSEL ═══════
+  // ═══════ FACTIONS CAROUSEL (section-3 slide system) ═══════
   (function(){
-    var factions=[
-      {
-        name:'Ex Sanguis',
-        desc:'A militaristic order devoted to rooting out vampiric corruption. Forged in fire and bound by oath, they believe light reveals all sin. Others revel in opacity. Not them.',
-        icon:'<path d="M32 2l6 18h18l-14 11 5 18-15-11-15 11 5-18L8 20h18z"/>'
-      },
-      {
-        name:'Cradle',
-        desc:'Survivors who built from nothing, Cradle stands for human resilience. They protect what remains and fight for every scrap of hope. This place is all they got, so they dig deep and stick together.',
-        icon:'<path d="M32 6a26 26 0 1 0 0 52 26 26 0 0 0 0-52zm0 8a18 18 0 1 1 0 36 18 18 0 0 1 0-36z"/><path d="M30 22h4v12h-4z"/><path d="M26 30h12v4H26z"/>'
-      },
-      {
-        name:'House Mallat',
-        desc:'An ancient house of the night, they walk in shadow and lead through fear and tradition. Their reach extends far beyond what the eye can see. They follow the path that leads home. To darkness.',
-        icon:'<path d="M32 8c-6 0-12 4-16 10-3 4-8 6-12 6 4 6 10 10 16 14h2c-4-6-6-12-4-18 2 6 6 12 10 16h8c4-4 8-10 10-16 2 6 0 12-4 18h2c6-4 12-8 16-14-4 0-9-2-12-6C44 12 38 8 32 8z"/>'
-      }
-    ];
+    var slides=document.querySelectorAll('.faction-main-container');
+    var facTotal=slides.length;
     var facCur=0;
-    var facTotal=factions.length;
     var facBusy=false;
-    var bgs=document.querySelectorAll('.fac-bg-img');
-    var nameEl=document.getElementById('facName');
-    var descEl=document.getElementById('facDesc');
-    var iconEl=document.getElementById('facIcon');
-    var dots=document.querySelectorAll('.fac-dot');
+    var CDN_ACTIVE='https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c737_apokrif_web_landing_4_factions_layered19.png';
+    var CDN_INACTIVE='https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c734_apokrif_web_landing_4_factions_layered16.png';
+
+    function updateDots(){
+      for(var s=0;s<facTotal;s++){
+        var dotsDiv=slides[s].querySelector('.div-block-11');
+        if(!dotsDiv)continue;
+        var imgs=dotsDiv.querySelectorAll('img');
+        for(var d=0;d<imgs.length;d++){
+          imgs[d].src=(d===facCur)?CDN_ACTIVE:CDN_INACTIVE;
+        }
+      }
+    }
 
     function facGoTo(n){
       if(facBusy)return;
@@ -979,41 +995,34 @@ document.addEventListener('DOMContentLoaded',function(){
 
       var tl=gsap.timeline({onComplete:function(){facBusy=false}});
 
-      // Crossfade backgrounds
-      tl.to(bgs[prev],{opacity:0,duration:.7,ease:'power2.inOut'},0);
-      tl.to(bgs[facCur],{opacity:1,duration:.7,ease:'power2.inOut'},0);
+      // Fade out current slide
+      tl.to(slides[prev],{opacity:0,duration:.7,ease:'power2.inOut'},0);
+      // Fade in next slide
+      tl.set(slides[facCur],{zIndex:3,pointerEvents:'auto'},0);
+      tl.to(slides[facCur],{opacity:1,duration:.7,ease:'power2.inOut'},0);
 
-      // Fade out text + icon
-      tl.to(nameEl,{opacity:0,y:-20,duration:.25,ease:'power2.in'},0);
-      tl.to(descEl,{opacity:0,y:-12,duration:.25,ease:'power2.in'},.05);
-      tl.to(iconEl,{opacity:0,scale:0.7,duration:.2,ease:'power2.in'},.05);
+      // Reset previous slide
+      tl.set(slides[prev],{zIndex:1,pointerEvents:'none',clearProps:''},0.7);
 
-      // Swap content mid-transition
+      // Update active class and dots
       tl.call(function(){
-        nameEl.textContent=factions[facCur].name;
-        descEl.textContent=factions[facCur].desc;
-        iconEl.innerHTML=factions[facCur].icon;
-      },null,.35);
-
-      // Fade in new text + icon
-      tl.fromTo(nameEl,{opacity:0,y:20},{opacity:1,y:0,duration:.4,ease:'power2.out'},.4);
-      tl.fromTo(descEl,{opacity:0,y:12},{opacity:1,y:0,duration:.4,ease:'power2.out'},.45);
-      tl.fromTo(iconEl,{opacity:0,scale:0.7},{opacity:0.85,scale:1,duration:.35,ease:'back.out(1.4)'},.45);
-
-      // Update indicators
-      dots.forEach(function(d,i){d.classList.toggle('active',i===facCur)});
+        slides[prev].classList.remove('active');
+        slides[facCur].classList.add('active');
+        updateDots();
+      },null,0);
     }
 
-    // Arrow handlers
-    document.getElementById('facPrev').addEventListener('click',function(){facGoTo(facCur-1)});
-    document.getElementById('facNext').addEventListener('click',function(){facGoTo(facCur+1)});
+    // Arrow handlers — bind all prev/next buttons across all slides
+    for(var i=1;i<=facTotal;i++){
+      (function(idx){
+        var prevBtn=document.getElementById('facPrev'+idx);
+        var nextBtn=document.getElementById('facNext'+idx);
+        if(prevBtn)prevBtn.addEventListener('click',function(){facStopAuto();facGoTo(facCur-1);facStartAuto()});
+        if(nextBtn)nextBtn.addEventListener('click',function(){facStopAuto();facGoTo(facCur+1);facStartAuto()});
+      })(i);
+    }
 
-    // Dot handlers
-    dots.forEach(function(d){
-      d.addEventListener('click',function(){facGoTo(parseInt(this.dataset.i,10))});
-    });
-
-    // Auto-play (safe start/stop to prevent multiple concurrent intervals)
+    // Auto-play
     var facAutoIv=null;
     function facStartAuto(){clearInterval(facAutoIv);facAutoIv=setInterval(function(){facGoTo(facCur+1)},7000)}
     function facStopAuto(){clearInterval(facAutoIv);facAutoIv=null}
@@ -1029,21 +1038,18 @@ document.addEventListener('DOMContentLoaded',function(){
       facStartAuto();
     });
 
-    // Pause auto-play on hover
+    // Pause on hover
     facEl.addEventListener('mouseenter',function(){facStopAuto()});
     facEl.addEventListener('mouseleave',function(){facStartAuto()});
 
-    // Pause when tab hidden (prevents queued transitions)
+    // Pause when tab hidden
     document.addEventListener('visibilitychange',function(){
       if(document.hidden){facStopAuto()}else{facStartAuto()}
     });
 
     // ScrollTrigger entrance
-    gsap.from('.fac-card-inner',{y:50,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'}});
-    bgs.forEach(function(bg,i){
-      if(i>0) return;
-      gsap.from(bg,{scale:1.1,duration:1.2,ease:'power2.out',scrollTrigger:{trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'}});
-    });
+    gsap.from('.div-block-9',{y:50,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'}});
+    gsap.from(slides[0],{scale:1.05,duration:1.2,ease:'power2.out',scrollTrigger:{trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'}});
   })();
 });
 </script>
