@@ -1028,7 +1028,6 @@ document.addEventListener('DOMContentLoaded',function(){
       facCur=next;
 
       var prevOverlay=slides[prev].querySelector('::after')||slides[prev];
-      var nextPanel=slides[facCur].querySelector('.div-block-9');
       var nextFront=slides[facCur].querySelector('.div-block-19');
       var prevFront=slides[prev].querySelector('.div-block-19');
 
@@ -1043,11 +1042,7 @@ document.addEventListener('DOMContentLoaded',function(){
       tl.to(slides[facCur],{opacity:1,duration:.7,ease:'power2.out'},0.15);
 
       // 3. Belépő slide overlay fade-in (a ::after-t CSS kezeli az .active class-on keresztül)
-      // De a belépő slide panel és előtér kép késleltetve animálódik
-      if(nextPanel){
-        gsap.set(nextPanel,{y:30,opacity:0});
-        tl.to(nextPanel,{y:0,opacity:1,duration:.5,ease:'power2.out'},0.35);
-      }
+      // A szürke panel (div-block-9) nem kap külön animációt — a crossfade természetesen tartja a helyén
       if(nextFront){
         gsap.set(nextFront,{y:40,opacity:0,scale:1.03});
         tl.to(nextFront,{y:0,opacity:1,scale:1,duration:.6,ease:'power2.out'},0.4);
@@ -1106,8 +1101,6 @@ document.addEventListener('DOMContentLoaded',function(){
     var stConfig={trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'};
     // Háttérkép scale-down belépés
     gsap.from(slides[0],{scale:1.1,duration:1.4,ease:'power2.out',scrollTrigger:stConfig});
-    // Szürke panel slide-up + fade
-    gsap.from('.faction-main-container.active .div-block-9',{y:50,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:Object.assign({},stConfig,{start:'top 70%'})});
     // Előtér kép parallax felemelkedés
     gsap.from('.faction-main-container.active .div-block-19',{y:60,opacity:0,scale:1.05,duration:1,ease:'power2.out',scrollTrigger:Object.assign({},stConfig,{start:'top 65%'})});
   })();
