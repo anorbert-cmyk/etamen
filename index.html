@@ -500,6 +500,229 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   .snap-desc{font-size:clamp(0.875rem, 1.2vw + 0.25rem, 1.5rem)}
   .btn-snap{width:clamp(140px, 38vw, 160px)}
 }
+
+/* ═══════════════════════════════════════
+   TIMELINE
+   ═══════════════════════════════════════ */
+#timeline{
+  position:relative;z-index:4;background:var(--bk);
+  border-top:1px solid rgba(255,255,255,0.04);
+  padding:clamp(3.5rem,8vh,6rem) var(--pad) clamp(3rem,7vh,5.5rem);
+}
+.tl-inner{max-width:1200px;margin:0 auto}
+.tl-label{
+  font-family:Queering,sans-serif;font-size:var(--fs-small);
+  color:var(--g);letter-spacing:3px;text-transform:uppercase;
+  margin:0 0 var(--sp-2xl);opacity:0.6;display:block;
+}
+.tl-stage{position:relative}
+
+/* 3-column grid */
+.tl-cols{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(1rem,2.5vw,2rem);
+  list-style:none;margin:0;padding:0;position:relative;
+}
+.tl-col{
+  display:flex;flex-direction:column;align-items:center;
+  opacity:0;transform:translateY(-18px);
+  will-change:transform,opacity;
+}
+
+/* Image */
+.tl-img-wrap{
+  width:100%;height:clamp(180px,22vw,320px);
+  border-radius:3px;overflow:hidden;
+  border:1px solid rgba(123,107,138,0.25);flex-shrink:0;
+}
+.tl-img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Dot */
+.tl-dot{
+  width:14px;height:14px;border-radius:50%;
+  background:var(--g);border:2px solid var(--bk);
+  box-shadow:0 0 0 2px var(--g);
+  flex-shrink:0;margin:clamp(10px,1.5vw,14px) 0;
+  position:relative;z-index:2;
+  opacity:0;transform:scale(0);
+  transition:opacity .35s ease,transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* Text card */
+.tl-card{
+  width:100%;
+  background:rgba(26,21,32,0.96);
+  background-image:repeating-linear-gradient(
+    -45deg,
+    transparent,transparent 6px,
+    rgba(157,214,124,0.045) 6px,rgba(157,214,124,0.045) 7px
+  );
+  border:1px solid rgba(157,214,124,0.15);
+  border-radius:3px;overflow:hidden;
+  padding:clamp(.875rem,2vw,1.5rem);
+  position:relative;flex:1;
+}
+.tl-card::before{
+  content:'';position:absolute;top:0;left:0;
+  width:22px;height:22px;background:var(--g);
+  clip-path:polygon(0 0,100% 0,0 100%);pointer-events:none;
+}
+.tl-year{
+  display:block;font-family:Queering,sans-serif;
+  font-size:clamp(.7rem,.85vw,.875rem);color:var(--g);
+  letter-spacing:.15em;text-transform:uppercase;margin-bottom:var(--sp-xs);
+}
+.tl-title{
+  font-family:Queering,sans-serif;font-size:clamp(1rem,1.5vw,1.375rem);
+  color:var(--tl);line-height:1.2;margin:0 0 var(--sp-sm);
+}
+.tl-desc{
+  font-family:'Crimson Text',Georgia,serif;
+  font-size:clamp(.875rem,1vw + .05rem,.9375rem);
+  color:var(--tl);line-height:1.6;margin:0;opacity:.85;
+}
+
+/* Horizontal connecting line (positioned via JS) */
+.tl-line{
+  position:absolute;left:0;right:0;height:2px;
+  pointer-events:none;z-index:1;
+}
+.tl-line__bg{
+  position:absolute;inset:0;
+  background:rgba(255,255,255,0.1);border-radius:2px;
+}
+.tl-line__fill{
+  position:absolute;inset:0;background:var(--g);border-radius:2px;
+  transform:scaleX(0);transform-origin:left center;will-change:transform;
+}
+
+/* Reduced motion: show full completed state */
+@media(prefers-reduced-motion:reduce){
+  .tl-col{opacity:1!important;transform:none!important}
+  .tl-dot{opacity:1!important;transform:scale(1)!important}
+  .tl-line__fill{transform:scaleX(1)!important}
+}
+
+/* Timeline — mobile: vertical stack with left border */
+@media(max-width:767px){
+  .tl-cols{
+    grid-template-columns:1fr;gap:var(--sp-xl);
+    padding-left:clamp(1.25rem,5vw,1.75rem);
+    border-left:2px solid rgba(157,214,124,0.2);
+  }
+  .tl-col{
+    flex-direction:row;align-items:flex-start;
+    gap:var(--sp-md);position:relative;
+    opacity:1;transform:none; /* no entrance anim on mobile */
+  }
+  .tl-img-wrap{
+    width:clamp(80px,22vw,120px);height:auto;
+    aspect-ratio:3/4;flex-shrink:0;
+  }
+  .tl-dot{
+    position:absolute;
+    left:calc(-1 * clamp(1.25rem,5vw,1.75rem) - 7px);
+    top:var(--sp-xs);margin:0;
+    opacity:1;transform:scale(1);
+  }
+  .tl-card{flex:1}
+  .tl-line{display:none}
+}
+
+/* ═══════════════════════════════════════
+   COMMUNITY
+   ═══════════════════════════════════════ */
+#community{
+  position:relative;z-index:4;background:var(--bk);
+  border-top:1px solid rgba(255,255,255,0.04);
+  padding:clamp(3.5rem,8vh,6rem) var(--pad) clamp(2.5rem,5vh,4rem);
+  overflow:hidden;
+}
+.cm-inner{max-width:1200px;margin:0 auto}
+
+/* Heading + actions row */
+.cm-top{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  gap:var(--sp-xl);flex-wrap:wrap;margin-bottom:var(--sp-xl);
+}
+.cm-heading{
+  font-family:Queering,sans-serif;
+  font-size:clamp(1.75rem,4vw + .25rem,3.375rem);
+  color:var(--tl);line-height:1.1;margin:0;max-width:20ch;
+}
+.cm-actions{
+  display:flex;flex-direction:column;
+  align-items:flex-end;gap:var(--sp-md);flex-shrink:0;
+}
+.cm-social{
+  display:flex;align-items:center;gap:8px;
+  color:var(--pm);font-family:'Crimson Text',serif;
+  font-size:var(--fs-body);font-style:italic;
+  text-decoration:none;transition:color .25s;
+}
+.cm-social:hover{color:var(--tl)}
+.cm-social svg{width:18px;height:18px;fill:currentColor;flex-shrink:0}
+.cm-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:clamp(.625rem,1.2vw,.875rem) clamp(1.25rem,2.5vw,2rem);
+  background:var(--g);color:#000;
+  font-family:Queering,sans-serif;font-size:var(--fs-cta);
+  letter-spacing:.05em;text-decoration:none;
+  border-radius:2px;min-height:var(--touch);
+  transition:filter .25s,transform .18s ease-out;
+}
+.cm-btn:hover{filter:brightness(1.12);transform:translateX(2px)}
+.cm-btn:focus-visible{outline:2px solid var(--g);outline-offset:3px}
+.cm-btn svg{width:1em;height:1em;flex-shrink:0;stroke:currentColor;fill:none}
+
+/* Divider */
+.cm-divider{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--pm) 20%,var(--pm) 80%,transparent);
+  margin-bottom:var(--sp-2xl);opacity:.35;
+}
+
+/* Gallery scroll container */
+.cm-gallery{
+  display:flex;gap:clamp(.5rem,1.5vw,1rem);
+  overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;-ms-overflow-style:none;
+  padding-bottom:4px;
+}
+.cm-gallery::-webkit-scrollbar{display:none}
+.cm-gallery-item{
+  flex:0 0 clamp(220px,calc(33.33% - .5rem),380px);
+  scroll-snap-align:start;border-radius:3px;overflow:hidden;
+  aspect-ratio:4/3;background:var(--dp);
+  border:1px solid rgba(123,107,138,0.2);flex-shrink:0;
+}
+.cm-gallery-item img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .6s ease;
+}
+.cm-gallery-item:hover img{transform:scale(1.04)}
+
+/* Dot indicators */
+.cm-dots{
+  display:flex;justify-content:center;align-items:center;
+  gap:8px;margin-top:var(--sp-md);
+}
+.cm-dot{
+  width:6px;height:6px;border-radius:3px;
+  background:rgba(123,107,138,0.35);
+  border:none;padding:0;cursor:pointer;
+  transition:background .25s,width .2s ease-out;
+}
+.cm-dot.active{background:var(--g);width:18px}
+.cm-dot:focus-visible{outline:2px solid var(--g);outline-offset:3px}
+
+/* Community — mobile */
+@media(max-width:767px){
+  .cm-top{flex-direction:column;align-items:flex-start}
+  .cm-actions{align-items:flex-start}
+  .cm-gallery-item{flex:0 0 82vw}
+}
 </style>
 </head>
 <body>
@@ -703,9 +926,87 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
     </div>
   </div>
 </section>
-<section id="timeline" class="section-after ph"><h2>Timeline</h2><p>Coming next</p></section>
+<section id="timeline" class="section-after">
+  <div class="tl-inner">
+    <span class="tl-label" aria-hidden="true">Timeline</span>
+    <div class="tl-stage">
+      <div class="tl-line" id="tlLine" aria-hidden="true">
+        <div class="tl-line__bg"></div>
+        <div class="tl-line__fill" id="tlFill"></div>
+      </div>
+      <ul class="tl-cols" role="list">
+        <li class="tl-col" role="listitem">
+          <div class="tl-img-wrap">
+            <img src="images/gallerybg1.webp" alt="Ex Sanguis, 2039" loading="lazy" class="tl-img">
+          </div>
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div class="tl-card">
+            <span class="tl-year">2039</span>
+            <h3 class="tl-title">The First Breach</h3>
+            <p class="tl-desc">The corporate veil lifted for the first time. Three factions emerged from the ruins of the old world, each claiming sovereignty over what remained.</p>
+          </div>
+        </li>
+        <li class="tl-col" role="listitem">
+          <div class="tl-img-wrap">
+            <img src="images/gallerybg2.webp" alt="Cradle, 2051" loading="lazy" class="tl-img">
+          </div>
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div class="tl-card">
+            <span class="tl-year">2051</span>
+            <h3 class="tl-title">The Pact Fractures</h3>
+            <p class="tl-desc">A generation raised on promises found only betrayal. Ex Sanguis, Cradle and House Mallat turned on each other in the shadows.</p>
+          </div>
+        </li>
+        <li class="tl-col" role="listitem">
+          <div class="tl-img-wrap">
+            <img src="images/gallerybg3.webp" alt="House Mallat, 2059" loading="lazy" class="tl-img">
+          </div>
+          <div class="tl-dot" aria-hidden="true"></div>
+          <div class="tl-card">
+            <span class="tl-year">2059</span>
+            <h3 class="tl-title">Your Story Begins</h3>
+            <p class="tl-desc">Three factions stand at the edge of total war. You enter this world as witness, participant and chronicler. What you do next matters.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
 <section id="team" class="section-after ph"><h2>Team</h2><p>Coming next</p></section>
-<section id="community" class="section-after ph"><h2>Community</h2><p>Coming next</p></section>
+<section id="community" class="section-after">
+  <div class="cm-inner">
+    <div class="cm-top">
+      <h2 class="cm-heading">Join the Community.<br>Shape the Story.</h2>
+      <div class="cm-actions">
+        <a href="https://instagram.com/apokrif.graphicnovel" target="_blank" rel="noopener noreferrer" class="cm-social" aria-label="Follow @apokrif.graphicnovel on Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <span>@apokrif.graphicnovel</span>
+        </a>
+        <a href="https://instagram.com/apokrif.graphicnovel" target="_blank" rel="noopener noreferrer" class="cm-btn">
+          Follow us
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h9.5M9 4.5L12.5 8 9 11.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="cm-divider" aria-hidden="true"></div>
+    <div class="cm-gallery-wrap">
+      <div class="cm-gallery" role="region" aria-label="Community gallery">
+        <div class="cm-gallery-item" data-index="0"><img src="images/17-slide.jpg" alt="Community artwork 1" loading="lazy"></div>
+        <div class="cm-gallery-item" data-index="1"><img src="images/18-slide.jpg" alt="Community artwork 2" loading="lazy"></div>
+        <div class="cm-gallery-item" data-index="2"><img src="images/19-slide.jpg" alt="Community artwork 3" loading="lazy"></div>
+        <div class="cm-gallery-item" data-index="3"><img src="images/20-slide.jpg" alt="Community artwork 4" loading="lazy"></div>
+        <div class="cm-gallery-item" data-index="4"><img src="images/21-slide.jpg" alt="Community artwork 5" loading="lazy"></div>
+      </div>
+      <div class="cm-dots" role="group" aria-label="Gallery navigation">
+        <button class="cm-dot active" aria-label="Image 1" aria-current="true"></button>
+        <button class="cm-dot" aria-label="Image 2" aria-current="false"></button>
+        <button class="cm-dot" aria-label="Image 3" aria-current="false"></button>
+        <button class="cm-dot" aria-label="Image 4" aria-current="false"></button>
+        <button class="cm-dot" aria-label="Image 5" aria-current="false"></button>
+      </div>
+    </div>
+  </div>
+</section>
 
 <script>
 document.addEventListener('DOMContentLoaded',function(){
@@ -1097,6 +1398,91 @@ document.addEventListener('DOMContentLoaded',function(){
     var stConfig={trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'};
     gsap.from(bgSlides[0],{scale:1.1,duration:1.4,ease:'power2.out',scrollTrigger:stConfig});
     gsap.from(facActive,{y:60,opacity:0,scale:1.05,duration:1,ease:'power2.out',scrollTrigger:Object.assign({},stConfig,{start:'top 65%'})});
+  })();
+
+  // ═══════ TIMELINE ═══════
+  (function(){
+    var section=document.getElementById('timeline');
+    if(!section)return;
+    var fill=document.getElementById('tlFill');
+    var line=document.getElementById('tlLine');
+    var cols=section.querySelectorAll('.tl-col');
+    var dots=section.querySelectorAll('.tl-dot');
+    if(!fill||!line||!cols.length)return;
+
+    // Position horizontal line to align with dots (between image and card)
+    function positionLine(){
+      var imgWrap=section.querySelector('.tl-img-wrap');
+      if(!imgWrap)return;
+      var dotEl=section.querySelector('.tl-dot');
+      if(!dotEl)return;
+      var imgH=imgWrap.offsetHeight;
+      var dotMargin=parseInt(getComputedStyle(dotEl).marginTop)||12;
+      // center of dot = imgH + dotMargin + half dot height (7px)
+      line.style.top=(imgH+dotMargin+7)+'px';
+    }
+    positionLine();
+    window.addEventListener('resize',positionLine,{passive:true});
+
+    // Skip GSAP animation if reduced motion preferred
+    if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+      fill.style.transform='scaleX(1)';
+      dots.forEach(function(d){d.style.opacity='1';d.style.transform='scale(1)';});
+      cols.forEach(function(c){c.style.opacity='1';c.style.transform='none';});
+      return;
+    }
+
+    // Scroll-driven timeline: line grows + entries fade in progressively
+    var tl=gsap.timeline({
+      scrollTrigger:{
+        trigger:section,
+        start:'top 72%',
+        end:'bottom 55%',
+        scrub:1.2
+      }
+    });
+
+    // Green fill spans the full scroll duration (3 units = full scroll)
+    tl.to(fill,{scaleX:1,ease:'none',duration:3},0);
+
+    // Each entry reveals at 0, 1, 2 (= 0%, 33%, 66% of scroll progress)
+    cols.forEach(function(col,i){
+      var dot=dots[i];
+      tl.to(col,{opacity:1,y:0,ease:'power2.out',duration:0.55},i*1.0+0.05);
+      if(dot){tl.to(dot,{opacity:1,scale:1,ease:'back.out(2)',duration:0.3},i*1.0+0.15);}
+    });
+  })();
+
+  // ═══════ COMMUNITY GALLERY ═══════
+  (function(){
+    var gallery=document.querySelector('.cm-gallery');
+    var dots=document.querySelectorAll('.cm-dot');
+    var items=document.querySelectorAll('.cm-gallery-item');
+    if(!gallery||!dots.length||!items.length)return;
+
+    // IntersectionObserver: activate dot when image is ≥50% visible
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          var idx=parseInt(entry.target.dataset.index)||0;
+          dots.forEach(function(d,di){
+            var active=di===idx;
+            d.classList.toggle('active',active);
+            d.setAttribute('aria-current',active?'true':'false');
+          });
+        }
+      });
+    },{root:gallery,threshold:0.5});
+    items.forEach(function(item){obs.observe(item);});
+
+    // Dot click scrolls to corresponding image
+    dots.forEach(function(dot,i){
+      dot.addEventListener('click',function(){
+        var item=items[i];
+        if(!item)return;
+        gallery.scrollTo({left:item.offsetLeft,behavior:'smooth'});
+      });
+    });
   })();
 });
 </script>
