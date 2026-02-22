@@ -505,50 +505,46 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
    TIMELINE
    ═══════════════════════════════════════ */
 #timeline{
-  position:relative;z-index:4;background:var(--bk);
-  border-top:1px solid rgba(255,255,255,0.04);
-  padding:clamp(3.5rem,8vh,6rem) var(--pad) clamp(3rem,7vh,5.5rem);
+  height:100vh;height:100dvh;
+  overflow:hidden;
+  position:relative;z-index:4;
+  background:var(--bk);
 }
-.tl-inner{max-width:1200px;margin:0 auto}
+
+/* Scenes wrapper */
+.tl-scenes{position:relative;width:100%;height:100%}
+
+/* Individual full-viewport scene */
+.tl-scene{
+  position:absolute;inset:0;
+  display:flex;
+  opacity:0;
+}
+.tl-scene:first-child{opacity:1}
+
+/* Left: portrait image */
+.tl-scene-img{
+  width:clamp(35%,43%,50%);
+  height:100%;flex-shrink:0;
+}
+.tl-scene-img img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Right: label + card + progress bar */
+.tl-scene-panel{
+  flex:1;display:flex;flex-direction:column;
+  justify-content:center;
+  padding:var(--sp-2xl) clamp(2rem,5vw,5rem);
+  background:var(--bk);
+}
+
+/* Timeline label (unchanged) */
 .tl-label{
   font-family:Queering,sans-serif;font-size:var(--fs-small);
   color:var(--g);letter-spacing:3px;text-transform:uppercase;
   margin:0 0 var(--sp-2xl);opacity:0.6;display:block;
 }
-.tl-stage{position:relative}
 
-/* 3-column grid */
-.tl-cols{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:clamp(1rem,2.5vw,2rem);
-  list-style:none;margin:0;padding:0;position:relative;
-}
-.tl-col{
-  display:flex;flex-direction:column;align-items:center;
-  opacity:0;transform:translateY(-18px);
-  will-change:transform,opacity;
-}
-
-/* Image */
-.tl-img-wrap{
-  width:100%;height:clamp(180px,22vw,320px);
-  border-radius:3px;overflow:hidden;
-  border:1px solid rgba(123,107,138,0.25);flex-shrink:0;
-}
-.tl-img{width:100%;height:100%;object-fit:cover;display:block}
-
-/* Dot */
-.tl-dot{
-  width:14px;height:14px;border-radius:50%;
-  background:var(--g);border:2px solid var(--bk);
-  box-shadow:0 0 0 2px var(--g);
-  flex-shrink:0;margin:clamp(10px,1.5vw,14px) 0;
-  position:relative;z-index:2;
-  opacity:0;transform:scale(0);
-  transition:opacity .35s ease,transform .35s cubic-bezier(.34,1.56,.64,1);
-}
-
-/* Text card */
+/* Card (unchanged visual identity) */
 .tl-card{
   width:100%;
   background:rgba(26,21,32,0.96);
@@ -560,7 +556,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   border:1px solid rgba(157,214,124,0.15);
   border-radius:3px;overflow:hidden;
   padding:clamp(.875rem,2vw,1.5rem);
-  position:relative;flex:1;
+  position:relative;
 }
 .tl-card::before{
   content:'';position:absolute;top:0;left:0;
@@ -582,51 +578,42 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   color:var(--tl);line-height:1.6;margin:0;opacity:.85;
 }
 
-/* Horizontal connecting line (positioned via JS) */
-.tl-line{
-  position:absolute;left:0;right:0;height:2px;
-  pointer-events:none;z-index:1;
+/* Progress bar */
+.tl-bar{margin-top:var(--sp-xl)}
+.tl-bar-track{
+  position:relative;height:2px;
+  background:rgba(255,255,255,0.12);
+  border-radius:2px;overflow:hidden;
 }
-.tl-line__bg{
-  position:absolute;inset:0;
-  background:rgba(255,255,255,0.1);border-radius:2px;
+.tl-bar-fill{
+  position:absolute;left:0;top:0;bottom:0;
+  background:var(--g);border-radius:2px;
+  width:33.33%;
 }
-.tl-line__fill{
-  position:absolute;inset:0;background:var(--g);border-radius:2px;
-  transform:scaleX(0);transform-origin:left center;will-change:transform;
+.tl-bar-dots{
+  display:flex;justify-content:space-between;
+  margin-top:var(--sp-sm);
 }
+.tl-bdot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  transition:background .2s,transform .2s;
+}
+.tl-bdot.active{background:var(--g);transform:scale(1.35)}
 
-/* Reduced motion: show full completed state */
+/* Reduced motion */
 @media(prefers-reduced-motion:reduce){
-  .tl-col{opacity:1!important;transform:none!important}
-  .tl-dot{opacity:1!important;transform:scale(1)!important}
-  .tl-line__fill{transform:scaleX(1)!important}
+  .tl-scene{opacity:1!important}
 }
 
-/* Timeline — mobile: vertical stack with left border */
+/* Mobile: vertical stack, all scenes visible */
 @media(max-width:767px){
-  .tl-cols{
-    grid-template-columns:1fr;gap:var(--sp-xl);
-    padding-left:clamp(1.25rem,5vw,1.75rem);
-    border-left:2px solid rgba(157,214,124,0.2);
-  }
-  .tl-col{
-    flex-direction:row;align-items:flex-start;
-    gap:var(--sp-md);position:relative;
-    opacity:1;transform:none; /* no entrance anim on mobile */
-  }
-  .tl-img-wrap{
-    width:clamp(80px,22vw,120px);height:auto;
-    aspect-ratio:3/4;flex-shrink:0;
-  }
-  .tl-dot{
-    position:absolute;
-    left:calc(-1 * clamp(1.25rem,5vw,1.75rem) - 7px);
-    top:var(--sp-xs);margin:0;
-    opacity:1;transform:scale(1);
-  }
-  .tl-card{flex:1}
-  .tl-line{display:none}
+  #timeline{height:auto;overflow:visible}
+  .tl-scenes{display:flex;flex-direction:column;gap:var(--sp-2xl);padding:var(--sp-2xl) var(--pad)}
+  .tl-scene{position:relative;opacity:1!important;flex-direction:column}
+  .tl-scene-img{width:100%;height:clamp(200px,55vw,300px)}
+  .tl-scene-panel{padding:var(--sp-lg) 0}
+  .tl-bar{display:none}
 }
 
 /* ═══════════════════════════════════════
@@ -927,50 +914,75 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
     </div>
   </div>
 </section>
-<section id="timeline" class="section-after">
-  <div class="tl-inner">
-    <span class="tl-label" aria-hidden="true">Timeline</span>
-    <div class="tl-stage">
-      <div class="tl-line" id="tlLine" aria-hidden="true">
-        <div class="tl-line__bg"></div>
-        <div class="tl-line__fill" id="tlFill"></div>
+<section id="timeline">
+  <div class="tl-scenes">
+
+    <div class="tl-scene" data-scene="0">
+      <div class="tl-scene-img">
+        <img src="images/gallerybg1.webp" alt="Ex Sanguis, 2039" loading="eager">
       </div>
-      <ul class="tl-cols" role="list">
-        <li class="tl-col" role="listitem">
-          <div class="tl-img-wrap">
-            <img src="images/gallerybg1.webp" alt="Ex Sanguis, 2039" loading="lazy" class="tl-img">
+      <div class="tl-scene-panel">
+        <span class="tl-label" aria-hidden="true">Timeline</span>
+        <div class="tl-card">
+          <span class="tl-year">2039</span>
+          <h3 class="tl-title">The First Breach</h3>
+          <p class="tl-desc">The corporate veil lifted for the first time. Three factions emerged from the ruins of the old world, each claiming sovereignty over what remained.</p>
+        </div>
+        <div class="tl-bar" aria-hidden="true">
+          <div class="tl-bar-track"><div class="tl-bar-fill"></div></div>
+          <div class="tl-bar-dots">
+            <span class="tl-bdot active"></span>
+            <span class="tl-bdot"></span>
+            <span class="tl-bdot"></span>
           </div>
-          <div class="tl-dot" aria-hidden="true"></div>
-          <div class="tl-card">
-            <span class="tl-year">2039</span>
-            <h3 class="tl-title">The First Breach</h3>
-            <p class="tl-desc">The corporate veil lifted for the first time. Three factions emerged from the ruins of the old world, each claiming sovereignty over what remained.</p>
-          </div>
-        </li>
-        <li class="tl-col" role="listitem">
-          <div class="tl-img-wrap">
-            <img src="images/gallerybg2.webp" alt="Cradle, 2051" loading="lazy" class="tl-img">
-          </div>
-          <div class="tl-dot" aria-hidden="true"></div>
-          <div class="tl-card">
-            <span class="tl-year">2051</span>
-            <h3 class="tl-title">The Pact Fractures</h3>
-            <p class="tl-desc">A generation raised on promises found only betrayal. Ex Sanguis, Cradle and House Mallat turned on each other in the shadows.</p>
-          </div>
-        </li>
-        <li class="tl-col" role="listitem">
-          <div class="tl-img-wrap">
-            <img src="images/gallerybg3.webp" alt="House Mallat, 2059" loading="lazy" class="tl-img">
-          </div>
-          <div class="tl-dot" aria-hidden="true"></div>
-          <div class="tl-card">
-            <span class="tl-year">2059</span>
-            <h3 class="tl-title">Your Story Begins</h3>
-            <p class="tl-desc">Three factions stand at the edge of total war. You enter this world as witness, participant and chronicler. What you do next matters.</p>
-          </div>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
+
+    <div class="tl-scene" data-scene="1">
+      <div class="tl-scene-img">
+        <img src="images/gallerybg2.webp" alt="Cradle, 2051" loading="lazy">
+      </div>
+      <div class="tl-scene-panel">
+        <span class="tl-label" aria-hidden="true">Timeline</span>
+        <div class="tl-card">
+          <span class="tl-year">2051</span>
+          <h3 class="tl-title">The Pact Fractures</h3>
+          <p class="tl-desc">A generation raised on promises found only betrayal. Ex Sanguis, Cradle and House Mallat turned on each other in the shadows.</p>
+        </div>
+        <div class="tl-bar" aria-hidden="true">
+          <div class="tl-bar-track"><div class="tl-bar-fill"></div></div>
+          <div class="tl-bar-dots">
+            <span class="tl-bdot"></span>
+            <span class="tl-bdot active"></span>
+            <span class="tl-bdot"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-scene" data-scene="2">
+      <div class="tl-scene-img">
+        <img src="images/gallerybg3.webp" alt="House Mallat, 2059" loading="lazy">
+      </div>
+      <div class="tl-scene-panel">
+        <span class="tl-label" aria-hidden="true">Timeline</span>
+        <div class="tl-card">
+          <span class="tl-year">2059</span>
+          <h3 class="tl-title">Your Story Begins</h3>
+          <p class="tl-desc">Three factions stand at the edge of total war. You enter this world as witness, participant and chronicler. What you do next matters.</p>
+        </div>
+        <div class="tl-bar" aria-hidden="true">
+          <div class="tl-bar-track"><div class="tl-bar-fill"></div></div>
+          <div class="tl-bar-dots">
+            <span class="tl-bdot"></span>
+            <span class="tl-bdot"></span>
+            <span class="tl-bdot active"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 <section id="team" class="section-after ph"><h2>Team</h2><p>Coming next</p></section>
@@ -1405,52 +1417,46 @@ document.addEventListener('DOMContentLoaded',function(){
   (function(){
     var section=document.getElementById('timeline');
     if(!section)return;
-    var fill=document.getElementById('tlFill');
-    var line=document.getElementById('tlLine');
-    var cols=section.querySelectorAll('.tl-col');
-    var dots=section.querySelectorAll('.tl-dot');
-    if(!fill||!line||!cols.length)return;
+    var scenes=[].slice.call(section.querySelectorAll('.tl-scene'));
+    if(!scenes.length)return;
+    if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
 
-    // Position horizontal line to align with dots (between image and card)
-    function positionLine(){
-      var imgWrap=section.querySelector('.tl-img-wrap');
-      if(!imgWrap)return;
-      var dotEl=section.querySelector('.tl-dot');
-      if(!dotEl)return;
-      var imgH=imgWrap.offsetHeight;
-      var dotMargin=parseInt(getComputedStyle(dotEl).marginTop)||12;
-      // center of dot = imgH + dotMargin + half dot height (7px)
-      line.style.top=(imgH+dotMargin+7)+'px';
-    }
-    positionLine();
-    window.addEventListener('resize',positionLine,{passive:true});
-
-    // Skip GSAP animation if reduced motion preferred
-    if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
-      fill.style.transform='scaleX(1)';
-      dots.forEach(function(d){d.style.opacity='1';d.style.transform='scale(1)';});
-      cols.forEach(function(c){c.style.opacity='1';c.style.transform='none';});
-      return;
-    }
-
-    // gsap.matchMedia(): GSAP animation only on desktop (≥768px)
-    // On mobile the CSS handles the vertical layout with no entrance animation
     gsap.matchMedia().add('(min-width:768px)',function(){
+      var fills=[].slice.call(section.querySelectorAll('.tl-bar-fill'));
+      var dotGroups=scenes.map(function(s){
+        return [].slice.call(s.querySelectorAll('.tl-bdot'));
+      });
+
+      // Initial state: only first scene visible
+      gsap.set(scenes[0],{opacity:1});
+      gsap.set(scenes.slice(1),{opacity:0});
+
       var tl=gsap.timeline({
         scrollTrigger:{
           trigger:section,
-          start:'top 72%',
-          end:'bottom 55%',
-          scrub:1.2
+          pin:true,
+          start:'top top',
+          end:'+=200%',
+          scrub:1.5,
+          onUpdate:function(self){
+            // 3 slides, 2 transitions → Math.round(progress*2) gives 0,1,2
+            var idx=Math.min(2,Math.round(self.progress*2));
+            dotGroups.forEach(function(dots){
+              dots.forEach(function(d,i){d.classList.toggle('active',i===idx);});
+            });
+            // Bar fill grows from 33% to 100%
+            var pct=(33.33+self.progress*66.67).toFixed(2)+'%';
+            fills.forEach(function(f){f.style.width=pct;});
+          }
         }
       });
-      // transformOrigin set in tween (not just CSS) as per GSAP best practice
-      tl.to(fill,{scaleX:1,transformOrigin:'left center',ease:'none',duration:3},0);
-      cols.forEach(function(col,i){
-        var dot=dots[i];
-        tl.to(col,{opacity:1,y:0,ease:'power2.out',duration:0.55},i*1.0+0.05);
-        if(dot){tl.to(dot,{opacity:1,scale:1,ease:'back.out(2)',duration:0.3},i*1.0+0.15);}
-      });
+
+      // Slide 1 → 2
+      tl.to(scenes[0],{opacity:0,duration:1})
+        .to(scenes[1],{opacity:1,duration:1},'<');
+      // Slide 2 → 3
+      tl.to(scenes[1],{opacity:0,duration:1})
+        .to(scenes[2],{opacity:1,duration:1},'<');
     });
   })();
 
