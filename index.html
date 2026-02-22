@@ -1299,6 +1299,29 @@ document.addEventListener('DOMContentLoaded',function(){
   gsap.from('.et-cta',{opacity:0,duration:.4,delay:.35,scrollTrigger:{trigger:'#et',start:'top 65%',toggleActions:'play none none reverse'}});
   gsap.from('.slider-frame',{x:80,opacity:0,duration:.7,ease:'power2.out',scrollTrigger:{trigger:'#et',start:'top 60%',toggleActions:'play none none reverse'}});
 
+  // ═══════ ET TAMEN — Brand-green glow on hover (GSAP) ═══════
+  (function(){
+    var slideImgs=document.querySelectorAll('#sTrack .slide img');
+    slideImgs.forEach(function(img){
+      img.addEventListener('mouseenter',function(){
+        gsap.to(img,{
+          boxShadow:'0 0 30px rgba(168,216,48,0.6), 0 0 60px rgba(168,216,48,0.3)',
+          scale:1.03,
+          duration:0.4,
+          ease:'power2.out'
+        });
+      });
+      img.addEventListener('mouseleave',function(){
+        gsap.to(img,{
+          boxShadow:'0 0 0px rgba(168,216,48,0)',
+          scale:1,
+          duration:0.35,
+          ease:'power2.inOut'
+        });
+      });
+    });
+  })();
+
   // ═══════ THE NOVEL — Reusable Fluid Letter-Stagger Toggle ═══════
   function initNovelToggle(cfg){
     function splitChars(el){
