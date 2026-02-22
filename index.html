@@ -693,7 +693,8 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 .cm-gallery::-webkit-scrollbar{display:none}
 .cm-gallery-item{
   flex:0 0 clamp(220px,calc(33.33% - .5rem),380px);
-  scroll-snap-align:start;border-radius:3px;overflow:hidden;
+  scroll-snap-align:start;scroll-snap-stop:always;
+  border-radius:3px;overflow:hidden;
   aspect-ratio:4/3;background:var(--dp);
   border:1px solid rgba(123,107,138,0.2);flex-shrink:0;
 }
@@ -1432,24 +1433,24 @@ document.addEventListener('DOMContentLoaded',function(){
       return;
     }
 
-    // Scroll-driven timeline: line grows + entries fade in progressively
-    var tl=gsap.timeline({
-      scrollTrigger:{
-        trigger:section,
-        start:'top 72%',
-        end:'bottom 55%',
-        scrub:1.2
-      }
-    });
-
-    // Green fill spans the full scroll duration (3 units = full scroll)
-    tl.to(fill,{scaleX:1,ease:'none',duration:3},0);
-
-    // Each entry reveals at 0, 1, 2 (= 0%, 33%, 66% of scroll progress)
-    cols.forEach(function(col,i){
-      var dot=dots[i];
-      tl.to(col,{opacity:1,y:0,ease:'power2.out',duration:0.55},i*1.0+0.05);
-      if(dot){tl.to(dot,{opacity:1,scale:1,ease:'back.out(2)',duration:0.3},i*1.0+0.15);}
+    // gsap.matchMedia(): GSAP animation only on desktop (≥768px)
+    // On mobile the CSS handles the vertical layout with no entrance animation
+    gsap.matchMedia().add('(min-width:768px)',function(){
+      var tl=gsap.timeline({
+        scrollTrigger:{
+          trigger:section,
+          start:'top 72%',
+          end:'bottom 55%',
+          scrub:1.2
+        }
+      });
+      // transformOrigin set in tween (not just CSS) as per GSAP best practice
+      tl.to(fill,{scaleX:1,transformOrigin:'left center',ease:'none',duration:3},0);
+      cols.forEach(function(col,i){
+        var dot=dots[i];
+        tl.to(col,{opacity:1,y:0,ease:'power2.out',duration:0.55},i*1.0+0.05);
+        if(dot){tl.to(dot,{opacity:1,scale:1,ease:'back.out(2)',duration:0.3},i*1.0+0.15);}
+      });
     });
   })();
 
