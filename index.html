@@ -6,7 +6,7 @@
 <title>Apokrif Universe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@1,700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
@@ -502,293 +502,365 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 }
 
 /* ═══════════════════════════════════════
-   TIMELINE — VERTICAL SCROLL CROSSFADE
+   TIMELINE — HORIZONTAL SCROLL (GSAP)
    ═══════════════════════════════════════ */
 :root{
-  --tl-green:#A8D830;
-  --tl-purple:#A07898;
-  --tl-text:#F0F0F0;
-  --tl-muted:#E0D8DE;
+  --brand-green:#A8D830;
+  --brand-green-hover:#BFEF45;
+  --card-purple:#A07898;
+  --bg-dark:#111111;
+  --text-light:#F0F0F0;
+  --text-muted:#E0D8DE;
+  --text-grey:#C0B8BC;
+  --bar-grey:#333333;
 }
 
-/* Section wrapper */
+/* Section wrapper — pinned full-viewport */
 #timeline{
-  height:100vh;height:100dvh;
-  overflow:hidden;
   position:relative;z-index:4;
-  background:var(--bk);
-}
-
-/* Scenes container */
-.tl-scenes{position:relative;width:100%;height:100%;}
-
-/* Individual scene — stacked, GSAP crossfades opacity */
-.tl-scene{
-  position:absolute;inset:0;
-  display:flex;
-  opacity:0;
-}
-.tl-scene:first-child{opacity:1;}
-
-/* Left: full-height portrait image */
-.tl-scene-img{
-  width:clamp(35%,43%,50%);
-  height:100%;
-  flex-shrink:0;
+  width:100%;height:100vh;
   overflow:hidden;
-}
-.tl-scene-img img{width:100%;height:100%;object-fit:cover;display:block;}
-
-/* Right: text panel */
-.tl-scene-panel{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  padding:var(--sp-2xl) clamp(2rem,5vw,5rem);
-  background:var(--bk);
+  background-color:var(--bg-dark);
 }
 
-/* "Timeline" label inside each panel */
-.tl-label{
-  display:block;
-  font-family:'Playfair Display',Georgia,serif;
-  font-style:italic;
-  font-weight:700;
-  font-size:clamp(3rem,5.5vw,5rem);
-  color:var(--tl-green);
-  line-height:0.92;
-  letter-spacing:-0.02em;
-  margin-bottom:var(--sp-xl);
-  pointer-events:none;
-  user-select:none;
-}
-
-/* Card wrapper — zigzag on ::before so overflow:hidden on card won't clip it */
-.tl-card-wrap{
-  padding-top:16px;
-  position:relative;
-  max-width:520px;
-}
-
-/* Zigzag border — downward-pointing green triangles, ~60% width */
-.tl-card-wrap::before{
+/* Noise texture overlay */
+#timeline::before{
   content:'';
-  position:absolute;
-  top:0;left:0;
-  width:60%;height:16px;
-  background:
-    linear-gradient(to top right,var(--tl-green) 50%,transparent 50%) 0 0 / 11px 16px,
-    linear-gradient(to top left, var(--tl-green) 50%,transparent 50%) 11px 0 / 11px 16px;
-  background-repeat:repeat-x;
+  position:absolute;inset:0;z-index:0;
+  opacity:0.4;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  pointer-events:none;
+  mix-blend-mode:overlay;
+}
+
+/* Vignette */
+#timeline::after{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,0.5) 100%);
   pointer-events:none;
   z-index:1;
 }
 
-/* Card — solid mauve, overflow hidden so corner fog stays clipped */
-.tl-card{
-  background-color:var(--tl-purple);
-  border-radius:0;
-  padding:40px 44px;
-  position:relative;
-  min-height:240px;
-  overflow:hidden;
+/* Heading — fixed above the sliding track, always centred */
+.timeline-heading{
+  position:absolute;
+  top:8vh;left:50%;
+  transform:translateX(-50%);
+  z-index:10;
+  text-align:center;
+  font-family:'Playfair Display',Georgia,serif;
+  font-style:italic;font-weight:700;
+  font-size:clamp(72px,8vw,130px);
+  color:var(--brand-green);
+  letter-spacing:-0.02em;line-height:1;
+  user-select:none;pointer-events:none;
+  white-space:nowrap;
 }
 
-/* Corner fog — diagonal teeth from top-right fading toward bottom-left */
-.tl-card::after{
-  content:'';
-  position:absolute;
-  top:0;right:0;
-  width:62%;height:82%;
+/* Horizontal track — GSAP translates this */
+.timeline-track{
+  display:flex;
+  width:300vw;
+  height:100%;
+  position:relative;z-index:2;
+  will-change:transform;
+}
+
+/* Individual slide */
+.timeline-slide{
+  width:100vw;height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 5vw;
+  flex-shrink:0;
+}
+
+/* Card pair: image left + card right */
+.card-pair{
+  display:flex;
+  align-items:center;
+  gap:60px;
+  max-width:1100px;
+  width:100%;
+  margin-top:60px;
+}
+
+/* Left: portrait illustration */
+.timeline-image{
+  flex-shrink:0;
+  width:100%;max-width:380px;
+  aspect-ratio:3/4;
+  overflow:hidden;
+  border:1px solid rgba(160,120,152,0.25);
+  box-shadow:4px 4px 20px rgba(0,0,0,0.4);
+}
+.timeline-image img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+
+/* Right: card wrapper */
+.timeline-card-wrapper{
+  flex:1;
+  min-width:0;
+}
+
+/* Zigzag top border */
+.zigzag-border{
+  width:60%;height:16px;overflow:hidden;
+}
+.zigzag-border svg{display:block;}
+
+/* Purple card */
+.timeline-card{
+  background-color:var(--card-purple);
+  position:relative;overflow:hidden;
+  padding:40px 44px;
+  min-height:280px;
+  border-radius:0;
+}
+
+/* Corner fog — diagonal from top-right, fade out bottom-left */
+.corner-pattern{
+  position:absolute;top:0;right:0;
+  width:55%;height:80%;
+  pointer-events:none;z-index:0;
   background-image:repeating-linear-gradient(
     -45deg,
-    rgba(200,160,195,0.20),
-    rgba(200,160,195,0.20) 52px,
-    transparent 52px,
-    transparent 104px
+    transparent,
+    transparent 60px,
+    rgba(180,140,175,0.22) 60px,
+    rgba(180,140,175,0.22) 120px
   );
-  -webkit-mask-image:linear-gradient(
-    -45deg,
-    rgba(0,0,0,0.9) 0%,
-    rgba(0,0,0,0.5) 35%,
-    rgba(0,0,0,0) 62%
-  );
-  mask-image:linear-gradient(
-    -45deg,
-    rgba(0,0,0,0.9) 0%,
-    rgba(0,0,0,0.5) 35%,
-    rgba(0,0,0,0) 62%
-  );
-  pointer-events:none;
-  z-index:0;
+  -webkit-mask-image:linear-gradient(-45deg,rgba(0,0,0,1) 0%,rgba(0,0,0,0.5) 45%,rgba(0,0,0,0) 75%);
+  mask-image:linear-gradient(-45deg,rgba(0,0,0,1) 0%,rgba(0,0,0,0.5) 45%,rgba(0,0,0,0) 75%);
 }
 
-/* Year label */
-.tl-year{
-  display:block;
-  font-family:'Crimson Text',monospace,sans-serif;
+/* Text content above the pattern */
+.card-content{position:relative;z-index:1;}
+.card-content .year{
+  color:var(--brand-green);
   font-size:14px;font-weight:600;
-  color:var(--tl-green);
-  letter-spacing:0.35em;text-transform:uppercase;
-  margin-bottom:8px;
-  position:relative;z-index:1;
+  letter-spacing:0.35em;
+  font-family:'Inter',-apple-system,sans-serif;
+  margin-bottom:10px;display:block;
 }
-
-/* Title */
-.tl-title{
+.card-content .title{
+  color:var(--text-light);
+  font-size:26px;font-weight:700;
   font-family:'Playfair Display',Georgia,serif;
-  font-size:clamp(1.375rem,2vw,1.625rem);
-  font-weight:700;
-  color:var(--tl-text);
-  line-height:1.2;
-  margin:0 0 16px;
-  position:relative;z-index:1;
+  font-style:normal;line-height:1.2;
+  margin-bottom:16px;
 }
-
-/* Description */
-.tl-desc{
-  font-family:'Crimson Text',Georgia,serif;
-  font-size:clamp(.9375rem,1.05vw,1.0625rem);
-  color:var(--tl-muted);
+.card-content .description{
+  color:var(--text-muted);
+  font-size:15px;font-weight:400;
   line-height:1.65;
-  margin:0;
-  max-width:460px;
-  position:relative;z-index:1;
+  font-family:'Inter',-apple-system,sans-serif;
+  max-width:500px;
+}
+.card-content .description+.description{margin-top:12px;}
+
+/* Progress bar — outside the track, always visible */
+.timeline-progress-bar{
+  position:absolute;
+  bottom:60px;left:5%;right:5%;
+  height:16px;
+  display:flex;align-items:center;
+  z-index:15;pointer-events:none;
+}
+.progress-track{
+  position:relative;width:100%;height:3px;
+  background-color:var(--bar-grey);
+  border-radius:2px;
+}
+.progress-fill{
+  position:absolute;top:0;left:0;
+  height:100%;width:0%;
+  background-color:var(--brand-green);
+  border-radius:2px;
+}
+.progress-dot{
+  position:absolute;top:50%;left:0%;
+  transform:translate(-50%,-50%);
+  width:14px;height:14px;border-radius:50%;
+  background-color:var(--brand-green);
+  z-index:2;
 }
 
-/* Progress bar */
-.tl-bar{margin-top:var(--sp-xl);}
-.tl-bar-track{
-  position:relative;height:2px;
-  background:rgba(255,255,255,0.12);
-  border-radius:2px;overflow:hidden;
-}
-.tl-bar-fill{
-  position:absolute;left:0;top:0;bottom:0;
-  background:var(--tl-green);border-radius:2px;
-  width:33.33%;
-}
-.tl-bar-dots{
-  display:flex;justify-content:space-between;
-  margin-top:var(--sp-sm);
-}
-.tl-bdot{
-  width:8px;height:8px;border-radius:50%;
-  background:rgba(255,255,255,0.2);
-  transition:background .2s,transform .2s;
-}
-.tl-bdot.active{background:var(--tl-green);transform:scale(1.35);}
-
-/* Reduced motion: all scenes visible */
-@media(prefers-reduced-motion:reduce){
-  .tl-scene{opacity:1!important;}
-}
-
-/* Mobile: vertical stack, no animation */
+/* Mobile — single column, no scroll animation */
 @media(max-width:767px){
   #timeline{height:auto;overflow:visible;}
-  .tl-scenes{display:flex;flex-direction:column;gap:var(--sp-2xl);padding:var(--sp-2xl) var(--pad);}
-  .tl-scene{position:relative;opacity:1!important;flex-direction:column;}
-  .tl-scene-img{width:100%;height:clamp(200px,55vw,300px);}
-  .tl-scene-panel{padding:var(--sp-lg) 0;}
-  .tl-bar{display:none;}
+  .timeline-track{width:100%;flex-direction:column;transform:none!important;}
+  .timeline-slide{width:100%;height:auto;padding:var(--sp-2xl) var(--pad);}
+  .timeline-heading{font-size:clamp(48px,12vw,72px);}
+  .card-pair{flex-direction:column;gap:0;margin-top:80px;}
+  .timeline-image{max-width:100%;aspect-ratio:16/9;}
+  .timeline-card{padding:24px 20px;}
+  .card-content .title{font-size:20px;}
+  .card-content .description{font-size:13px;}
+  .timeline-progress-bar{display:none;}
 }
 
 /* ═══════════════════════════════════════
    COMMUNITY
    ═══════════════════════════════════════ */
 #community{
-  position:relative;z-index:4;background:var(--bk);
-  border-top:1px solid rgba(255,255,255,0.04);
-  padding:clamp(3.5rem,8vh,6rem) var(--pad) clamp(2.5rem,5vh,4rem);
+  position:relative;z-index:4;
+  background-color:var(--bg-dark);
+  padding:clamp(3.5rem,8vh,6rem) clamp(1rem,4vw,3rem) clamp(2.5rem,5vh,4rem);
   overflow:hidden;
 }
-.cm-inner{max-width:1200px;margin:0 auto}
 
-/* Heading + actions row */
-.cm-top{
-  display:flex;justify-content:space-between;align-items:flex-end;
-  gap:var(--sp-xl);flex-wrap:wrap;margin-bottom:var(--sp-xl);
+/* Noise overlay — same as Timeline */
+#community::before{
+  content:'';
+  position:absolute;inset:0;z-index:0;
+  opacity:0.4;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  pointer-events:none;
+  mix-blend-mode:overlay;
 }
-.cm-heading{
-  font-family:Queering,sans-serif;
-  font-size:clamp(1.75rem,4vw + .25rem,3.375rem);
-  color:var(--tl);line-height:1.1;margin:0;max-width:20ch;
+
+/* Vignette */
+#community::after{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,0.5) 100%);
+  pointer-events:none;
+  z-index:1;
 }
-.cm-actions{
-  display:flex;flex-direction:column;
-  align-items:flex-end;gap:var(--sp-md);flex-shrink:0;
+
+.content-wrapper{
+  max-width:1100px;margin:0 auto;
+  position:relative;z-index:2;
 }
-.cm-social{
-  display:flex;align-items:center;gap:8px;
-  color:var(--pm);font-family:'Crimson Text',serif;
-  font-size:var(--fs-body);font-style:italic;
-  text-decoration:none;transition:color .25s;
+
+/* Heading */
+.community-heading{
+  text-align:center;
+  font-family:'Playfair Display',Georgia,serif;
+  font-style:italic;font-weight:400;
+  font-size:clamp(36px,4vw,56px);
+  color:var(--brand-green);
+  line-height:1.25;
+  margin-bottom:32px;
 }
-.cm-social:hover{color:var(--tl)}
-.cm-social svg{width:18px;height:18px;fill:currentColor;flex-shrink:0}
-.cm-btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:clamp(.625rem,1.2vw,.875rem) clamp(1.25rem,2.5vw,2rem);
-  background:var(--g);color:#000;
-  font-family:Queering,sans-serif;font-size:var(--fs-cta);
-  letter-spacing:.05em;text-decoration:none;
-  border-radius:2px;min-height:var(--touch);
-  transition:filter .25s,transform .18s ease-out;
+
+/* Description */
+.community-description{
+  text-align:center;
+  max-width:680px;margin:0 auto 48px;
+  font-family:'Inter',-apple-system,sans-serif;
+  font-size:14.5px;font-weight:400;
+  line-height:1.7;
+  color:var(--text-grey);
 }
-.cm-btn:hover{filter:brightness(1.12);transform:translateX(2px)}
-.cm-btn:focus-visible{outline:2px solid var(--g);outline-offset:3px}
-.cm-btn svg{width:1em;height:1em;flex-shrink:0;stroke:currentColor;fill:none}
+
+/* Social bar */
+.social-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:24px 0;
+}
+
+/* Instagram profile link */
+.social-profile{
+  display:flex;align-items:center;gap:12px;
+  text-decoration:none;
+}
+.social-profile .icon{
+  width:38px;height:38px;border-radius:50%;
+  background-color:var(--brand-green);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--bg-dark);font-weight:700;font-size:16px;
+  font-family:'Playfair Display',Georgia,serif;
+  flex-shrink:0;
+}
+.social-profile .handle{
+  font-family:'Inter',-apple-system,sans-serif;
+  font-size:15px;font-weight:500;
+  color:var(--text-light);
+}
+
+/* Follow button wrapper — decorative left line lives here */
+.follow-button-wrapper{position:relative;}
+.follow-button-wrapper::before{
+  content:'';
+  position:absolute;
+  left:-8px;top:20%;bottom:20%;
+  width:3px;
+  background-color:var(--brand-green);
+}
+
+/* Pentagon / arrow-head follow button */
+.follow-button{
+  display:inline-flex;align-items:center;justify-content:center;
+  background-color:var(--brand-green);
+  color:var(--bg-dark);
+  font-family:'Playfair Display',Georgia,serif;
+  font-style:italic;font-weight:700;
+  font-size:24px;
+  padding:14px 48px 14px 28px;
+  border:none;cursor:pointer;
+  text-decoration:none;
+  transition:background-color .2s;
+  min-width:180px;
+  clip-path:polygon(0% 0%,82% 0%,100% 50%,82% 100%,0% 100%);
+}
+.follow-button:hover{background-color:var(--brand-green-hover);}
+.follow-button:focus-visible{outline:2px solid var(--brand-green);outline-offset:4px;}
 
 /* Divider */
-.cm-divider{
-  height:1px;
-  background:linear-gradient(90deg,transparent,var(--pm) 20%,var(--pm) 80%,transparent);
-  margin-bottom:var(--sp-2xl);opacity:.35;
+.community-divider{
+  width:100%;height:1px;
+  background-color:rgba(255,255,255,0.1);
 }
 
-/* Gallery scroll container */
-.cm-gallery{
-  display:flex;gap:clamp(.5rem,1.5vw,1rem);
-  overflow-x:auto;scroll-snap-type:x mandatory;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;-ms-overflow-style:none;
-  padding-bottom:4px;
+/* 4-column image grid */
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:22px;
+  padding:40px 0 32px;
 }
-.cm-gallery::-webkit-scrollbar{display:none}
-.cm-gallery-item{
-  flex:0 0 clamp(220px,calc(33.33% - .5rem),380px);
-  scroll-snap-align:start;scroll-snap-stop:always;
-  border-radius:3px;overflow:hidden;
-  aspect-ratio:4/3;background:var(--dp);
-  border:1px solid rgba(123,107,138,0.2);flex-shrink:0;
+.gallery-item{
+  aspect-ratio:1/1.15;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  border:1px solid rgba(160,140,165,0.12);
+  cursor:pointer;
+  transition:transform .3s ease;
 }
-.cm-gallery-item img{
+.gallery-item:hover{transform:scale(1.03);}
+.gallery-item img{
   width:100%;height:100%;object-fit:cover;display:block;
-  transition:transform .6s ease;
 }
-.cm-gallery-item:hover img{transform:scale(1.04)}
 
-/* Dot indicators */
-.cm-dots{
-  display:flex;justify-content:center;align-items:center;
-  gap:8px;margin-top:var(--sp-md);
+/* Pagination dots */
+.gallery-dots{
+  display:flex;justify-content:center;
+  gap:12px;margin-top:30px;
 }
-.cm-dot{
-  width:6px;height:6px;border-radius:3px;
-  background:rgba(123,107,138,0.35);
-  border:none;padding:0;cursor:pointer;
-  transition:background .25s,width .2s ease-out;
+.gallery-dot{
+  width:10px;height:10px;border-radius:50%;
+  background-color:#444444;
+  border:none;cursor:pointer;padding:0;
+  transition:background-color .2s;
 }
-.cm-dot.active{background:var(--g);width:18px}
-.cm-dot:focus-visible{outline:2px solid var(--g);outline-offset:3px}
+.gallery-dot.active{background-color:var(--brand-green);}
+.gallery-dot:focus-visible{outline:2px solid var(--brand-green);outline-offset:3px;}
 
 /* Community — mobile */
 @media(max-width:767px){
-  .cm-top{flex-direction:column;align-items:flex-start}
-  .cm-actions{align-items:flex-start}
-  .cm-gallery-item{flex:0 0 82vw}
+  .social-bar{flex-direction:column;align-items:flex-start;gap:20px;}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
+}
+@media(max-width:480px){
+  .follow-button{font-size:18px;padding:12px 38px 12px 20px;}
 }
 </style>
 </head>
@@ -994,117 +1066,124 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   </div>
 </section>
 <section id="timeline">
-  <div class="tl-scenes">
+  <!-- Heading — NOT inside the track, stays fixed above as slides move -->
+  <h2 class="timeline-heading">Timeline</h2>
 
-    <!-- Scene 0 — 2039: The First Breach -->
-    <div class="tl-scene" data-scene="0">
-      <div class="tl-scene-img">
-        <img src="images/gallerybg1.webp" alt="Ex Sanguis, 2039" loading="eager">
-      </div>
-      <div class="tl-scene-panel">
-        <span class="tl-label" aria-hidden="true">Timeline</span>
-        <div class="tl-card-wrap">
-          <div class="tl-card">
-            <span class="tl-year">2039</span>
-            <h3 class="tl-title">The First Breach</h3>
-            <p class="tl-desc">The corporate veil lifted for the first time as leaked NEXUS files exposed humanity's quiet extinction plan — chosen survivors, sealed vaults, and a world left to burn.</p>
-          </div>
+  <!-- Horizontal track — GSAP translates this leftward -->
+  <div class="timeline-track">
+
+    <!-- SLIDE 1 — 2059: Our Dying World -->
+    <div class="timeline-slide">
+      <div class="card-pair">
+        <div class="timeline-image">
+          <img src="images/gallerybg1.webp" alt="Our Dying World, 2059" loading="eager">
         </div>
-        <div class="tl-bar" aria-hidden="true">
-          <div class="tl-bar-track"><div class="tl-bar-fill"></div></div>
-          <div class="tl-bar-dots">
-            <span class="tl-bdot active"></span>
-            <span class="tl-bdot"></span>
-            <span class="tl-bdot"></span>
+        <div class="timeline-card-wrapper">
+          <div class="zigzag-border">
+            <svg width="100%" height="16" preserveAspectRatio="xMinYMid meet" aria-hidden="true">
+              <defs><pattern id="zz1" width="22" height="16" patternUnits="userSpaceOnUse"><polygon points="0,0 11,16 22,0" fill="#A8D830"/></pattern></defs>
+              <rect width="100%" height="16" fill="url(#zz1)"/>
+            </svg>
+          </div>
+          <div class="timeline-card">
+            <div class="corner-pattern" aria-hidden="true"></div>
+            <div class="card-content">
+              <span class="year">2 0 5 9</span>
+              <h3 class="title">Our Dying World</h3>
+              <p class="description">Facing worsening storms, and mass migration, a coalition of governments and corporations send FLARE drones into deep space to search for a new home.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Scene 1 — 2051: The Pact Fractures -->
-    <div class="tl-scene" data-scene="1">
-      <div class="tl-scene-img">
-        <img src="images/gallerybg2.webp" alt="Ex Sanguis, 2051" loading="lazy">
-      </div>
-      <div class="tl-scene-panel">
-        <span class="tl-label" aria-hidden="true">Timeline</span>
-        <div class="tl-card-wrap">
-          <div class="tl-card">
-            <span class="tl-year">2051</span>
-            <h3 class="tl-title">The Pact Fractures</h3>
-            <p class="tl-desc">The alliance between the Seven Syndicates collapses. Resource wars ignite across three continents as rival factions race to control the last viable habitation zones.</p>
-          </div>
+    <!-- SLIDE 2 — 2125: Betrayal -->
+    <div class="timeline-slide">
+      <div class="card-pair">
+        <div class="timeline-image">
+          <img src="images/gallerybg2.webp" alt="Betrayal, 2125" loading="lazy">
         </div>
-        <div class="tl-bar" aria-hidden="true">
-          <div class="tl-bar-track"><div class="tl-bar-fill"></div></div>
-          <div class="tl-bar-dots">
-            <span class="tl-bdot"></span>
-            <span class="tl-bdot active"></span>
-            <span class="tl-bdot"></span>
+        <div class="timeline-card-wrapper">
+          <div class="zigzag-border">
+            <svg width="100%" height="16" preserveAspectRatio="xMinYMid meet" aria-hidden="true">
+              <defs><pattern id="zz2" width="22" height="16" patternUnits="userSpaceOnUse"><polygon points="0,0 11,16 22,0" fill="#A8D830"/></pattern></defs>
+              <rect width="100%" height="16" fill="url(#zz2)"/>
+            </svg>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Scene 2 — 2059: Your Story Begins -->
-    <div class="tl-scene" data-scene="2">
-      <div class="tl-scene-img">
-        <img src="images/gallerybg3.webp" alt="Ex Sanguis, 2059" loading="lazy">
-      </div>
-      <div class="tl-scene-panel">
-        <span class="tl-label" aria-hidden="true">Timeline</span>
-        <div class="tl-card-wrap">
-          <div class="tl-card">
-            <span class="tl-year">2059</span>
-            <h3 class="tl-title">Your Story Begins</h3>
-            <p class="tl-desc">Drafted into the Apokrif program against your will, you carry the last seed of the old world. The future — or its end — rests entirely in your hands.</p>
-          </div>
-        </div>
-        <div class="tl-bar" aria-hidden="true">
-          <div class="tl-bar-track"><div class="tl-bar-fill"></div></div>
-          <div class="tl-bar-dots">
-            <span class="tl-bdot"></span>
-            <span class="tl-bdot"></span>
-            <span class="tl-bdot active"></span>
+          <div class="timeline-card">
+            <div class="corner-pattern" aria-hidden="true"></div>
+            <div class="card-content">
+              <span class="year">2 1 2 5</span>
+              <h3 class="title">Betrayal</h3>
+              <p class="description">During a now routine passenger loading trip, the Hope&rsquo;s security forces are overwhelmed by an unknown force of attackers. They seize control of the colony ship, ignite its engines, and pull away from orbit. As the Hope leaves communication range, a woman appears on a video feed broadcasting from the great ship. &ldquo;I&rsquo;m not like you, Emperor&rdquo; she says, snarling and fanged. &ldquo;I won&rsquo;t play my part. I won&rsquo;t obey.&rdquo;</p>
+              <p class="description">On Earth, shock turns to grief turns to fury. Pandemonium descends upon the world as citizens turn on each other. Vigilante squads emerge from the chaos, determined to uproot the monsters responsible.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- SLIDE 3 -->
+    <div class="timeline-slide">
+      <div class="card-pair">
+        <div class="timeline-image">
+          <img src="images/gallerybg3.webp" alt="Timeline slide 3" loading="lazy">
+        </div>
+        <div class="timeline-card-wrapper">
+          <div class="zigzag-border">
+            <svg width="100%" height="16" preserveAspectRatio="xMinYMid meet" aria-hidden="true">
+              <defs><pattern id="zz3" width="22" height="16" patternUnits="userSpaceOnUse"><polygon points="0,0 11,16 22,0" fill="#A8D830"/></pattern></defs>
+              <rect width="100%" height="16" fill="url(#zz3)"/>
+            </svg>
+          </div>
+          <div class="timeline-card">
+            <div class="corner-pattern" aria-hidden="true"></div>
+            <div class="card-content">
+              <span class="year">[ Y E A R ]</span>
+              <h3 class="title">Coming Soon</h3>
+              <p class="description">The next chapter of the Apokrif universe is being written. Stay tuned.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.timeline-track -->
+
+  <!-- Progress bar — outside the track, always visible -->
+  <div class="timeline-progress-bar" aria-hidden="true">
+    <div class="progress-track">
+      <div class="progress-fill"></div>
+      <div class="progress-dot"></div>
+    </div>
   </div>
 </section>
 <section id="team" class="section-after ph"><h2>Team</h2><p>Coming next</p></section>
 <section id="community" class="section-after">
-  <div class="cm-inner">
-    <div class="cm-top">
-      <h2 class="cm-heading">Join the Community.<br>Shape the Story.</h2>
-      <div class="cm-actions">
-        <a href="https://instagram.com/apokrif.graphicnovel" target="_blank" rel="noopener noreferrer" class="cm-social" aria-label="Follow @apokrif.graphicnovel on Instagram">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          <span>@apokrif.graphicnovel</span>
-        </a>
-        <a href="https://instagram.com/apokrif.graphicnovel" target="_blank" rel="noopener noreferrer" class="cm-btn">
-          Follow us
-          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h9.5M9 4.5L12.5 8 9 11.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
+  <div class="content-wrapper">
+    <h2 class="community-heading">Join the Community. Shape the Story</h2>
+    <p class="community-description">Our higher tier Kickstarter backers will play a role in helping shape the world of Apokrif, voting on concept art options that will impact and shape environments and characters you meet in the graphic novel. Our highest tier backers will have the option to be added into the world itself, with specific characters from all factions reserved for your likeness and name.</p>
+    <div class="social-bar">
+      <a href="https://instagram.com/apokrif.graphicnovel" target="_blank" rel="noopener noreferrer" class="social-profile" aria-label="Follow @apokrif.graphicnovel on Instagram">
+        <div class="icon" aria-hidden="true">A</div>
+        <span class="handle">@apokrif.graphicnovel</span>
+      </a>
+      <div class="follow-button-wrapper">
+        <a href="https://instagram.com/apokrif.graphicnovel" target="_blank" rel="noopener noreferrer" class="follow-button">Follow us</a>
       </div>
     </div>
-    <div class="cm-divider" aria-hidden="true"></div>
-    <div class="cm-gallery-wrap">
-      <div class="cm-gallery" role="region" aria-label="Community gallery">
-        <div class="cm-gallery-item" data-index="0"><img src="images/17-slide.jpg" alt="Community artwork 1" loading="lazy"></div>
-        <div class="cm-gallery-item" data-index="1"><img src="images/18-slide.jpg" alt="Community artwork 2" loading="lazy"></div>
-        <div class="cm-gallery-item" data-index="2"><img src="images/19-slide.jpg" alt="Community artwork 3" loading="lazy"></div>
-        <div class="cm-gallery-item" data-index="3"><img src="images/20-slide.jpg" alt="Community artwork 4" loading="lazy"></div>
-        <div class="cm-gallery-item" data-index="4"><img src="images/21-slide.jpg" alt="Community artwork 5" loading="lazy"></div>
-      </div>
-      <div class="cm-dots" role="group" aria-label="Gallery navigation">
-        <button class="cm-dot active" aria-label="Image 1" aria-current="true"></button>
-        <button class="cm-dot" aria-label="Image 2" aria-current="false"></button>
-        <button class="cm-dot" aria-label="Image 3" aria-current="false"></button>
-        <button class="cm-dot" aria-label="Image 4" aria-current="false"></button>
-        <button class="cm-dot" aria-label="Image 5" aria-current="false"></button>
-      </div>
+    <div class="community-divider" aria-hidden="true"></div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="images/17-slide.jpg" alt="Community concept art 1" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/18-slide.jpg" alt="Community concept art 2" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/19-slide.jpg" alt="Community concept art 3" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/20-slide.jpg" alt="Community concept art 4" loading="lazy"></div>
+    </div>
+    <div class="gallery-dots" role="group" aria-label="Gallery navigation">
+      <button class="gallery-dot active" aria-label="Image 1" aria-current="true"></button>
+      <button class="gallery-dot" aria-label="Image 2" aria-current="false"></button>
+      <button class="gallery-dot" aria-label="Image 3" aria-current="false"></button>
+      <button class="gallery-dot" aria-label="Image 4" aria-current="false"></button>
     </div>
   </div>
 </section>
@@ -1505,78 +1584,66 @@ document.addEventListener('DOMContentLoaded',function(){
   (function(){
     var section=document.getElementById('timeline');
     if(!section)return;
-    var scenes=[].slice.call(section.querySelectorAll('.tl-scene'));
-    if(!scenes.length)return;
+    var track=section.querySelector('.timeline-track');
+    var fill=section.querySelector('.progress-fill');
+    var dot=section.querySelector('.progress-dot');
+    if(!track)return;
 
     if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
 
     gsap.matchMedia().add('(min-width:768px)',function(){
-      var fills=[].slice.call(section.querySelectorAll('.tl-bar-fill'));
-      var dotGroups=scenes.map(function(s){
-        return [].slice.call(s.querySelectorAll('.tl-bdot'));
-      });
-
-      // Initial state: first scene visible, rest hidden
-      gsap.set(scenes[0],{opacity:1});
-      gsap.set(scenes.slice(1),{opacity:0});
+      var scrollDist=function(){return track.scrollWidth-window.innerWidth;};
 
       var tl=gsap.timeline({
         scrollTrigger:{
           trigger:section,
           pin:true,
+          scrub:1,
           start:'top top',
-          end:'+=200%',
-          scrub:1.5,
-          onUpdate:function(self){
-            // 0-2 index from progress (3 slides, 2 transitions)
-            var idx=Math.min(2,Math.round(self.progress*2));
-            dotGroups.forEach(function(dots){
-              dots.forEach(function(d,i){d.classList.toggle('active',i===idx);});
-            });
-            // Fill: 33.33% → 100%
-            var pct=(33.33+self.progress*66.67).toFixed(2)+'%';
-            fills.forEach(function(f){f.style.width=pct;});
-          }
+          end:function(){return '+='+scrollDist();},
+          invalidateOnRefresh:true,
+          anticipatePin:1,
         }
       });
+      tl.to(track,{x:function(){return -scrollDist();},ease:'none'});
 
-      // Slide 0 → 1 crossfade
-      tl.to(scenes[0],{opacity:0,duration:1})
-        .to(scenes[1],{opacity:1,duration:1},'<');
-      // Slide 1 → 2 crossfade
-      tl.to(scenes[1],{opacity:0,duration:1})
-        .to(scenes[2],{opacity:1,duration:1},'<');
+      if(fill){
+        gsap.to(fill,{
+          width:'100%',ease:'none',
+          scrollTrigger:{
+            trigger:section,scrub:1,
+            start:'top top',
+            end:function(){return '+='+scrollDist();}
+          }
+        });
+      }
+
+      if(dot){
+        gsap.to(dot,{
+          left:'100%',ease:'none',
+          scrollTrigger:{
+            trigger:section,scrub:1,
+            start:'top top',
+            end:function(){return '+='+scrollDist();}
+          }
+        });
+      }
     });
   })();
 
   // ═══════ COMMUNITY GALLERY ═══════
   (function(){
-    var gallery=document.querySelector('.cm-gallery');
-    var dots=document.querySelectorAll('.cm-dot');
-    var items=document.querySelectorAll('.cm-gallery-item');
-    if(!gallery||!dots.length||!items.length)return;
+    var dots=document.querySelectorAll('.gallery-dot');
+    if(!dots.length)return;
 
-    // IntersectionObserver: activate dot when image is ≥50% visible
-    var obs=new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          var idx=parseInt(entry.target.dataset.index)||0;
-          dots.forEach(function(d,di){
-            var active=di===idx;
-            d.classList.toggle('active',active);
-            d.setAttribute('aria-current',active?'true':'false');
-          });
-        }
-      });
-    },{root:gallery,threshold:0.5});
-    items.forEach(function(item){obs.observe(item);});
-
-    // Dot click scrolls to corresponding image
-    dots.forEach(function(dot,i){
+    dots.forEach(function(dot){
       dot.addEventListener('click',function(){
-        var item=items[i];
-        if(!item)return;
-        gallery.scrollTo({left:item.offsetLeft,behavior:'smooth'});
+        dots.forEach(function(d){
+          d.classList.remove('active');
+          d.setAttribute('aria-current','false');
+        });
+        dot.classList.add('active');
+        dot.setAttribute('aria-current','true');
       });
     });
   })();
