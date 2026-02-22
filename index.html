@@ -855,6 +855,69 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 @media(max-width:480px){
   .follow-button{font-size:var(--fs-nav);}
 }
+
+/* ── Gallery Print Quality section ── */
+.gallery-section{
+  position:relative;
+  background-color:var(--bg-dark);
+  background-image:url("images/05-image.jpg");
+  background-position:50% 0;
+  background-size:cover;
+  min-height:100vh;min-height:100dvh;
+  display:flex;align-items:center;
+  overflow:hidden;
+}
+.gallery-section::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("images/noise.png");
+  background-size:200px 200px;opacity:.25;
+  pointer-events:none;z-index:1;
+}
+.gallery-section::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.7) 100%);
+  pointer-events:none;z-index:1;
+}
+.gallery-inner{
+  position:relative;z-index:2;
+  width:100%;max-width:1400px;
+  margin:0 auto;
+  padding:clamp(60px,8vw,120px) clamp(24px,5vw,80px);
+  display:flex;flex-direction:column;
+  gap:clamp(40px,6vw,80px);
+}
+.gallery-header{
+  display:flex;align-items:flex-start;
+  justify-content:space-between;gap:40px;
+}
+.gallery-title{
+  font-family:'Queering',sans-serif;
+  font-size:clamp(56px,8vw,120px);
+  line-height:.95;color:#fff;margin:0;
+  text-transform:none;letter-spacing:-.01em;flex:0 0 auto;
+}
+.gallery-desc{
+  font-family:'Inter',sans-serif;
+  font-size:clamp(14px,1.2vw,18px);
+  color:var(--g);line-height:1.65;
+  max-width:320px;margin-top:.5em;align-self:flex-end;
+}
+.gallery-imgs{
+  display:grid;
+  grid-template-columns:1fr 1.35fr .9fr;
+  align-items:flex-end;
+  gap:clamp(12px,2vw,28px);
+}
+.gi{overflow:hidden;clip-path:inset(0 0 100% 0);}
+.gi img{width:100%;height:100%;object-fit:cover;display:block;}
+.gi-1{aspect-ratio:3/4;align-self:flex-end;margin-bottom:40px;}
+.gi-2{aspect-ratio:2/3;}
+.gi-3{aspect-ratio:3/4;align-self:flex-end;margin-bottom:20px;}
+@media(max-width:768px){
+  .gallery-header{flex-direction:column;}
+  .gallery-imgs{grid-template-columns:1fr 1fr;}
+  .gi-3{display:none;}
+}
 </style>
 </head>
 <body>
@@ -1124,7 +1187,19 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
     </div>
   </div>
 </section>
-<section id="team" class="section-after ph"><h2>Team</h2><p>Coming next</p></section>
+<section id="team" class="section-after gallery-section">
+  <div class="gallery-inner">
+    <div class="gallery-header">
+      <h2 class="gallery-title">Gallery<br>Print Quality</h2>
+      <p class="gallery-desc">Handcrafted editions printed on archival stock &mdash; each book a tactile object as much as a literary one.</p>
+    </div>
+    <div class="gallery-imgs">
+      <div class="gi gi-1"><img src="images/book1.webp" alt="Book 1 spine" loading="lazy"></div>
+      <div class="gi gi-2"><img src="images/book2.webp" alt="Book 2 cover" loading="lazy"></div>
+      <div class="gi gi-3"><img src="images/book2.webp" alt="Book 2 detail" loading="lazy"></div>
+    </div>
+  </div>
+</section>
 <section id="community" class="section-after">
   <div class="content-wrapper">
     <h2 class="community-heading">Join the Community. Shape the Story</h2>
@@ -1654,6 +1729,21 @@ document.addEventListener('DOMContentLoaded',function(){
       });
     });
   })();
+
+  /* ── Gallery Print Quality — image reveal ── */
+  (function(){
+    var gis=document.querySelectorAll('.gallery-section .gi');
+    if(!gis.length) return;
+    gsap.set(gis,{clipPath:'inset(0 0 100% 0)'});
+    ScrollTrigger.batch(gis,{
+      start:'top 90%',
+      onEnter:function(els){
+        gsap.to(els,{clipPath:'inset(0 0 0% 0)',duration:1.1,ease:'power3.out',stagger:.18});
+      },
+      once:true
+    });
+  })();
+
 });
 </script>
 </body>
