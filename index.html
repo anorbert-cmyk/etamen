@@ -6,7 +6,7 @@
 <title>Apokrif Universe</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Oswald:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
@@ -605,65 +605,56 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   width:100%;height:100%;object-fit:cover;display:block;
 }
 
-/* Right: card wrapper */
-.timeline-card-wrapper{
-  flex:1;
-  min-width:0;
-}
-
-/* Zigzag top border */
-.zigzag-border{
-  width:60%;height:16px;overflow:hidden;
-}
-.zigzag-border svg{display:block;}
-
-/* Purple card */
+/* Purple card — matches spec exactly */
 .timeline-card{
-  background-color:var(--card-purple);
-  position:relative;overflow:hidden;
-  padding:40px 44px;
-  min-height:280px;
-  border-radius:0;
+  flex:1;min-width:0;
+  position:relative;
+  width:100%;max-width:700px;
+  min-height:300px;
+  background-color:#94618E;
+  /* Diagonal shadow columns via SVG */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='1000'%3E%3Cpolygon points='0,0 300,0 300,300' fill='rgba(0,0,0,0.06)'/%3E%3C/svg%3E");
+  background-size:300px 1000px;
+  background-repeat:repeat-x;
+  color:white;
+  padding:70px 50px 50px 50px;
+  box-sizing:border-box;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  border-radius:4px;
+  overflow:hidden;
+}
+/* Green zigzag top-left decoration via ::before */
+.timeline-card::before{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:140px;height:20px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 20'%3E%3Cpath d='M0,0 L20,20 L20,0 L40,20 L40,0 L60,20 L60,0 L80,20 L80,0 L100,20 L100,0 L120,20 L120,0 L140,20 L140,0 Z' fill='%239ee37d'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  filter:drop-shadow(2px 3px 3px rgba(0,0,0,0.15));
 }
 
-/* Corner fog — diagonal from top-right, fade out bottom-left */
-.corner-pattern{
-  position:absolute;top:0;right:0;
-  width:55%;height:80%;
-  pointer-events:none;z-index:0;
-  background-image:repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 60px,
-    rgba(180,140,175,0.22) 60px,
-    rgba(180,140,175,0.22) 120px
-  );
-  -webkit-mask-image:linear-gradient(-45deg,rgba(0,0,0,1) 0%,rgba(0,0,0,0.5) 45%,rgba(0,0,0,0) 75%);
-  mask-image:linear-gradient(-45deg,rgba(0,0,0,1) 0%,rgba(0,0,0,0.5) 45%,rgba(0,0,0,0) 75%);
-}
-
-/* Text content above the pattern */
+/* Text content */
 .card-content{position:relative;z-index:1;}
 .card-content .year{
-  color:var(--brand-green);
-  font-size:14px;font-weight:600;
-  letter-spacing:0.35em;
-  font-family:'Inter',-apple-system,sans-serif;
-  margin-bottom:10px;display:block;
+  font-family:'Courier New',Courier,monospace;
+  font-size:1.1rem;font-weight:bold;
+  color:#9ee37d;
+  letter-spacing:4px;
+  margin:0 0 15px 0;display:block;
 }
 .card-content .title{
-  color:var(--text-light);
-  font-size:26px;font-weight:700;
-  font-family:'Playfair Display',Georgia,serif;
-  font-style:normal;line-height:1.2;
-  margin-bottom:16px;
+  font-family:'Oswald',sans-serif;
+  font-size:2.2rem;font-weight:400;
+  color:white;
+  margin:0 0 20px 0;
+  line-height:1.2;letter-spacing:0.5px;
 }
 .card-content .description{
-  color:var(--text-muted);
-  font-size:15px;font-weight:400;
-  line-height:1.65;
-  font-family:'Inter',-apple-system,sans-serif;
-  max-width:500px;
+  font-size:1.05rem;
+  color:rgba(255,255,255,0.85);
+  line-height:1.6;
+  font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  margin:0;max-width:95%;
 }
 .card-content .description+.description{margin-top:12px;}
 
@@ -705,9 +696,9 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   .timeline-heading{font-size:clamp(48px,12vw,72px);font-family:Queering,Arial,sans-serif;}
   .card-pair{flex-direction:column;gap:0;margin-top:80px;}
   .timeline-image{max-width:100%;aspect-ratio:16/9;}
-  .timeline-card{padding:24px 20px;}
-  .card-content .title{font-size:20px;}
-  .card-content .description{font-size:13px;}
+  .timeline-card{padding:40px 24px 30px;min-height:auto;}
+  .card-content .title{font-size:1.5rem;}
+  .card-content .description{font-size:0.9rem;}
   .timeline-progress-bar{display:none;}
 }
 
@@ -1077,20 +1068,11 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
         <div class="timeline-image">
           <img src="images/gallerybg1.webp" alt="Our Dying World, 2059" loading="eager">
         </div>
-        <div class="timeline-card-wrapper">
-          <div class="zigzag-border">
-            <svg width="100%" height="16" preserveAspectRatio="xMinYMid meet" aria-hidden="true">
-              <defs><pattern id="zz1" width="22" height="16" patternUnits="userSpaceOnUse"><polygon points="0,0 11,16 22,0" fill="#A8D830"/></pattern></defs>
-              <rect width="100%" height="16" fill="url(#zz1)"/>
-            </svg>
-          </div>
-          <div class="timeline-card">
-            <div class="corner-pattern" aria-hidden="true"></div>
-            <div class="card-content">
-              <span class="year">2 0 5 9</span>
-              <h3 class="title">Our Dying World</h3>
-              <p class="description">Facing worsening storms, and mass migration, a coalition of governments and corporations send FLARE drones into deep space to search for a new home.</p>
-            </div>
+        <div class="timeline-card">
+          <div class="card-content">
+            <span class="year">2059</span>
+            <h3 class="title">Our Dying World</h3>
+            <p class="description">Facing worsening storms, and mass migration, a coalition of governments and corporations send FLARE drones into deep space to search for a new home.</p>
           </div>
         </div>
       </div>
@@ -1102,21 +1084,12 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
         <div class="timeline-image">
           <img src="images/gallerybg2.webp" alt="Betrayal, 2125" loading="lazy">
         </div>
-        <div class="timeline-card-wrapper">
-          <div class="zigzag-border">
-            <svg width="100%" height="16" preserveAspectRatio="xMinYMid meet" aria-hidden="true">
-              <defs><pattern id="zz2" width="22" height="16" patternUnits="userSpaceOnUse"><polygon points="0,0 11,16 22,0" fill="#A8D830"/></pattern></defs>
-              <rect width="100%" height="16" fill="url(#zz2)"/>
-            </svg>
-          </div>
-          <div class="timeline-card">
-            <div class="corner-pattern" aria-hidden="true"></div>
-            <div class="card-content">
-              <span class="year">2 1 2 5</span>
-              <h3 class="title">Betrayal</h3>
-              <p class="description">During a now routine passenger loading trip, the Hope&rsquo;s security forces are overwhelmed by an unknown force of attackers. They seize control of the colony ship, ignite its engines, and pull away from orbit. As the Hope leaves communication range, a woman appears on a video feed broadcasting from the great ship. &ldquo;I&rsquo;m not like you, Emperor&rdquo; she says, snarling and fanged. &ldquo;I won&rsquo;t play my part. I won&rsquo;t obey.&rdquo;</p>
-              <p class="description">On Earth, shock turns to grief turns to fury. Pandemonium descends upon the world as citizens turn on each other. Vigilante squads emerge from the chaos, determined to uproot the monsters responsible.</p>
-            </div>
+        <div class="timeline-card">
+          <div class="card-content">
+            <span class="year">2125</span>
+            <h3 class="title">Betrayal</h3>
+            <p class="description">During a now routine passenger loading trip, the Hope&rsquo;s security forces are overwhelmed by an unknown force of attackers. They seize control of the colony ship, ignite its engines, and pull away from orbit. As the Hope leaves communication range, a woman appears on a video feed broadcasting from the great ship. &ldquo;I&rsquo;m not like you, Emperor&rdquo; she says, snarling and fanged. &ldquo;I won&rsquo;t play my part. I won&rsquo;t obey.&rdquo;</p>
+            <p class="description">On Earth, shock turns to grief turns to fury. Pandemonium descends upon the world as citizens turn on each other. Vigilante squads emerge from the chaos, determined to uproot the monsters responsible.</p>
           </div>
         </div>
       </div>
@@ -1128,20 +1101,11 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
         <div class="timeline-image">
           <img src="images/gallerybg3.webp" alt="Timeline slide 3" loading="lazy">
         </div>
-        <div class="timeline-card-wrapper">
-          <div class="zigzag-border">
-            <svg width="100%" height="16" preserveAspectRatio="xMinYMid meet" aria-hidden="true">
-              <defs><pattern id="zz3" width="22" height="16" patternUnits="userSpaceOnUse"><polygon points="0,0 11,16 22,0" fill="#A8D830"/></pattern></defs>
-              <rect width="100%" height="16" fill="url(#zz3)"/>
-            </svg>
-          </div>
-          <div class="timeline-card">
-            <div class="corner-pattern" aria-hidden="true"></div>
-            <div class="card-content">
-              <span class="year">[ Y E A R ]</span>
-              <h3 class="title">Coming Soon</h3>
-              <p class="description">The next chapter of the Apokrif universe is being written. Stay tuned.</p>
-            </div>
+        <div class="timeline-card">
+          <div class="card-content">
+            <span class="year">[ YEAR ]</span>
+            <h3 class="title">Coming Soon</h3>
+            <p class="description">The next chapter of the Apokrif universe is being written. Stay tuned.</p>
           </div>
         </div>
       </div>
