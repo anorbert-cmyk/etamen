@@ -372,7 +372,7 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   position:absolute;bottom:0;left:50%;transform:translateX(-50%);
   width:100%;max-width:1756px;height:auto;
   display:block;object-fit:fill;
-  will-change:clip-path,opacity;
+  will-change:transform,opacity;
 }
 
 /* ─── KÖZÖS VEZÉRLŐ PANEL (szürke sáv — FIX, mindig látható) ─── */
@@ -1015,34 +1015,34 @@ document.addEventListener('DOMContentLoaded',function(){
       var prev=facCur;
       facCur=next;
 
-      // A) Háttér crossfade
+      // A) Háttér crossfade (Apple: lassú, sima)
       var bgTl=gsap.timeline();
-      bgTl.to(bgSlides[prev],{opacity:0,duration:0.7,ease:'power2.inOut'},0);
+      bgTl.to(bgSlides[prev],{opacity:0,duration:1.4,ease:'power1.inOut'},0);
       bgTl.set(bgSlides[next],{zIndex:2},0);
-      bgTl.to(bgSlides[next],{opacity:1,duration:0.7,ease:'power2.out'},0.1);
-      bgTl.set(bgSlides[prev],{zIndex:1},0.8);
+      bgTl.to(bgSlides[next],{opacity:1,duration:1.4,ease:'power1.inOut'},0);
+      bgTl.set(bgSlides[prev],{zIndex:1},1.5);
       bgTl.call(function(){
         bgSlides[prev].classList.remove('active');
         bgSlides[next].classList.add('active');
       },null,0.1);
 
-      // B) Front kép — clip-path inset reveal (középről kifelé nyílik)
+      // B) Front kép — Apple-stílusú crossfade (tiszta opacity + finom scale)
       var nextImg=(facActive===facFrontA)?facFrontB:facFrontA;
       var prevImg=facActive;
 
-      // Új kép előkészítése: src beállítás, teljesen klippelve (láthatatlan), fölé emelve
+      // Új kép előkészítése: láthatatlan, enyhén nagyítva (fog bezoomolni)
       nextImg.src=facData[next].front;
       nextImg.alt=facData[next].frontAlt;
-      gsap.set(nextImg,{clipPath:'inset(50% 50% 50% 50%)',opacity:1,zIndex:2,scale:1});
-      gsap.set(prevImg,{zIndex:1});
+      gsap.set(nextImg,{opacity:0,scale:1.04,zIndex:2,clearProps:'clipPath'});
+      gsap.set(prevImg,{zIndex:1,scale:1});
 
       var frontTl=gsap.timeline();
-      // Régi kép: enyhe zoom + halványodás mögötte
-      frontTl.to(prevImg,{scale:1.04,opacity:0.3,duration:1.2,ease:'power2.inOut'},0);
-      // Új kép: clip-path reveal középről kifelé
-      frontTl.to(nextImg,{clipPath:'inset(0% 0% 0% 0%)',duration:1.2,ease:'power2.inOut',
+      // Régi kép: nagyon finom zoom out + elhalványul
+      frontTl.to(prevImg,{scale:1.02,opacity:0,duration:1.6,ease:'power1.inOut'},0);
+      // Új kép: finom zoom in nullába + felhalványul — Apple-selymes crossfade
+      frontTl.to(nextImg,{opacity:1,scale:1,duration:1.8,ease:'power1.inOut',
         onComplete:function(){
-          gsap.set(prevImg,{scale:1,opacity:0,zIndex:1,clipPath:'inset(0% 0% 0% 0%)'});
+          gsap.set(prevImg,{opacity:0,scale:1,zIndex:1});
           facActive=nextImg;
           facBusy=false;
         }
