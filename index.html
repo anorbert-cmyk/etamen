@@ -502,118 +502,216 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 }
 
 /* ═══════════════════════════════════════
-   TIMELINE
+   TIMELINE — HORIZONTAL SCROLL (GSAP PIN)
    ═══════════════════════════════════════ */
+:root{
+  --tl-green:#A8D830;
+  --tl-purple:#9B7094;
+  --tl-bg:#0a0a0a;
+  --tl-text:#F0F0F0;
+  --tl-muted:#E0D8DE;
+  --tl-bar:#333333;
+}
+
 #timeline{
+  position:relative;z-index:4;
   height:100vh;height:100dvh;
   overflow:hidden;
-  position:relative;z-index:4;
-  background:var(--bk);
+  background:var(--tl-bg);
 }
 
-/* Scenes wrapper */
-.tl-scenes{position:relative;width:100%;height:100%}
+/* Subtle grain texture overlay */
+#timeline::after{
+  content:'';position:absolute;inset:0;
+  z-index:100;pointer-events:none;
+  background-image:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");
+  background-repeat:repeat;
+  opacity:0.05;
+  mix-blend-mode:overlay;
+}
 
-/* Individual full-viewport scene */
-.tl-scene{
-  position:absolute;inset:0;
+/* Horizontal track — 3 slides wide */
+.tl-track{
   display:flex;
-  opacity:0;
+  width:300vw;
+  height:100%;
+  will-change:transform;
 }
-.tl-scene:first-child{opacity:1}
+
+/* Each slide: 100vw × 100vh */
+.tl-slide{
+  width:100vw;
+  height:100%;
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 clamp(1.5rem,4vw,3rem);
+}
+
+/* Inner centering wrapper */
+.tl-slide-inner{
+  width:100%;
+  max-width:1200px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:clamp(1.25rem,2.5vh,2rem);
+  padding-bottom:clamp(5rem,12vh,8rem);
+}
+
+/* "Timeline" display heading — only on slide 1 */
+.tl-heading{
+  font-family:'Crimson Text',Georgia,serif;
+  font-style:italic;font-weight:400;
+  font-size:clamp(3rem,7vw,7rem);
+  color:var(--tl-green);
+  line-height:0.95;
+  letter-spacing:-0.01em;
+  margin:0;
+  padding-top:clamp(1rem,3vh,2rem);
+}
+
+/* Two-column layout */
+.tl-cols{
+  display:flex;
+  gap:clamp(2rem,4vw,4rem);
+  align-items:flex-start;
+  width:100%;
+}
 
 /* Left: portrait image */
-.tl-scene-img{
-  width:clamp(35%,43%,50%);
-  height:100%;flex-shrink:0;
+.tl-img{
+  flex:0 0 40%;
+  height:clamp(260px,52vh,520px);
+  overflow:hidden;
+  border:1px solid rgba(123,107,138,0.4);
+  box-shadow:0 8px 48px rgba(0,0,0,0.7);
+  flex-shrink:0;
 }
-.tl-scene-img img{width:100%;height:100%;object-fit:cover;display:block}
+.tl-img img{width:100%;height:100%;object-fit:cover;display:block}
 
-/* Right: label + card + progress bar */
-.tl-scene-panel{
-  flex:1;display:flex;flex-direction:column;
-  justify-content:center;
-  padding:var(--sp-2xl) clamp(2rem,5vw,5rem);
-  background:var(--bk);
-}
-
-/* Timeline label (unchanged) */
-.tl-label{
-  font-family:Queering,sans-serif;font-size:var(--fs-small);
-  color:var(--g);letter-spacing:3px;text-transform:uppercase;
-  margin:0 0 var(--sp-2xl);opacity:0.6;display:block;
-}
-
-/* Card (unchanged visual identity) */
-.tl-card{
-  width:100%;
-  background:rgba(26,21,32,0.96);
-  background-image:repeating-linear-gradient(
-    -45deg,
-    transparent,transparent 6px,
-    rgba(157,214,124,0.045) 6px,rgba(157,214,124,0.045) 7px
-  );
-  border:1px solid rgba(157,214,124,0.15);
-  border-radius:3px;overflow:hidden;
-  padding:clamp(.875rem,2vw,1.5rem);
+/* Right: card wrapper — padding-top leaves room for zigzag */
+.tl-card-wrap{
+  flex:1;
+  min-width:0;
+  padding-top:14px;
   position:relative;
 }
+
+/* Card — mauve base + diagonal stripes */
+.tl-card{
+  background-color:var(--tl-purple);
+  background-image:repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 20px,
+    rgba(0,0,0,0.12) 20px,
+    rgba(0,0,0,0.12) 40px
+  );
+  border-radius:0;
+  padding:clamp(1.5rem,2.5vw,2.5rem);
+  position:relative;
+}
+
+/* Zigzag green border along the top edge */
 .tl-card::before{
-  content:'';position:absolute;top:0;left:0;
-  width:22px;height:22px;background:var(--g);
-  clip-path:polygon(0 0,100% 0,0 100%);pointer-events:none;
+  content:'';
+  position:absolute;
+  top:-14px;left:0;right:0;
+  height:14px;
+  background:
+    linear-gradient(135deg,var(--tl-green) 33.33%,transparent 33.33%) 0 0,
+    linear-gradient(225deg,var(--tl-green) 33.33%,transparent 33.33%) 0 0;
+  background-size:20px 14px;
+  background-repeat:repeat-x;
+  pointer-events:none;
 }
+
+/* Year label */
 .tl-year{
-  display:block;font-family:Queering,sans-serif;
-  font-size:clamp(.7rem,.85vw,.875rem);color:var(--g);
-  letter-spacing:.15em;text-transform:uppercase;margin-bottom:var(--sp-xs);
+  display:block;
+  font-family:'Crimson Text',monospace,sans-serif;
+  font-size:clamp(.8rem,.9vw,.9375rem);
+  font-weight:400;
+  color:var(--tl-green);
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  margin-bottom:clamp(.4rem,.8vh,.6rem);
 }
+
+/* Title */
 .tl-title{
-  font-family:Queering,sans-serif;font-size:clamp(1rem,1.5vw,1.375rem);
-  color:var(--tl);line-height:1.2;margin:0 0 var(--sp-sm);
+  font-family:Queering,serif;
+  font-size:clamp(1.25rem,2.2vw,1.75rem);
+  font-weight:700;
+  color:var(--tl-text);
+  line-height:1.15;
+  margin:0 0 clamp(.6rem,1.2vh,.875rem);
 }
+
+/* Description */
 .tl-desc{
   font-family:'Crimson Text',Georgia,serif;
-  font-size:clamp(.875rem,1vw + .05rem,.9375rem);
-  color:var(--tl);line-height:1.6;margin:0;opacity:.85;
+  font-size:clamp(.9375rem,1vw,1.0625rem);
+  color:var(--tl-muted);
+  line-height:1.65;
+  margin:0;
 }
 
-/* Progress bar */
-.tl-bar{margin-top:var(--sp-xl)}
-.tl-bar-track{
-  position:relative;height:2px;
-  background:rgba(255,255,255,0.12);
-  border-radius:2px;overflow:hidden;
+/* ── Progress bar (absolute, stays in place while slides move) ── */
+.tl-progress{
+  position:absolute;
+  bottom:clamp(36px,6vh,64px);
+  left:40%;
+  right:5%;
+  display:flex;
+  align-items:center;
+  z-index:101;
+  pointer-events:none;
 }
-.tl-bar-fill{
+.tl-pdot{
+  width:14px;height:14px;
+  border-radius:50%;
+  background:var(--tl-green);
+  flex-shrink:0;
+  position:relative;z-index:2;
+}
+.tl-pdot.end{opacity:0}
+.tl-ptrack{
+  flex:1;
+  height:3px;
+  background:var(--tl-bar);
+  position:relative;
+  overflow:hidden;
+}
+.tl-pfill{
   position:absolute;left:0;top:0;bottom:0;
-  background:var(--g);border-radius:2px;
-  width:33.33%;
+  width:0%;
+  background:var(--tl-green);
 }
-.tl-bar-dots{
-  display:flex;justify-content:space-between;
-  margin-top:var(--sp-sm);
-}
-.tl-bdot{
-  width:8px;height:8px;border-radius:50%;
-  background:rgba(255,255,255,0.2);
-  transition:background .2s,transform .2s;
-}
-.tl-bdot.active{background:var(--g);transform:scale(1.35)}
 
-/* Reduced motion */
+/* Reduced motion: show completed state, no animation */
 @media(prefers-reduced-motion:reduce){
-  .tl-scene{opacity:1!important}
+  .tl-pfill{width:100%!important}
+  .tl-pdot.end{opacity:1!important}
 }
 
-/* Mobile: vertical stack, all scenes visible */
+/* Mobile: vertical stack, no horizontal scroll */
 @media(max-width:767px){
   #timeline{height:auto;overflow:visible}
-  .tl-scenes{display:flex;flex-direction:column;gap:var(--sp-2xl);padding:var(--sp-2xl) var(--pad)}
-  .tl-scene{position:relative;opacity:1!important;flex-direction:column}
-  .tl-scene-img{width:100%;height:clamp(200px,55vw,300px)}
-  .tl-scene-panel{padding:var(--sp-lg) 0}
-  .tl-bar{display:none}
+  .tl-track{width:100%;flex-direction:column;height:auto}
+  .tl-slide{
+    width:100%;height:auto;
+    padding:clamp(2.5rem,6vw,3.5rem) var(--pad) clamp(2rem,5vw,3rem);
+    align-items:flex-start;
+  }
+  .tl-slide-inner{padding-bottom:0;gap:var(--sp-lg)}
+  .tl-heading{font-size:clamp(2.5rem,9vw,4rem);padding-top:0}
+  .tl-cols{flex-direction:column}
+  .tl-img{flex:unset;width:100%;height:clamp(200px,55vw,320px)}
+  .tl-card-wrap{padding-top:14px}
+  .tl-progress{display:none}
 }
 
 /* ═══════════════════════════════════════
@@ -915,75 +1013,76 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   </div>
 </section>
 <section id="timeline">
-  <div class="tl-scenes">
 
-    <div class="tl-scene" data-scene="0">
-      <div class="tl-scene-img">
-        <img src="images/gallerybg1.webp" alt="Ex Sanguis, 2039" loading="eager">
-      </div>
-      <div class="tl-scene-panel">
-        <span class="tl-label" aria-hidden="true">Timeline</span>
-        <div class="tl-card">
-          <span class="tl-year">2039</span>
-          <h3 class="tl-title">The First Breach</h3>
-          <p class="tl-desc">The corporate veil lifted for the first time. Three factions emerged from the ruins of the old world, each claiming sovereignty over what remained.</p>
-        </div>
-        <div class="tl-bar" aria-hidden="true">
-          <div class="tl-bar-track"><div class="tl-bar-fill"></div></div>
-          <div class="tl-bar-dots">
-            <span class="tl-bdot active"></span>
-            <span class="tl-bdot"></span>
-            <span class="tl-bdot"></span>
+  <!-- 300vw horizontal track — GSAP moves this left as user scrolls -->
+  <div class="tl-track" id="tlTrack">
+
+    <!-- Slide 1 — 2059: Our Dying World -->
+    <div class="tl-slide">
+      <div class="tl-slide-inner">
+        <h2 class="tl-heading">Timeline</h2>
+        <div class="tl-cols">
+          <div class="tl-img">
+            <img src="images/gallerybg1.webp" alt="2059 — Our Dying World" loading="eager">
+          </div>
+          <div class="tl-card-wrap">
+            <div class="tl-card">
+              <span class="tl-year">2 0 5 9</span>
+              <h3 class="tl-title">Our Dying World</h3>
+              <p class="tl-desc">Facing worsening storms and mass migration, a coalition of governments and corporations send FLARE drones into deep space to search for a new home.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="tl-scene" data-scene="1">
-      <div class="tl-scene-img">
-        <img src="images/gallerybg2.webp" alt="Cradle, 2051" loading="lazy">
-      </div>
-      <div class="tl-scene-panel">
-        <span class="tl-label" aria-hidden="true">Timeline</span>
-        <div class="tl-card">
-          <span class="tl-year">2051</span>
-          <h3 class="tl-title">The Pact Fractures</h3>
-          <p class="tl-desc">A generation raised on promises found only betrayal. Ex Sanguis, Cradle and House Mallat turned on each other in the shadows.</p>
-        </div>
-        <div class="tl-bar" aria-hidden="true">
-          <div class="tl-bar-track"><div class="tl-bar-fill"></div></div>
-          <div class="tl-bar-dots">
-            <span class="tl-bdot"></span>
-            <span class="tl-bdot active"></span>
-            <span class="tl-bdot"></span>
+    <!-- Slide 2 — 2061: Signal from the Void -->
+    <div class="tl-slide">
+      <div class="tl-slide-inner">
+        <div class="tl-cols">
+          <div class="tl-img">
+            <img src="images/gallerybg2.webp" alt="2061 — Signal from the Void" loading="lazy">
+          </div>
+          <div class="tl-card-wrap">
+            <div class="tl-card">
+              <span class="tl-year">2 0 6 1</span>
+              <h3 class="tl-title">Signal from the Void</h3>
+              <p class="tl-desc">A FLARE drone detects a habitable exoplanet — codename EREBUS. But the signal carries an anomaly: a rhythmic pulse that shouldn't exist naturally.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="tl-scene" data-scene="2">
-      <div class="tl-scene-img">
-        <img src="images/gallerybg3.webp" alt="House Mallat, 2059" loading="lazy">
-      </div>
-      <div class="tl-scene-panel">
-        <span class="tl-label" aria-hidden="true">Timeline</span>
-        <div class="tl-card">
-          <span class="tl-year">2059</span>
-          <h3 class="tl-title">Your Story Begins</h3>
-          <p class="tl-desc">Three factions stand at the edge of total war. You enter this world as witness, participant and chronicler. What you do next matters.</p>
-        </div>
-        <div class="tl-bar" aria-hidden="true">
-          <div class="tl-bar-track"><div class="tl-bar-fill"></div></div>
-          <div class="tl-bar-dots">
-            <span class="tl-bdot"></span>
-            <span class="tl-bdot"></span>
-            <span class="tl-bdot active"></span>
+    <!-- Slide 3 — 2067: The Ark Launches -->
+    <div class="tl-slide">
+      <div class="tl-slide-inner">
+        <div class="tl-cols">
+          <div class="tl-img">
+            <img src="images/gallerybg3.webp" alt="2067 — The Ark Launches" loading="lazy">
+          </div>
+          <div class="tl-card-wrap">
+            <div class="tl-card">
+              <span class="tl-year">2 0 6 7</span>
+              <h3 class="tl-title">The Ark Launches</h3>
+              <p class="tl-desc">Humanity builds the ARK — a generation ship carrying 10,000 colonists, military personnel, and an experimental AI called SERAPH. They depart Earth with no guarantee of return.</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
+  </div><!-- /.tl-track -->
+
+  <!-- Progress bar — outside track so it stays fixed while slides move -->
+  <div class="tl-progress" aria-hidden="true">
+    <div class="tl-pdot start"></div>
+    <div class="tl-ptrack">
+      <div class="tl-pfill" id="tlFill"></div>
+    </div>
+    <div class="tl-pdot end" id="tlEndDot"></div>
   </div>
+
 </section>
 <section id="team" class="section-after ph"><h2>Team</h2><p>Coming next</p></section>
 <section id="community" class="section-after">
@@ -1413,50 +1512,45 @@ document.addEventListener('DOMContentLoaded',function(){
     gsap.from(facActive,{y:60,opacity:0,scale:1.05,duration:1,ease:'power2.out',scrollTrigger:Object.assign({},stConfig,{start:'top 65%'})});
   })();
 
-  // ═══════ TIMELINE ═══════
+  // ═══════ TIMELINE — HORIZONTAL SCROLL ═══════
   (function(){
     var section=document.getElementById('timeline');
     if(!section)return;
-    var scenes=[].slice.call(section.querySelectorAll('.tl-scene'));
-    if(!scenes.length)return;
-    if(window.matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    var track=document.getElementById('tlTrack');
+    var fill=document.getElementById('tlFill');
+    var endDot=document.getElementById('tlEndDot');
+    if(!track)return;
+
+    if(window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+      if(fill)fill.style.width='100%';
+      if(endDot)endDot.style.opacity='1';
+      return;
+    }
 
     gsap.matchMedia().add('(min-width:768px)',function(){
-      var fills=[].slice.call(section.querySelectorAll('.tl-bar-fill'));
-      var dotGroups=scenes.map(function(s){
-        return [].slice.call(s.querySelectorAll('.tl-bdot'));
-      });
-
-      // Initial state: only first scene visible
-      gsap.set(scenes[0],{opacity:1});
-      gsap.set(scenes.slice(1),{opacity:0});
-
-      var tl=gsap.timeline({
+      // Horizontal slide: move track left by (totalWidth - 1 viewport) px
+      gsap.to(track,{
+        x:function(){return -(track.scrollWidth-window.innerWidth);},
+        ease:'none',
         scrollTrigger:{
           trigger:section,
           pin:true,
+          anticipatePin:1,
+          scrub:1,
           start:'top top',
-          end:'+=200%',
-          scrub:1.5,
+          end:function(){return '+='+(track.scrollWidth-window.innerWidth);},
+          invalidateOnRefresh:true,
           onUpdate:function(self){
-            // 3 slides, 2 transitions → Math.round(progress*2) gives 0,1,2
-            var idx=Math.min(2,Math.round(self.progress*2));
-            dotGroups.forEach(function(dots){
-              dots.forEach(function(d,i){d.classList.toggle('active',i===idx);});
-            });
-            // Bar fill grows from 33% to 100%
-            var pct=(33.33+self.progress*66.67).toFixed(2)+'%';
-            fills.forEach(function(f){f.style.width=pct;});
+            // Fill grows 0% → 100% proportionally
+            if(fill)fill.style.width=(self.progress*100).toFixed(1)+'%';
+            // End dot fades in during last 20% of scroll
+            if(endDot){
+              var ep=Math.max(0,(self.progress-0.8)/0.2);
+              endDot.style.opacity=Math.min(1,ep).toFixed(3);
+            }
           }
         }
       });
-
-      // Slide 1 → 2
-      tl.to(scenes[0],{opacity:0,duration:1})
-        .to(scenes[1],{opacity:1,duration:1},'<');
-      // Slide 2 → 3
-      tl.to(scenes[1],{opacity:0,duration:1})
-        .to(scenes[2],{opacity:1,duration:1},'<');
     });
   })();
 
