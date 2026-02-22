@@ -363,14 +363,17 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 .fac-bg._2::after{background-color:rgba(140,120,70,0.35)}
 .fac-bg._3::after{background-color:rgba(44,62,80,0.38)}
 
-/* ─── KÖZÖS FRONT KÉP ─── */
+/* ─── KÖZÖS FRONT KÉP (clip-path reveal) ─── */
 .fac-front-wrap{
   position:absolute;top:273px;left:30px;right:30px;bottom:30px;
-  z-index:5;display:flex;align-items:flex-end;justify-content:center;
-  overflow:visible;pointer-events:none;
+  z-index:5;overflow:hidden;pointer-events:none;
 }
-.fac-front-wrap img{width:100%;max-width:1756px;height:auto;display:block;object-fit:fill}
-.fac-frag{position:absolute;will-change:transform,opacity;z-index:10;pointer-events:none}
+.fac-front-img{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:1756px;height:auto;
+  display:block;object-fit:fill;
+  will-change:clip-path,opacity;
+}
 
 /* ─── KÖZÖS VEZÉRLŐ PANEL (szürke sáv — FIX, mindig látható) ─── */
 #facPanel{
@@ -665,9 +668,10 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
     <div class="fac-bg _3"></div>
   </div>
 
-  <!-- Közös front kép (shatter animációval vált) -->
+  <!-- Közös front kép (clip-path reveal animációval vált) -->
   <div class="fac-front-wrap" id="facFrontWrap">
-    <img id="facFrontImg" src="images/gallerybg1.webp" alt="Ex Sanguis warrior">
+    <img id="facFrontA" class="fac-front-img" src="images/gallerybg1.webp" alt="Ex Sanguis warrior">
+    <img id="facFrontB" class="fac-front-img" src="images/gallerybg1.webp" alt="" style="opacity:0">
   </div>
 
   <!-- Közös szürke sáv — MINDIG LÁTHATÓ, soha nem animálódik -->
@@ -945,7 +949,7 @@ document.addEventListener('DOMContentLoaded',function(){
     labelDef:'From concept to hand-drawn art'
   });
 
-  // ═══════ FACTIONS CAROUSEL — fix panel + shatter transition ═══════
+  // ═══════ FACTIONS CAROUSEL — fix panel + clip-path reveal transition ═══════
   (function(){
     var bgSlides=document.querySelectorAll('.fac-bg');
     var facTotal=bgSlides.length;
@@ -954,8 +958,9 @@ document.addEventListener('DOMContentLoaded',function(){
     var facBusy=false;
 
     // DOM refs — közös elemek
-    var facFrontImg=document.getElementById('facFrontImg');
-    var facFrontWrap=document.getElementById('facFrontWrap');
+    var facFrontA=document.getElementById('facFrontA');
+    var facFrontB=document.getElementById('facFrontB');
+    var facActive=facFrontA; // melyik img az aktív (látható)
     var facTitle=document.getElementById('facTitle');
     var facDesc=document.getElementById('facDesc');
     var facLogo=document.getElementById('facLogo');
@@ -1001,55 +1006,6 @@ document.addEventListener('DOMContentLoaded',function(){
       }
     }
 
-    // ─── SHATTER ANIMÁCIÓ ───
-    // Fragmentekre bontja a képet és szétrepíti őket középről kifelé
-    function shatterImage(imgEl,cols,rows,onComplete){
-      var container=imgEl.parentElement;
-      var imgRect=imgEl.getBoundingClientRect();
-      var containerRect=container.getBoundingClientRect();
-      var offX=imgRect.left-containerRect.left;
-      var offY=imgRect.top-containerRect.top;
-      var w=imgRect.width;
-      var h=imgRect.height;
-      if(w<1||h<1){if(onComplete)onComplete();return}
-      var fragW=w/cols;
-      var fragH=h/rows;
-      var fragments=[];
-
-      for(var r=0;r<rows;r++){
-        for(var c=0;c<cols;c++){
-          var frag=document.createElement('div');
-          frag.className='fac-frag';
-          frag.style.left=(offX+c*fragW)+'px';
-          frag.style.top=(offY+r*fragH)+'px';
-          frag.style.width=fragW+'px';
-          frag.style.height=fragH+'px';
-          frag.style.backgroundImage='url('+imgEl.src+')';
-          frag.style.backgroundSize=w+'px '+h+'px';
-          frag.style.backgroundPosition='-'+(c*fragW)+'px -'+(r*fragH)+'px';
-          container.appendChild(frag);
-          fragments.push(frag);
-        }
-      }
-
-      gsap.set(imgEl,{visibility:'hidden'});
-
-      gsap.to(fragments,{
-        opacity:0,
-        scale:0,
-        rotation:function(){return gsap.utils.random(-720,720)},
-        x:function(){return gsap.utils.random(-400,400)},
-        y:function(){return gsap.utils.random(-300,300)},
-        duration:1.2,
-        stagger:{amount:0.5,from:'center',grid:[rows,cols]},
-        ease:'power3.in',
-        onComplete:function(){
-          fragments.forEach(function(f){f.remove()});
-          if(onComplete)onComplete();
-        }
-      });
-    }
-
     // ─── FŐ VÁLTÓ FÜGGVÉNY ───
     function facGoTo(n){
       if(facBusy)return;
@@ -1070,17 +1026,27 @@ document.addEventListener('DOMContentLoaded',function(){
         bgSlides[next].classList.add('active');
       },null,0.1);
 
-      // B) Front kép — shatter kilépés + új kép belépés
-      shatterImage(facFrontImg,5,4,function(){
-        facFrontImg.src=facData[next].front;
-        facFrontImg.alt=facData[next].frontAlt;
-        gsap.set(facFrontImg,{visibility:'visible',opacity:0,scale:1.05,y:30});
-        gsap.to(facFrontImg,{
-          opacity:1,scale:1,y:0,
-          duration:0.7,ease:'power2.out',
-          onComplete:function(){facBusy=false}
-        });
-      });
+      // B) Front kép — clip-path inset reveal (középről kifelé nyílik)
+      var nextImg=(facActive===facFrontA)?facFrontB:facFrontA;
+      var prevImg=facActive;
+
+      // Új kép előkészítése: src beállítás, teljesen klippelve (láthatatlan), fölé emelve
+      nextImg.src=facData[next].front;
+      nextImg.alt=facData[next].frontAlt;
+      gsap.set(nextImg,{clipPath:'inset(50% 50% 50% 50%)',opacity:1,zIndex:2,scale:1});
+      gsap.set(prevImg,{zIndex:1});
+
+      var frontTl=gsap.timeline();
+      // Régi kép: enyhe zoom + halványodás mögötte
+      frontTl.to(prevImg,{scale:1.04,opacity:0.3,duration:1.2,ease:'power2.inOut'},0);
+      // Új kép: clip-path reveal középről kifelé
+      frontTl.to(nextImg,{clipPath:'inset(0% 0% 0% 0%)',duration:1.2,ease:'power2.inOut',
+        onComplete:function(){
+          gsap.set(prevImg,{scale:1,opacity:0,zIndex:1,clipPath:'inset(0% 0% 0% 0%)'});
+          facActive=nextImg;
+          facBusy=false;
+        }
+      },0);
 
       // C) Szürke sáv tartalom crossfade (sáv maga MINDIG fix)
       var cTl=gsap.timeline();
@@ -1130,7 +1096,7 @@ document.addEventListener('DOMContentLoaded',function(){
     // ScrollTrigger entrance
     var stConfig={trigger:'#factions',start:'top 75%',toggleActions:'play none none reverse'};
     gsap.from(bgSlides[0],{scale:1.1,duration:1.4,ease:'power2.out',scrollTrigger:stConfig});
-    gsap.from('#facFrontImg',{y:60,opacity:0,scale:1.05,duration:1,ease:'power2.out',scrollTrigger:Object.assign({},stConfig,{start:'top 65%'})});
+    gsap.from(facActive,{y:60,opacity:0,scale:1.05,duration:1,ease:'power2.out',scrollTrigger:Object.assign({},stConfig,{start:'top 65%'})});
   })();
 });
 </script>
