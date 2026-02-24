@@ -915,6 +915,55 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
   .gallery-imgs{grid-template-columns:1fr 1fr;}
   .gi-3{display:none;}
 }
+
+/* ═══════ REVEAL PARALLAX SECTION (rp-) ═══════ */
+.rp-section{
+  position:relative;
+  height:200vh;
+  background:#0d1f0d;
+  overflow:visible;
+}
+.rp-texture{
+  position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    repeating-linear-gradient(0deg,rgba(180,220,150,0.045) 0px,rgba(180,220,150,0.045) 1px,transparent 1px,transparent 10px),
+    repeating-linear-gradient(90deg,rgba(180,220,150,0.045) 0px,rgba(180,220,150,0.045) 1px,transparent 1px,transparent 10px);
+}
+.rp-img{
+  position:absolute;z-index:1;
+  max-width:clamp(120px,20vw,280px);
+  will-change:transform;
+}
+.rp-img img{
+  width:100%;height:auto;display:block;
+  border-radius:8px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.55),0 2px 8px rgba(0,0,0,0.3);
+  mix-blend-mode:luminosity;
+}
+.rp-L1{left:5%;top:7%;}
+.rp-L2{left:13%;top:36%;}
+.rp-L3{left:4%;top:68%;}
+.rp-R1{right:5%;top:13%;}
+.rp-R2{right:16%;top:45%;}
+.rp-R3{right:7%;top:73%;}
+.rp-text-wrap{
+  position:absolute;top:42%;left:50%;
+  transform:translateX(-50%);
+  width:100%;max-width:900px;
+  padding:0 clamp(20px,5vw,60px);
+  text-align:center;z-index:2;pointer-events:none;
+}
+.rp-text{display:flex;flex-direction:column;gap:.35em;}
+.rp-lw{overflow:hidden;}
+.rp-l{
+  display:block;
+  font-family:Queering,Arial,sans-serif;
+  font-size:clamp(1.4rem,4vw,3.2rem);
+  letter-spacing:.15em;text-transform:uppercase;
+  color:#c8e6c9;will-change:transform;
+}
+@media(max-width:767px){.rp-L3,.rp-R3{display:none;}}
+@media(max-width:479px){.rp-L2,.rp-R2{display:none;}}
 </style>
 </head>
 <body>
@@ -1118,6 +1167,27 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
     </div>
   </div>
 </section>
+
+<!-- ═══════ REVEAL PARALLAX SECTION ═══════ -->
+<section id="rp" class="section-after rp-section" aria-label="Reveal Parallax">
+  <div class="rp-texture" aria-hidden="true"></div>
+
+  <div class="rp-img rp-L1"><img src="https://picsum.photos/seed/rp1/280/380?grayscale" alt="" loading="lazy"></div>
+  <div class="rp-img rp-L2"><img src="https://picsum.photos/seed/rp2/280/380?grayscale" alt="" loading="lazy"></div>
+  <div class="rp-img rp-L3"><img src="https://picsum.photos/seed/rp3/280/380?grayscale" alt="" loading="lazy"></div>
+  <div class="rp-img rp-R1"><img src="https://picsum.photos/seed/rp4/280/380?grayscale" alt="" loading="lazy"></div>
+  <div class="rp-img rp-R2"><img src="https://picsum.photos/seed/rp5/280/380?grayscale" alt="" loading="lazy"></div>
+  <div class="rp-img rp-R3"><img src="https://picsum.photos/seed/rp6/280/380?grayscale" alt="" loading="lazy"></div>
+
+  <div class="rp-text-wrap">
+    <div class="rp-text">
+      <div class="rp-lw"><span class="rp-l">Az igazság a mélyben rejtőzik</span></div>
+      <div class="rp-lw"><span class="rp-l">Ahol a fény nem ér el</span></div>
+      <div class="rp-lw"><span class="rp-l">Ott kezdődik a történet</span></div>
+    </div>
+  </div>
+</section>
+
 <section id="timeline">
   <!-- Heading — NOT inside the track, stays fixed above as slides move -->
   <h2 class="timeline-heading">Timeline</h2>
@@ -1751,6 +1821,54 @@ document.addEventListener('DOMContentLoaded',function(){
       },
       once:true
     });
+  })();
+
+  /* ═══════ REVEAL PARALLAX SECTION ═══════ */
+  (function(){
+    var section=document.getElementById('rp');
+    if(!section) return;
+
+    var imgs=[
+      {el:document.querySelector('.rp-L1'),rot:-3,  y:-80 },
+      {el:document.querySelector('.rp-L2'),rot:2.5, y:-150},
+      {el:document.querySelector('.rp-L3'),rot:-4,  y:-200},
+      {el:document.querySelector('.rp-R1'),rot:3.5, y:-100},
+      {el:document.querySelector('.rp-R2'),rot:-2,  y:-180},
+      {el:document.querySelector('.rp-R3'),rot:4.5, y:-120}
+    ];
+
+    var yMult=1;
+    if(window.innerWidth<=479){yMult=0.3;}
+    else if(window.innerWidth<=767){yMult=0.5;}
+
+    imgs.forEach(function(item){
+      if(!item.el) return;
+      gsap.set(item.el,{rotation:item.rot});
+      gsap.to(item.el,{
+        y:item.y*yMult,
+        ease:'none',
+        scrollTrigger:{
+          trigger:'#rp',
+          start:'top bottom',
+          end:'bottom top',
+          scrub:true
+        }
+      });
+    });
+
+    var textWrap=section.querySelector('.rp-text-wrap');
+    var lines=section.querySelectorAll('.rp-l');
+    if(textWrap && lines.length){
+      gsap.set(lines,{y:'100%'});
+      gsap.to(lines,{
+        y:'0%',duration:.8,ease:'power3.out',stagger:.15,
+        scrollTrigger:{
+          trigger:textWrap,
+          start:'top center',
+          toggleActions:'play none none reverse'
+        }
+      });
+    }
   })();
 
 });
