@@ -54,15 +54,17 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 .nav-container{padding:0 var(--pad);width:100%;margin:0 auto}
 .wrap-navigation-links{gap:var(--sp-xs);display:flex;align-items:center;width:100%}
 .nav-link{padding:var(--sp-xs);border-radius:4px;background-color:rgba(255,255,255,0.32);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);text-align:center;justify-content:center;align-items:center;width:100%;min-height:var(--touch);display:flex;position:relative;overflow:hidden;cursor:pointer}
-.nav-link.tab-link{border-radius:0;background-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;background-image:url("images/01-image.png");background-position:0 0;background-size:auto 100%;background-repeat:repeat-x;padding:2px 0 var(--sp-xs)}
+.nav-link.tab-link{border-radius:0;background-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;background-image:url("images/04-image.png");background-position:50% 50%;background-size:cover;padding:2px 0 var(--sp-xs)}
+.nav-link.tab-link::before{content:'';position:absolute;inset:0;background-color:rgba(157,214,124,0);transition:background-color .3s;z-index:0;pointer-events:none}
+.nav-link.tab-link:hover::before{background-color:rgba(157,214,124,0.42)}
 .nav-link.brand{background-color:#000;border-radius:0;padding:var(--sp-xs);gap:var(--sp-xs);width:auto;flex-shrink:0}
 .nav-link.brand img{width:var(--logo-w);height:auto}
 .nav-link.cta{border-radius:0;padding:2px 0 var(--sp-xs);width:auto;flex-shrink:0;background-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;background-image:url("images/02-image.png");background-position:0 0;background-size:auto 100%;background-repeat:repeat-x}
 .button-label{z-index:2;color:#000;font-family:Queering,Arial,sans-serif;font-size:var(--fs-nav);line-height:1;font-weight:400;position:relative;transition:color .3s}
 .button-label.apokrif,.button-label.community{color:var(--g)}
-.nav-link.tab-link .button-label{color:var(--tl)}
+.nav-link.tab-link .button-label{color:#2a2119}
 .nav-link-bg{background-color:var(--g);width:0%;position:absolute;inset:0;z-index:1}
-.nav-link.tab-link:hover .button-label,.nav-link.tab-link.active .button-label{color:var(--g)}
+.nav-link.tab-link:hover .button-label,.nav-link.tab-link.active .button-label{color:#2a2119}
 
 .hb{display:none;background:none;border:none;cursor:pointer;width:var(--touch);height:var(--touch);position:relative;margin-left:auto;flex-shrink:0;padding:13px 9px}
 .hb span{display:block;width:100%;height:2px;background:#fff;position:absolute;left:9px;right:9px;transition:.3s}
