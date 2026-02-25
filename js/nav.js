@@ -1,6 +1,5 @@
 /* === nav.js === */
 window.apokrif.register(function() {
-
   // Nav scroll-progress fill
   // 'timeline' handled separately below (GSAP pin extends scroll distance)
   // 'factions' handled separately below — endTrigger:#rp covers the gallery dead zone
@@ -84,5 +83,4 @@ window.apokrif.register(function() {
 
   // Mobile menu
   if (hb) hb.addEventListener('click', function() {this.classList.toggle('active'); if (mm) mm.classList.toggle('open')});
-
 });

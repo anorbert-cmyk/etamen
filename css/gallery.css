@@ -1,0 +1,57 @@
+/* === gallery.css === */
+
+/* ── Gallery Print Quality section ── */
+.gallery-section{
+  position:relative;
+  background-color:var(--bg-dark);
+  background-image:url("images/05-image.jpg");
+  background-position:50% 0;background-size:cover;
+  min-height:100vh;min-height:100dvh;
+  display:flex;align-items:center;overflow:hidden;
+}
+.gallery-section::before{
+  content:'';position:absolute;inset:0;
+  background-image:url("images/noise.png");
+  background-size:200px 200px;opacity:.25;
+  pointer-events:none;z-index:1;
+}
+.gallery-section::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,.7) 100%);
+  pointer-events:none;z-index:1;
+}
+.gallery-inner{
+  position:relative;z-index:2;
+  width:100%;max-width:1400px;margin:0 auto;
+  padding:clamp(60px,8vw,120px) clamp(24px,5vw,80px);
+  display:flex;flex-direction:column;gap:clamp(40px,6vw,80px);
+}
+.gallery-header{display:flex;align-items:flex-start;justify-content:space-between;gap:40px;}
+.gallery-title{
+  font-family:'Queering',sans-serif;
+  font-size:clamp(56px,8vw,120px);
+  line-height:.95;color:#fff;margin:0;
+  text-transform:none;letter-spacing:-.01em;flex:0 0 auto;
+}
+.gallery-desc{
+  font-family:'Inter',sans-serif;font-size:clamp(14px,1.2vw,18px);
+  color:#000;line-height:1.65;max-width:320px;margin-top:.5em;align-self:flex-end;
+}
+.gallery-imgs{
+  display:grid;grid-template-columns:1fr 1.35fr .9fr;
+  align-items:stretch;gap:clamp(12px,2vw,28px);
+}
+.gi{overflow:hidden;clip-path:inset(0 0 100% 0);height:clamp(380px,55vh,640px);}
+.gi img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+@media(max-width:768px){
+  .gallery-section{padding-bottom:env(safe-area-inset-bottom,0px)}
+  .gallery-inner{padding:clamp(40px,6vw,80px) var(--pad) calc(clamp(28px,5vw,48px) + env(safe-area-inset-bottom,0px));gap:clamp(28px,5vw,48px)}
+  .gallery-header{flex-direction:column;gap:16px;align-items:flex-start}
+  .gallery-title{font-size:clamp(48px,12vw,80px);overflow-wrap:break-word;word-break:break-word}
+  .gallery-desc{max-width:100%;margin-top:0;align-self:flex-start}
+  .gallery-imgs{grid-template-columns:1fr 1fr;gap:12px}
+  .gi{height:clamp(280px,45vw,420px)}
+  .gi-3{display:none}
+}
+@media(max-width:480px){
+  .gi{height:clamp(200px,42vw,320px)}

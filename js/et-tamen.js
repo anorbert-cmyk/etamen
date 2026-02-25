@@ -1,12 +1,12 @@
 /* === et-tamen.js === */
 window.apokrif.register(function() {
-
   // Et Tamen comic slider
   var track = document.getElementById('sTrack');
   if (!track) return; // guard: bail if slider not in DOM
   var slides = track.querySelectorAll('.slide');
   var dotsC = document.getElementById('sDots');
-  var cur = 0; var total = slides.length;
+  var cur = 0;
+  var total = slides.length;
 
   // Build dots
   for (var i = 0; i < total; i++) {
@@ -104,5 +104,4 @@ window.apokrif.register(function() {
       });
     });
   })();
-
 });

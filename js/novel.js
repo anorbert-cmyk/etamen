@@ -1,7 +1,6 @@
 /* === novel.js === */
 window.apokrif.register(function() {
-
-  // THE NOVEL — Reusable Fluid Letter-Stagger Toggle
+  // The Novel — Reusable Fluid Letter-Stagger Toggle
   function initNovelToggle(cfg) {
     function splitChars(el) {
       var text = el.textContent; el.textContent = '';
@@ -94,5 +93,4 @@ window.apokrif.register(function() {
     labelAlt: 'From hand-drawn art to concept',
     labelDef: 'From concept to hand-drawn art'
   });
-
 });
