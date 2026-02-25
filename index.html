@@ -57,13 +57,13 @@ a,button,[role="button"]{touch-action:manipulation}
 .nav-container{padding:0 var(--pad);width:100%;margin:0 auto}
 .wrap-navigation-links{gap:var(--sp-xs);display:flex;align-items:center;width:100%}
 .nav-link{padding:var(--sp-xs);border-radius:4px;background-color:rgba(255,255,255,0.32);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);text-align:center;justify-content:center;align-items:center;width:100%;min-height:var(--touch);display:flex;position:relative;overflow:hidden;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-.nav-link.tab-link{border-radius:0;background-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;background-image:url("images/04-image.png");background-position:50% 50%;background-size:cover;padding:2px 0 var(--sp-xs)}
+.nav-link.tab-link{border-radius:0;background-color:rgba(255,255,255,0.88);backdrop-filter:none;-webkit-backdrop-filter:none;background-image:url("images/04-image.png");background-position:50% 50%;background-size:cover;background-blend-mode:multiply;padding:2px 0 var(--sp-xs)}
 .nav-link.brand{background-color:#000;border-radius:0;padding:var(--sp-xs);gap:var(--sp-xs);width:auto;flex-shrink:0}
 .nav-link.brand img{width:var(--logo-w);height:auto}
 .nav-link.cta{border-radius:0;padding:2px 0 var(--sp-xs);width:auto;flex-shrink:0;background-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;background-image:url("images/02-image.png");background-position:0 0;background-size:auto 100%;background-repeat:repeat-x}
 .button-label{z-index:2;color:#fff;font-family:Queering,Arial,sans-serif;font-size:var(--fs-nav);line-height:1;font-weight:400;position:relative;transition:color .3s}
 .button-label.apokrif,.button-label.community{color:var(--g)}
-.nav-link.tab-link .button-label{color:#fff}
+.nav-link.tab-link .button-label{color:#1a1520}
 .nav-link-bg{background-color:var(--g);width:0%;position:absolute;inset:0;z-index:1}
 .nav-link.tab-link.active .button-label{color:#000}
 
@@ -222,6 +222,13 @@ a,button,[role="button"]{touch-action:manipulation}
   transition:background .3s;
 }
 .slide-dot.active::after{background:#fff}
+
+/* ET Tamen — bottom stamp bar */
+.et-bottom{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-end;padding:0 var(--pad) var(--sp-lg);pointer-events:none;z-index:5}
+.et-bottom-chevrons{display:flex;gap:2px;align-items:center;padding-bottom:var(--sp-xs)}
+.et-bottom-chevrons span{display:inline-block;width:0;height:0;border-left:clamp(6px,.6vw,9px) solid transparent;border-right:clamp(6px,.6vw,9px) solid transparent;border-top:clamp(8px,.8vw,12px) solid var(--tl);opacity:.6}
+.et-bottom-stamp{flex-shrink:0;pointer-events:auto}
+.et-bottom-stamp img{width:clamp(3rem,5vw,5rem);height:auto}
 
 /* ═══════ THE NOVEL — z-index layered panel ═══════ */
 #novel{
@@ -1183,6 +1190,11 @@ a,button,[role="button"]{touch-action:manipulation}
       </div>
     </div>
   </div>
+  <!-- Bottom bar: decorative chevrons + emblem stamp -->
+  <div class="et-bottom">
+    <div class="et-bottom-chevrons" id="etChevs"></div>
+    <div class="et-bottom-stamp"><img src="images/22-etchevs.png" alt="Apokrif emblem"></div>
+  </div>
 </section>
 
 <!-- All subsequent sections MUST have z-index:2 + own background -->
@@ -1588,6 +1600,9 @@ document.addEventListener('DOMContentLoaded',function(){
     if(document.hidden){etStopAuto()}else{etStartAuto()}
   });
 
+
+  // Build bottom chevrons (14 decorative triangles)
+  (function(){var c=document.getElementById('etChevs');if(c){for(var j=0;j<14;j++){var s=document.createElement('span');c.appendChild(s)}}})();
 
   // Et Tamen entrance anims
   gsap.from('.et-title-img',{opacity:0,y:30,duration:.6,scrollTrigger:{trigger:'#et',start:'top 70%',toggleActions:'play none none reverse'}});
@@ -2007,6 +2022,16 @@ document.addEventListener('DOMContentLoaded',function(){
         .to('#rp .rp-card._4 .rp-card-label',{opacity:0,duration:0.4},13)
         .to('#rp .rp-card._4',{opacity:0,duration:0.3},14);
 
+      /* rp-bsi entrance reveal — clip-path bottom-up */
+      gsap.set('#rp .rp-bsi',{clipPath:'inset(0 0 100% 0)',scale:1.08});
+      ScrollTrigger.batch('#rp .rp-bsi',{
+        start:'top 88%',
+        onEnter:function(els){
+          gsap.to(els,{clipPath:'inset(0 0 0% 0)',scale:1,duration:1.4,ease:'power3.inOut',stagger:0.18});
+        },
+        once:true
+      });
+
       document.querySelectorAll('#rp .rp-bsi').forEach(function(el,i){
         var speed=(i%3===0)?-15:(i%3===1)?10:-8;
         gsap.to(el,{yPercent:speed,ease:'none',
@@ -2015,7 +2040,7 @@ document.addEventListener('DOMContentLoaded',function(){
     });
 
     mm.add('(max-width:768px)',function(){
-      document.querySelectorAll('#rp .rp-bsi').forEach(function(el){el.style.transform='';});
+      document.querySelectorAll('#rp .rp-bsi').forEach(function(el){el.style.clipPath='';el.style.transform='';});
       document.querySelectorAll('#rp .rp-card').forEach(function(card,i){
         gsap.set(card,{opacity:0,y:20});
         ScrollTrigger.create({
