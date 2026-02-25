@@ -1,0 +1,131 @@
+/* === factions.css === */
+
+/* ═══════ FACTIONS CAROUSEL (section-3) ═══════ */
+.section-3{
+  background-color:#000;position:relative;z-index:4;
+  width:100%;height:100vh;height:100dvh;min-height:580px;overflow:hidden;
+}
+.scroll-container{
+  position:relative;width:100%;height:100%;overflow:hidden;
+}
+/* ─── HÁTTÉR RÉTEGEK (csak ::before blur bg + ::after overlay) ─── */
+.fac-bg{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  z-index:1;opacity:0;pointer-events:none;
+}
+.fac-bg.active{opacity:1;z-index:2}
+.fac-bg::before{
+  content:'';position:absolute;inset:-8px;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  filter:blur(6px);-webkit-filter:blur(6px);
+  z-index:0;pointer-events:none;
+}
+.fac-bg.ex::before{background-image:url('images/gallerybg1.webp')}
+.fac-bg._2::before{background-image:url('images/gallerybg2.webp')}
+.fac-bg._3::before{background-image:url('images/gallerybg3.webp')}
+.fac-bg::after{
+  content:'';position:absolute;inset:0;
+  z-index:1;pointer-events:none;opacity:0;
+}
+.fac-bg.active::after{opacity:1}
+.fac-bg.ex::after{background-color:rgba(107,79,46,0.35)}
+.fac-bg._2::after{background-color:rgba(140,120,70,0.35)}
+.fac-bg._3::after{background-color:rgba(44,62,80,0.38)}
+
+/* ─── KÖZÖS FRONT KÉP (clip-path reveal) ─── */
+.fac-front-wrap{
+  position:absolute;top:273px;left:30px;right:30px;bottom:30px;
+  z-index:5;overflow:hidden;pointer-events:none;
+}
+.fac-front-img{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:1756px;height:auto;
+  display:block;object-fit:fill;
+  will-change:transform,opacity;
+}
+
+/* ─── KÖZÖS VEZÉRLŐ PANEL (szürke sáv — FIX, mindig látható) ─── */
+#facPanel{
+  position:absolute;top:80px;left:30px;right:30px;
+  z-index:10;
+  background-color:#4E4D4E;
+  display:flex;flex-direction:row;align-items:stretch;
+  max-width:1140px;height:173px;
+  padding:15px 15px 10px;gap:29px;
+  margin:0 auto;
+  color:#ADA47F;font-family:Queering,Arial,sans-serif;font-size:16px;letter-spacing:-0.2px;
+}
+/* BAL OSZLOP: cím + pont-indikátorok */
+.div-block-14{
+  width:75px;display:flex;flex-direction:column;justify-content:space-between;
+  gap:5px;margin-right:40px;flex-shrink:0;
+}
+.div-block-10{width:75px;height:86px;overflow:visible}
+.meta-title{
+  color:#DEA468;font-size:40px;font-family:Queering,Arial,sans-serif;
+  font-weight:400;line-height:38px;letter-spacing:-1px;margin:0;
+}
+/* PONT INDIKÁTOROK */
+.div-block-11{display:flex;flex-direction:row;gap:2px;align-items:center}
+.div-block-11 img{width:15px;height:13px;display:block}
+/* ELVÁLASZTÓ */
+.fac-divider-col{flex-shrink:0;display:flex;align-items:center}
+.fac-divider-col img{width:4px;height:120px;object-fit:fill}
+/* LEÍRÓ SZÖVEG */
+.div-block-15{flex:1;height:148px;margin:0 40px;overflow:hidden;display:flex;align-items:center}
+.meta-desc{
+  color:#ADA47F;font-size:20px;font-family:Queering,Arial,sans-serif;
+  font-weight:400;line-height:24px;margin:0;
+}
+/* JOBB PANEL: indikátor + nyilak */
+.div-block-12{
+  display:flex;flex-direction:column;width:85px;height:148px;
+  gap:18px;flex-shrink:0;
+}
+.top-indicator img{width:85px;height:96px;display:block}
+.div-block-13{
+  display:flex;flex-direction:row;gap:7px;justify-content:space-around;
+  align-items:center;height:34px;
+}
+.div-block-18,.arrow-right{
+  min-width:48px;min-height:48px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  pointer-events:auto;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.div-block-18 img,.arrow-right img{width:10px;height:20px;display:block}
+
+/* Factions responsive */
+@media(max-width:1024px){
+  #facPanel{height:auto;min-height:120px;top:70px;left:20px;right:20px;gap:12px;padding:12px 16px}
+  .div-block-14{width:56px;margin-right:16px;gap:4px}
+  .div-block-10{width:56px;height:72px}
+  .meta-title{font-size:28px;line-height:28px;letter-spacing:-0.5px}
+  .fac-divider-col img{height:100px}
+  .div-block-15{margin:0 16px;height:auto}
+  .meta-desc{font-size:16px;line-height:22px}
+  .div-block-12{width:80px;height:auto;gap:14px}
+  .top-indicator img{width:80px;height:90px}
+  .fac-front-wrap{top:220px}
+}
+@media(max-width:768px){
+  #facPanel{top:8px;left:12px;right:12px;display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:auto auto;grid-template-areas:"icon title arrows" "icon desc  arrows";align-items:start;gap:0;padding:10px 12px;height:auto;max-height:130px}
+  .div-block-14{grid-area:icon;width:44px;flex-direction:column;justify-content:flex-start;margin-right:10px;gap:4px;align-self:start;padding-top:2px}
+  .div-block-10{width:44px;height:54px;overflow:visible}
+  .meta-title{grid-area:title;font-size:22px;line-height:24px;letter-spacing:-0.5px;align-self:end;padding-bottom:4px}
+  .fac-divider-col{display:none}
+  .div-block-15{grid-area:desc;margin:0;height:auto;overflow:hidden;display:flex;align-items:flex-start;padding-top:4px}
+  .meta-desc{font-size:13px;line-height:18px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .div-block-12{grid-area:arrows;width:48px;height:100%;flex-direction:column;justify-content:space-between;align-items:center;align-self:stretch;gap:8px;padding:2px 0}
+  .div-block-13{display:flex;align-items:center;justify-content:center;min-width:48px;min-height:48px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  .top-indicator img{width:50px;height:56px;display:block}
+  .fac-front-wrap{position:absolute;top:150px;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom,10px));height:auto}
+}
+@media(max-width:480px){
+  #facPanel{top:6px;left:8px;right:8px;padding:8px 10px;max-height:118px;grid-template-columns:38px 1fr 48px}
+  .div-block-14{width:38px;margin-right:8px}
+  .div-block-10{width:38px;height:46px}
+  .meta-title{font-size:19px;line-height:21px}
+  .meta-desc{font-size:13px;line-height:17px;-webkit-line-clamp:3}
+  .div-block-12{width:48px}
+  .top-indicator img{width:42px;height:48px}
+  .div-block-13{min-width:48px;min-height:48px}
+  .fac-front-wrap{top:136px;left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom,8px))}

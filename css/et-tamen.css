@@ -1,0 +1,148 @@
+/* === et-tamen.css === */
+
+/* ═══════ ET TAMEN ═══════ */
+#et{
+  z-index:1;position:-webkit-sticky;position:sticky;top:0;
+  background-color:var(--g);
+  background-image:url("images/05-image.jpg");
+  background-position:50% 0;background-size:cover;
+  min-height:100vh;min-height:100dvh;
+  transform:translate3d(0,0,0);
+}
+
+/* Main layout: left text + right slider, vertically centered */
+.et-main{
+  flex-flow:row;justify-content:space-between;align-items:center;
+  padding:0 0 0 var(--pad);
+  display:flex;
+  overflow-x:hidden;overflow-x:clip;overflow-y:visible;
+  min-height:100vh;min-height:100dvh;
+}
+
+/* Left column */
+.et-left{
+  gap:clamp(30px, 4vw, 56px);flex-flow:column;display:flex;
+  flex-shrink:0;min-height:0;
+  width:clamp(240px, 30vw, 420px);
+  padding-left:var(--sp-sm);
+}
+.et-title-wrap{display:flex;flex-direction:column;gap:var(--sp-sm)}
+.et-title-wrap .et-title-img{width:clamp(200px, 26vw, 350px);height:auto}
+.et-title-wrap .et-ep0-img{width:clamp(50px, 5vw, 80px);height:auto}
+.et-text-block{gap:var(--sp-sm);flex-flow:column;display:flex}
+.et-chev img{width:var(--icon-chev);height:auto}
+.et-body p{
+  color:var(--lt);letter-spacing:.5px;
+  font-family:Queering,Arial,sans-serif;
+  font-size:var(--fs-body);font-weight:400;line-height:1.5;
+}
+.et-cta-div{display:block}
+.et-cta{
+  color:var(--bk);letter-spacing:1px;text-transform:uppercase;
+  background-color:transparent;background-image:url("images/06-image.png");
+  background-position:0 0;background-size:cover;
+  padding:var(--sp-xs) clamp(1rem, 3vw, 2.5rem) clamp(0.4rem, 0.6vw, 0.6rem);
+  font-family:Queering,Arial,sans-serif;font-size:var(--fs-cta);
+  display:inline-block;cursor:pointer;transition:filter .3s;border:none;min-height:var(--touch);
+}
+.et-cta:hover{filter:brightness(1.1)}
+
+/* Right column: slider — centered in its column */
+.et-right{flex:1;overflow:visible;min-width:0;min-height:0;display:flex;justify-content:center}
+.slider-wrap{
+  position:relative;display:flex;align-items:center;gap:0;
+  max-width:fit-content;margin:0;
+}
+.slider-frame{
+  width:clamp(280px, 56vw, 810px);
+  height:clamp(400px, 70vw, 850px);
+  max-height:80vh;
+  overflow:hidden;position:relative;
+  flex-shrink:0;
+}
+.slide-track{display:flex;height:100%;transition:transform .7s ease}
+.slide{min-width:100%;height:100%;flex-shrink:0}
+.slide img{width:80%;height:90%;object-fit:cover;margin-left:clamp(30px, 5vw, 80px);margin-top:15px}
+
+/* Green arrows — tight against gallery edge */
+.slider-arrow{
+  color:var(--g);font-size:clamp(1.5rem, 3vw, 2.5rem);
+  cursor:pointer;user-select:none;
+  display:flex;align-items:center;justify-content:center;
+  min-width:var(--touch);min-height:var(--touch);
+  transition:opacity .3s;flex-shrink:0;
+  padding:0;margin:0;
+  position:relative;z-index:5;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
+.slider-arrow:hover{opacity:.7}
+.slider-arrow.prev{margin-right:-20px}
+.slider-arrow.next{margin-left:-20px}
+
+
+/* Slide dots — shark-tooth / zigzag style */
+.slide-dots{
+  display:flex;gap:24px;justify-content:center;align-items:flex-end;
+  padding-top:var(--sp-xs);
+  position:absolute;bottom:8px;left:0;right:0;
+}
+.slide-dot{
+  width:clamp(18px,2vw,26px);height:clamp(14px,1.6vw,20px);
+  border:none;border-radius:0;
+  cursor:pointer;padding:0;
+  background:transparent;
+  position:relative;
+  min-width:24px;min-height:var(--touch);
+  display:flex;align-items:flex-end;justify-content:center;
+  box-sizing:content-box;
+  transition:opacity .3s;
+}
+/* Shark-tooth triangle via clip-path */
+.slide-dot::after{
+  content:'';display:block;
+  width:clamp(12px,1.4vw,18px);height:clamp(16px,1.8vw,22px);
+  background:rgba(255,255,255,0.35);
+  clip-path:polygon(0% 0%,100% 50%,0% 100%);
+  transition:background .3s;
+}
+.slide-dot.active::after{background:#fff}
+
+/* ET Tamen — bottom stamp bar */
+.et-bottom{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-end;padding:0 var(--pad) var(--sp-lg);pointer-events:none;z-index:5}
+.et-bottom-chevrons{display:flex;gap:2px;align-items:center;padding-bottom:var(--sp-xs)}
+.et-bottom-chevrons span{display:inline-block;width:0;height:0;border-left:clamp(6px,.6vw,9px) solid transparent;border-right:clamp(6px,.6vw,9px) solid transparent;border-top:clamp(8px,.8vw,12px) solid var(--tl);opacity:.6}
+.et-bottom-stamp{flex-shrink:0;pointer-events:auto}
+.et-bottom-stamp img{width:clamp(3rem,5vw,5rem);height:auto}
+
+@media(max-width:1024px){
+  .et-main{flex-flow:column;align-items:center;justify-content:flex-start;padding:calc(60px + var(--sp-xl)) var(--pad) var(--sp-xl);min-height:100vh;min-height:100dvh;height:auto;overflow-y:visible;gap:clamp(40px,6vw,72px)}
+  .et-left{max-width:600px;width:100%;text-align:center;align-items:center;padding-left:0;gap:clamp(28px,4vw,48px)}
+  .et-title-wrap .et-title-img{width:clamp(200px,40vw,320px)}
+  .et-body p br{display:none}
+  .et-right{width:100%;justify-content:center}
+  .slider-wrap{justify-content:center}
+  .slider-frame{width:min(72vw,500px);height:min(92vw,640px)}
+  .slide img{width:88%;height:92%;margin-left:6%;margin-top:12px}
+  .slider-arrow{font-size:clamp(1.75rem,3.5vw,2.5rem);min-width:var(--touch);min-height:var(--touch)}
+  .slider-arrow.prev{margin-right:-12px}.slider-arrow.next{margin-left:-12px}
+}
+
+@media(max-width:768px){
+  .et-main{padding:calc(60px + var(--sp-lg)) var(--pad) var(--sp-lg);gap:clamp(32px,5vw,56px)}
+  .et-left{gap:clamp(24px,3.5vw,40px)}
+  .et-title-wrap .et-title-img{width:clamp(180px,44vw,280px)}
+  .slider-frame{width:min(82vw,460px);height:min(105vw,580px)}
+  .slide img{width:91%;height:93%;margin-left:4.5%;margin-top:10px}
+  .slider-arrow{font-size:1.75rem;min-width:var(--touch);min-height:var(--touch);padding:0 6px}
+  .slider-arrow.prev{margin-right:-8px}.slider-arrow.next{margin-left:-8px}
+}
+
+@media(max-width:480px){
+  .et-main{padding:calc(60px + var(--sp-md)) var(--pad) var(--sp-md);gap:clamp(24px,5vw,40px)}
+  .et-left{gap:clamp(18px,3vw,28px)}
+  .et-title-wrap .et-title-img{width:clamp(160px,52vw,240px)}
+  .slider-frame{width:min(88vw,340px);height:min(114vw,440px)}
+  .slide img{width:93%;height:94%;margin-left:3.5%;margin-top:8px}
+  .slider-arrow{font-size:1.5rem;min-width:var(--touch);min-height:var(--touch);padding:0 4px}
+  .slider-arrow.prev{margin-right:-6px}.slider-arrow.next{margin-left:-6px}
+}

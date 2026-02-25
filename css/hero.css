@@ -1,0 +1,58 @@
+/* === hero.css === */
+
+/* ═══════ HERO ═══════ */
+#hero{
+  z-index:0;background-color:var(--bk);
+  position:-webkit-sticky;position:sticky;top:0;height:100vh;height:100dvh;min-height:580px;
+  transform:translate3d(0,0,0);overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:-8%;
+  background-image:url("images/03-image.jpg");
+  background-position:40% 0;background-size:cover;
+  will-change:transform;z-index:0;
+}
+.main-container{z-index:2;width:100%;padding:0 var(--pad);position:relative}
+.master-hero-section{
+  flex-flow:column;justify-content:space-between;align-items:flex-start;
+  height:100vh;height:100dvh;min-height:580px;
+  padding-top:var(--sp-xl);padding-bottom:env(safe-area-inset-bottom, 0px);display:flex;
+}
+.master-hero-top-div{gap:var(--sp-lg);flex-flow:column;display:flex}
+.heading-405{color:var(--lt);letter-spacing:1px;font-family:Queering,Arial,sans-serif;font-size:var(--fs-hero);line-height:1}
+.kickstarter-button-div{display:block}
+.kickstarter-button{
+  color:#2a2119;letter-spacing:1px;text-transform:uppercase;
+  background-color:transparent;background-image:url("images/04-image.png");
+  background-position:0 0;background-size:cover;
+  padding:var(--sp-xs) clamp(1.375rem, 4vw, 4.375rem) clamp(0.5rem, 0.8vw, 0.75rem);
+  font-family:Queering,Arial,sans-serif;font-size:var(--fs-cta);
+  display:inline-block;cursor:pointer;transition:filter .3s;border:none;min-height:var(--touch);
+}
+.kickstarter-button:hover{filter:brightness(1.1)}
+
+.hero-bottom-div{justify-content:space-between;align-items:flex-end;padding-top:var(--sp-2xl);padding-bottom:var(--sp-md);display:flex;width:100%;gap:var(--sp-sm)}
+.hero-bottom-left{gap:var(--sp-xs);flex-flow:column;display:flex;flex:1;min-width:0}
+.graphic-div{padding-left:var(--sp-xs)}
+.graphic-div img{width:var(--icon-star);height:auto}
+.graphic-bottom-div img{width:var(--icon-chev);height:auto}
+.hero-bottom-text-div p{color:var(--lt);letter-spacing:.5px;font-family:Queering,Arial,sans-serif;font-size:var(--fs-body);font-weight:400;line-height:1.5}
+.hero-bottom-right-div{flex-shrink:0}
+.hero-bottom-right-div img{width:var(--icon-seal);height:auto}
+
+@media(max-width:1024px){
+  .hero-bottom-text-div p br{display:none}
+}
+
+@media(max-width:768px){
+  .master-hero-section{padding-bottom:env(safe-area-inset-bottom,16px)}
+  .hero-bottom-div{flex-direction:column;align-items:flex-start;gap:var(--sp-sm);padding-bottom:var(--sp-sm)}
+  .hero-bottom-left{width:100%;gap:var(--sp-xs)}
+  .hero-bottom-right-div{align-self:flex-end;flex-shrink:0}
+}
+
+@media(max-width:480px){
+  .hero-bottom-right-div{display:none}
+  .hero-bottom-left{width:100%}
+  .hero-bottom-div{gap:var(--sp-xs)}
+}

@@ -1,0 +1,208 @@
+/* === timeline.css === */
+
+/* ═══════════════════════════════════════
+   TIMELINE — HORIZONTAL SCROLL (GSAP)
+   ═══════════════════════════════════════ */
+:root{
+  --brand-green:#A8D830;
+  --brand-green-hover:#BFEF45;
+  --card-purple:#A07898;
+  --bg-dark:#111111;
+  --text-light:#F0F0F0;
+  --text-muted:#E0D8DE;
+  --text-grey:#C0B8BC;
+  --bar-grey:#333333;
+}
+
+/* Section wrapper — pinned full-viewport */
+#timeline{
+  position:relative;z-index:4;
+  width:100%;height:100vh;
+  overflow:hidden;
+  background-color:var(--bg-dark);
+  background-image:url("images/05-image.jpg");
+  background-position:50% 0;background-size:cover;
+}
+
+/* Noise texture overlay */
+#timeline::before{
+  content:'';
+  position:absolute;inset:0;z-index:0;
+  opacity:0.4;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat:repeat;
+  pointer-events:none;
+  mix-blend-mode:overlay;
+}
+
+/* Vignette */
+#timeline::after{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,0.5) 100%);
+  pointer-events:none;
+  z-index:1;
+}
+
+/* Heading — fixed above the sliding track, always centred */
+.timeline-heading{
+  position:absolute;
+  top:2vh;left:50%;
+  transform:translateX(-50%);
+  z-index:10;
+  text-align:center;
+  font-family:Queering,Arial,sans-serif;
+  font-style:normal;font-weight:400;
+  font-size:clamp(90px,11vw,160px);
+  color:var(--brand-green);
+  letter-spacing:0;line-height:1;
+  user-select:none;pointer-events:none;
+  white-space:nowrap;
+}
+
+/* Horizontal track — GSAP translates this */
+.timeline-track{
+  display:flex;
+  width:300vw;
+  height:100%;
+  position:relative;z-index:2;
+  will-change:transform;
+}
+
+/* Individual slide */
+.timeline-slide{
+  width:100vw;height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:clamp(120px,17vh,180px) 5vw 0;
+  flex-shrink:0;
+}
+
+/* Card pair: image left + card right */
+.card-pair{
+  display:flex;
+  align-items:stretch;
+  gap:60px;
+  max-width:1100px;
+  width:100%;
+  height:clamp(380px,52vh,500px);
+}
+
+/* Left: portrait illustration */
+.timeline-image{
+  flex:0 0 auto;
+  width:100%;max-width:340px;
+  overflow:hidden;
+  border:1px solid rgba(160,120,152,0.25);
+  box-shadow:4px 4px 20px rgba(0,0,0,0.4);
+}
+.timeline-image img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+
+/* Purple card — matches spec exactly */
+.timeline-card{
+  flex:1;min-width:0;
+  position:relative;
+  width:100%;max-width:700px;
+  overflow-y:auto;
+  background-color:#94618E;
+  /* Diagonal shadow columns via SVG */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='1000'%3E%3Cpolygon points='0,0 300,0 300,300' fill='rgba(0,0,0,0.06)'/%3E%3C/svg%3E");
+  background-size:300px 1000px;
+  background-repeat:repeat-x;
+  color:white;
+  padding:70px 50px 50px 50px;
+  box-sizing:border-box;
+  box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  border-radius:4px;
+  overflow:hidden;
+}
+/* Green zigzag top-left decoration via ::before */
+.timeline-card::before{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:140px;height:20px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 20'%3E%3Cpath d='M0,0 L20,20 L20,0 L40,20 L40,0 L60,20 L60,0 L80,20 L80,0 L100,20 L100,0 L120,20 L120,0 L140,20 L140,0 Z' fill='%239ee37d'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  filter:drop-shadow(2px 3px 3px rgba(0,0,0,0.15));
+}
+
+/* Text content */
+.card-content{position:relative;z-index:1;}
+.card-content .year{
+  font-family:'Courier New',Courier,monospace;
+  font-size:1.1rem;font-weight:bold;
+  color:#9ee37d;
+  letter-spacing:4px;
+  margin:0 0 15px 0;display:block;
+}
+.card-content .title{
+  font-family:'Oswald',sans-serif;
+  font-size:2.2rem;font-weight:400;
+  color:white;
+  margin:0 0 20px 0;
+  line-height:1.2;letter-spacing:0.5px;
+}
+.card-content .description{
+  font-size:1.05rem;
+  color:rgba(255,255,255,0.85);
+  line-height:1.6;
+  font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  margin:0;max-width:95%;
+}
+.card-content .description+.description{margin-top:12px;}
+
+/* Progress bar — centered under the card content, always visible */
+.timeline-progress-bar{
+  position:absolute;
+  bottom:8vh;
+  left:0;right:0;
+  width:100%;
+  padding:0 5vw;
+  height:16px;
+  display:flex;align-items:center;
+  z-index:15;pointer-events:none;
+}
+.progress-track{
+  position:relative;width:100%;height:3px;
+  background-color:var(--bar-grey);
+  border-radius:2px;
+}
+.progress-fill{
+  position:absolute;top:0;left:0;
+  height:100%;width:0%;
+  background-color:var(--brand-green);
+  border-radius:2px;
+}
+.progress-dot{
+  position:absolute;top:50%;left:0%;
+  transform:translate(-50%,-50%);
+  width:16px;height:16px;border-radius:50%;
+  background-color:var(--brand-green);
+  box-shadow:0 0 10px rgba(168,216,48,0.6);
+  z-index:2;
+}
+
+/* Mobile — single column, no scroll animation */
+@media(max-width:767px){
+  #timeline{height:auto;overflow:visible;padding-bottom:48px;overscroll-behavior-y:contain}
+  .timeline-heading{position:relative;top:auto;left:auto;transform:none;display:block;text-align:center;font-size:clamp(52px,13vw,80px);padding:28px 16px 20px;white-space:nowrap;overflow:hidden}
+  .timeline-track{display:flex;flex-direction:column;width:100%;height:auto;transform:none;will-change:auto}
+  .timeline-slide{width:100%;height:auto;display:flex;align-items:stretch;justify-content:center;padding:24px 16px 40px;flex-shrink:0;border-top:1px solid rgba(160,120,152,0.18)}
+  .timeline-slide:first-child{border-top:none}
+  .card-pair{flex-direction:column;gap:8px;height:auto;max-width:440px;width:100%;margin:0 auto;align-items:stretch}
+  .timeline-image{flex:none;width:100%;max-width:400px;margin:0 auto;aspect-ratio:3/4;height:auto;overflow:hidden;border:1px solid rgba(160,120,152,0.3);border-bottom:none}
+  .timeline-image img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+  .timeline-card{flex:none;padding:36px 20px 28px;min-height:auto;overflow-y:visible;border-radius:0 0 4px 4px;box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+  .timeline-card::before{width:100px;height:18px}
+  .card-content .year{font-size:0.9rem;letter-spacing:4px;display:block;margin-bottom:8px}
+  .card-content .title{font-size:1.75rem;margin:0 0 16px;line-height:1.2}
+  .card-content .description{font-size:1rem;line-height:1.65}
+  .timeline-progress-bar{display:none}
+}
+@media(max-width:480px){
+  .timeline-card{padding:28px 14px 22px}
+  .card-content .year{letter-spacing:2px;font-size:0.9rem}
+  .card-content .title{font-size:1.5rem}

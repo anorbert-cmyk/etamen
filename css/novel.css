@@ -1,0 +1,141 @@
+/* === novel.css === */
+
+/* ═══════ THE NOVEL — z-index layered panel ═══════ */
+#novel{
+  z-index:2;position:-webkit-sticky;position:sticky;top:0;
+  background-color:var(--g);
+  min-height:100vh;min-height:100dvh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 var(--pad);
+  transform:translate3d(0,0,0);
+}
+#novel2{
+  z-index:3;position:relative;
+  background-color:var(--g);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 var(--pad);
+  min-height:100vh;min-height:100dvh;
+  transform:translate3d(0,0,0);
+}
+.snap-panel{
+  border-radius:clamp(8px, 1vw, 16px);
+  width:100%;height:clamp(400px, 55vw, 80vh);
+  position:relative;overflow:hidden;
+}
+/* Layer 0: Background images — must perfectly overlap */
+.snap-panel .img-cover{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;transition:none;z-index:0;
+}
+.snap-panel .img-cover.alt{opacity:0}
+/* Layer 1: Big heading — BEHIND the character */
+.novel-heading-layer{
+  position:absolute;inset:0;width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  z-index:1;pointer-events:none;
+}
+.novel-heading-text{
+  color:var(--tl);font-family:Queering,Arial,sans-serif;
+  font-size:clamp(4rem, 14vw, 12rem);
+  line-height:0.85;letter-spacing:0;font-weight:400;
+  white-space:nowrap;text-align:center;
+  will-change:transform,opacity;
+  text-shadow:0 2px 40px rgba(0,0,0,0.3);
+}
+.novel-heading-text.s2{
+  position:absolute;opacity:0;
+}
+/* Letter-by-letter stagger spans */
+.novel-heading-text .char{
+  display:inline-block;
+  will-change:transform,opacity;
+}
+/* Layer 3: UI controls — on top of everything */
+.snap-bottom{
+  position:absolute;inset:auto 0 0;width:100%;
+  height:clamp(180px, 40%, 420px);
+  background:linear-gradient(0deg,rgba(0,0,0,0.6) 0%,transparent 100%);
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:flex-end;padding-bottom:var(--sp-lg);gap:var(--sp-md);
+  z-index:3;
+}
+.novel-desc-wrap{
+  position:relative;width:100%;text-align:center;
+  padding:0 var(--pad);
+}
+.snap-desc{
+  color:var(--lt);font-family:Queering,Arial,sans-serif;
+  font-size:clamp(1rem, 1.5vw + 0.25rem, 1.875rem);
+  line-height:1.4;letter-spacing:.5px;font-weight:400;
+  max-width:70ch;margin:0 auto;
+  will-change:transform,opacity;
+}
+.snap-desc.s2{
+  position:absolute;inset:0;opacity:0;
+  transform:translateY(20px);
+  display:flex;align-items:center;justify-content:center;
+}
+/* Toggle button */
+.btn-snap{
+  padding:clamp(3px, 0.25vw, 4px);
+  border-radius:999px;
+  background-color:rgba(0,0,0,0.4);
+  backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+  cursor:pointer;position:relative;overflow:hidden;
+  width:clamp(150px, 11vw, 180px);
+  height:clamp(48px, 3.3vw, 52px);
+  display:flex;align-items:center;
+  border:none;
+}
+.btn-circle{
+  border-radius:999px;background-color:var(--g);flex:none;
+  width:clamp(36px, 2.8vw, 44px);height:clamp(36px, 2.8vw, 44px);
+  position:relative;z-index:1;
+}
+.btn-snap-visible,.btn-snap-hidden{
+  position:absolute;inset:0;display:flex;align-items:center;
+  font-family:Queering,Arial,sans-serif;
+  font-size:var(--fs-small);letter-spacing:1px;
+  text-transform:uppercase;color:var(--lt);font-weight:400;
+}
+.btn-snap-visible{justify-content:flex-end;padding-right:clamp(10px,1vw,16px)}
+.btn-snap-hidden{
+  justify-content:flex-start;padding-left:clamp(10px,1vw,16px);
+  opacity:0;color:var(--lt);z-index:2;
+}
+.snap-label{
+  color:var(--lt);font-family:Queering,Arial,sans-serif;
+  font-size:var(--fs-small);letter-spacing:1px;
+  text-transform:uppercase;font-weight:400;
+}
+
+@media(max-width:1024px){
+  .snap-panel{height:min(68vh,540px);min-height:320px}
+  .novel-heading-text{font-size:clamp(3.5rem,12vw,7rem);white-space:normal}
+  .snap-bottom{height:clamp(160px,38%,340px);padding-bottom:var(--sp-md);gap:var(--sp-sm)}
+  .snap-desc{font-size:clamp(0.95rem,1.4vw + 0.3rem,1.6rem);max-width:58ch}
+  .btn-snap{width:clamp(148px,14vw,172px);height:clamp(48px,4vw,52px)}
+}
+
+@media(max-width:768px){
+  .snap-panel{height:min(72vh,560px);min-height:300px}
+  .snap-desc br{display:none}
+  .novel-heading-text{font-size:clamp(3rem,13vw,6rem);white-space:normal;line-height:0.9}
+  .snap-bottom{height:clamp(150px,36%,300px);padding-bottom:clamp(16px,3vw,28px);gap:clamp(10px,2vw,18px)}
+  .snap-desc{font-size:clamp(1rem,1.8vw + 0.2rem,1.4rem);max-width:48ch}
+  .btn-snap{width:clamp(150px,42vw,180px);height:clamp(48px,5.5vw,52px)}
+}
+
+@media(max-width:480px){
+  .snap-panel{height:min(70vh,500px);min-height:280px}
+  .novel-heading-text{font-size:clamp(2.5rem,12vw,5rem);white-space:normal;line-height:0.95}
+  .snap-bottom{height:clamp(140px,38%,280px);padding-bottom:clamp(14px,3vw,22px);gap:clamp(8px,2vw,14px)}
+  .snap-desc{font-size:clamp(1rem,3.2vw,1.25rem);max-width:38ch;letter-spacing:.3px}
+  .btn-snap{width:clamp(144px,44vw,168px);height:clamp(48px,6vw,52px)}
+}
+
+@media(max-height:500px) and (orientation:landscape){
+  .snap-panel{height:min(90vw,380px);min-height:220px}
+  .snap-bottom{height:clamp(100px,28%,180px)}
+  .novel-heading-text{font-size:clamp(2rem,8vw,3.5rem)}
+}
