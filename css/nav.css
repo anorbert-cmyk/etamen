@@ -4,7 +4,7 @@
 .nav-container{padding:0 var(--pad);width:100%;margin:0 auto}
 .wrap-navigation-links{gap:var(--sp-xs);display:flex;align-items:center;width:100%}
 .nav-link{padding:var(--sp-xs);border-radius:4px;background-color:rgba(255,255,255,0.32);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);text-align:center;justify-content:center;align-items:center;width:100%;min-height:var(--touch);display:flex;position:relative;overflow:hidden;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-.nav-link.tab-link{border-radius:0;background-color:rgba(255,255,255,0.93);backdrop-filter:none;-webkit-backdrop-filter:none;padding:2px 0 var(--sp-xs)}
+.nav-link.tab-link{border-radius:0;background-color:#fff;backdrop-filter:none;-webkit-backdrop-filter:none;padding:2px 0 var(--sp-xs)}
 .nav-link.tab-link::before{content:'';position:absolute;inset:0;background-image:url("../images/04-image.png");background-position:50% 50%;background-size:cover;opacity:0.22;z-index:0;pointer-events:none}
 .nav-link.brand{background-color:#000;border-radius:0;padding:var(--sp-xs);gap:var(--sp-xs);width:auto;flex-shrink:0}
 .nav-link.brand img{width:var(--logo-w);height:auto}
