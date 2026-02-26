@@ -49,9 +49,9 @@
   .gallery-header{flex-direction:column;gap:16px;align-items:flex-start}
   .gallery-title{font-size:clamp(48px,12vw,80px);overflow-wrap:break-word;word-break:break-word}
   .gallery-desc{max-width:100%;margin-top:0;align-self:flex-start}
-  .gallery-imgs{grid-template-columns:1fr 1fr;gap:12px}
-  .gi{height:clamp(280px,45vw,420px)}
-  .gi-3{display:none}
+  .gallery-imgs{grid-template-columns:1fr;gap:clamp(10px,3vw,16px)}
+  .gi{height:clamp(260px,55vw,440px);clip-path:none}
+  .gi-3{display:block}
 }
 @media(max-width:480px){
-  .gi{height:clamp(200px,42vw,320px)}
+  .gi{height:clamp(220px,52vw,340px)}

@@ -46,11 +46,17 @@ window.apokrif.register(function() {
 
     mm.add('(max-width:768px)', function() {
       document.querySelectorAll('#rp .rp-bsi').forEach(function(el) {el.style.clipPath = ''; el.style.transform = '';});
-      document.querySelectorAll('#rp .rp-card').forEach(function(card, i) {
-        gsap.set(card, {opacity: 0, y: 20});
+      document.querySelectorAll('#rp .rp-card').forEach(function(card) {
+        gsap.set(card, {opacity: 1, y: 0, clearProps: 'all'});
+      });
+      document.querySelectorAll('#rp .rp-card-label').forEach(function(lbl) {
+        gsap.set(lbl, {opacity: 1, y: 0, clearProps: 'all'});
+      });
+      document.querySelectorAll('#rp .rp-bsi').forEach(function(el) {
+        gsap.set(el, {opacity: 0, y: 18});
         ScrollTrigger.create({
-          trigger: '#rp .rp-master', start: 'top ' + (60 - i * 12) + '%',
-          onEnter: function() {gsap.to(card, {opacity: 1, y: 0, duration: 0.6, ease: 'power2.out'});},
+          trigger: el, start: 'top 92%',
+          onEnter: function() {gsap.to(el, {opacity: 1, y: 0, duration: 0.55, ease: 'power2.out'});},
           once: true
         });
       });
