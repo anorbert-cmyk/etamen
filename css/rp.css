@@ -64,26 +64,25 @@
 .rp-bsi-sm._2{margin-left:15%;margin-top:-60px}
 @media(max-width:767px){
   .rp-section{padding:clamp(40px,6vw,80px) 0 clamp(60px,10vw,120px)}
-  .rp-top-tile{flex-direction:column;gap:16px;padding:0 var(--pad);margin-bottom:clamp(80px,14vw,200px)}
+  .rp-top-tile{flex-direction:column;gap:16px;padding:0 var(--pad);margin-bottom:40px}
   .rp-top-right{text-align:left;max-width:100%}
   .rp-heading{font-size:clamp(40px,12vw,80px);overflow-wrap:break-word;word-break:break-word}
-  .rp-master{height:2800px;padding:0 var(--pad)}
-  .rp-card{width:clamp(220px,70vw,400px)}
+  .rp-master{height:auto;padding:0 var(--pad);display:flex;flex-direction:column;gap:clamp(32px,7vw,48px)}
+  .rp-sticky{position:relative;top:auto;height:auto;transform:none;display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+  .rp-card{position:relative;opacity:1;width:100%;text-align:left;align-items:flex-start}
+  .rp-card-label{opacity:1;transform:none}
   .rp-card-text{font-size:clamp(1.25rem,4vw,2rem)}
-  .rp-bsi-lg{width:clamp(200px,45vw,320px)}
-  .rp-bsi-sm{width:clamp(120px,28vw,180px)}
-  .rp-bsi-vt{width:clamp(160px,36vw,260px)}
-  .rp-bsi-lg._1{margin-left:2%}
-  .rp-bsi-sm._1{margin-left:55%;margin-top:-80px}
-  .rp-bsi-lg._2{margin-left:35%;margin-top:100px}
-  .rp-bsi-vt._1{margin-left:3%;margin-top:-50px}
-  .rp-bsi-lg._3{margin-left:40%;margin-top:140px}
-  .rp-bsi-sm._2{margin-left:5%;margin-top:-40px}
+  .rp-imgs{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(14px,4vw,20px)}
+  .rp-bsi-lg._1,.rp-bsi-sm._1,.rp-bsi-lg._2,.rp-bsi-vt._1,.rp-bsi-lg._3,.rp-bsi-sm._2{margin:0}
+  .rp-bsi:nth-child(odd){align-self:flex-start}
+  .rp-bsi:nth-child(even){align-self:flex-end}
+  .rp-bsi-lg{width:min(75vw,280px)}
+  .rp-bsi-sm{width:min(55vw,200px)}
+  .rp-bsi-vt{width:min(60vw,220px)}
   .rp-bsi{will-change:auto}
 }
 @media(max-width:480px){
-  .rp-master{height:2200px}
-  .rp-card{width:85vw}
-  .rp-bsi-lg{width:clamp(180px,52vw,260px)}
-  .rp-bsi-sm{width:clamp(100px,30vw,150px)}
-  .rp-bsi-vt{width:clamp(140px,38vw,200px)}
+  .rp-card{width:90vw}
+  .rp-bsi-lg{width:min(82vw,260px)}
+  .rp-bsi-sm{width:min(62vw,180px)}
+  .rp-bsi-vt{width:min(68vw,200px)}
