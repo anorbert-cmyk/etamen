@@ -4,7 +4,7 @@
 #et{
   z-index:1;position:-webkit-sticky;position:sticky;top:0;
   background-color:var(--g);
-  background-image:url("images/05-image.jpg");
+  background-image:url("../images/05-image.jpg");
   background-position:50% 0;background-size:cover;
   min-height:100vh;min-height:100dvh;
   transform:translate3d(0,0,0);
@@ -39,7 +39,7 @@
 .et-cta-div{display:block}
 .et-cta{
   color:var(--bk);letter-spacing:1px;text-transform:uppercase;
-  background-color:transparent;background-image:url("images/06-image.png");
+  background-color:transparent;background-image:url("../images/06-image.png");
   background-position:0 0;background-size:cover;
   padding:var(--sp-xs) clamp(1rem, 3vw, 2.5rem) clamp(0.4rem, 0.6vw, 0.6rem);
   font-family:Queering,Arial,sans-serif;font-size:var(--fs-cta);

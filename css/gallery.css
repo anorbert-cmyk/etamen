@@ -4,14 +4,14 @@
 .gallery-section{
   position:relative;
   background-color:var(--bg-dark);
-  background-image:url("images/05-image.jpg");
+  background-image:url("../images/05-image.jpg");
   background-position:50% 0;background-size:cover;
   min-height:100vh;min-height:100dvh;
   display:flex;align-items:center;overflow:hidden;
 }
 .gallery-section::before{
   content:'';position:absolute;inset:0;
-  background-image:url("images/noise.png");
+  background-image:url("../images/noise.png");
   background-size:200px 200px;opacity:.25;
   pointer-events:none;z-index:1;
 }

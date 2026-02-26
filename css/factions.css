@@ -20,9 +20,9 @@
   filter:blur(6px);-webkit-filter:blur(6px);
   z-index:0;pointer-events:none;
 }
-.fac-bg.ex::before{background-image:url('images/gallerybg1.webp')}
-.fac-bg._2::before{background-image:url('images/gallerybg2.webp')}
-.fac-bg._3::before{background-image:url('images/gallerybg3.webp')}
+.fac-bg.ex::before{background-image:url('../images/gallerybg1.webp')}
+.fac-bg._2::before{background-image:url('../images/gallerybg2.webp')}
+.fac-bg._3::before{background-image:url('../images/gallerybg3.webp')}
 .fac-bg::after{
   content:'';position:absolute;inset:0;
   z-index:1;pointer-events:none;opacity:0;
