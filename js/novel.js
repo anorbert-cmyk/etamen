@@ -80,8 +80,8 @@ window.apokrif.register(function() {
     s1: 'novelS1', s2: 'novelS2',
     desc1: 'novelDesc1', desc2: 'novelDesc2',
     label: 'novelLabel',
-    labelAlt: 'From hand-drawn art to concept',
-    labelDef: 'From concept to hand-drawn art'
+    labelAlt: '',
+    labelDef: ''
   });
   initNovelToggle({
     section: 'novel2', panel: 'novel2Panel',
@@ -90,7 +90,17 @@ window.apokrif.register(function() {
     s1: 'novel2S1', s2: 'novel2S2',
     desc1: 'novel2Desc1', desc2: 'novel2Desc2',
     label: 'novel2Label',
-    labelAlt: 'From hand-drawn art to concept',
-    labelDef: 'From concept to hand-drawn art'
+    labelAlt: '',
+    labelDef: ''
+  });
+  initNovelToggle({
+    section: 'novel3', panel: 'novel3Panel',
+    btn: 'novel3Btn', circle: 'novel3Circle',
+    btnVis: 'novel3BtnVis', btnHid: 'novel3BtnHid',
+    s1: 'novel3S1', s2: 'novel3S2',
+    desc1: 'novel3Desc1', desc2: 'novel3Desc2',
+    label: 'novel3Label',
+    labelAlt: '',
+    labelDef: ''
   });
 });

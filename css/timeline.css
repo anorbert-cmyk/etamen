@@ -63,7 +63,7 @@
 /* Horizontal track — GSAP translates this */
 .timeline-track{
   display:flex;
-  width:300vw;
+  width:900vw;
   height:100%;
   position:relative;z-index:2;
   will-change:transform;
