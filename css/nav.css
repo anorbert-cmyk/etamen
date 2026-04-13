@@ -13,7 +13,7 @@
 .button-label.apokrif,.button-label.community{color:var(--g)}
 .nav-link.tab-link .button-label{color:#1a1520}
 .nav-link-bg{background-color:var(--g);width:0%;position:absolute;inset:0;z-index:1}
-.nav-link.tab-link .nav-link-bg{background-color:rgba(26,21,32,0.10)}
+.nav-link.tab-link .nav-link-bg{background-color:rgba(157,214,124,0.55)}
 .nav-link.tab-link.active .button-label{color:#000}
 
 .hb{display:none;background:none;border:none;cursor:pointer;width:var(--touch);height:var(--touch);position:relative;margin-left:auto;flex-shrink:0;padding:15px 9px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
