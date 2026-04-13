@@ -47,14 +47,14 @@ window.apokrif.register(function() {
     });
   })();
 
-  // The Novel progress spans both #novel and #novel2
+  // The Novel progress spans #novel, #novel2 and #novel3
   (function() {
     var link = document.querySelector('.nav-link.tab-link[data-s="novel"]');
     var bg = link ? link.querySelector('.nav-link-bg') : null;
     if (!link || !bg) return;
     ScrollTrigger.create({
       trigger: '#novel', start: 'top top',
-      endTrigger: '#novel2', end: 'bottom top',
+      endTrigger: '#novel3', end: 'bottom top',
       onUpdate: function(self) {bg.style.width = (self.progress * 100) + '%'},
       onLeave: function() {bg.style.width = '100%'},
       onLeaveBack: function() {bg.style.width = '0%'}

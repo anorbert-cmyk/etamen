@@ -3,13 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Apokrif Universe</title>
+<title>Apokrif Universe — A Dark Graphic Novel of Myth and Apocalypse</title>
+<meta name="description" content="Apokrif is a hand-drawn graphic novel braiding history, myth, and science fiction. Read the free Et Tamen prologue, meet the factions, and back us on Kickstarter.">
+<meta name="theme-color" content="#0a0710">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Apokrif Universe — A Dark Graphic Novel of Myth and Apocalypse">
+<meta property="og:description" content="Hand-drawn dark fantasy graphic novel. Read the free Et Tamen prologue and back us on Kickstarter.">
+<meta property="og:image" content="images/faction-ex-sanguis.webp">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Oswald:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" integrity="sha384-RVPQwTb0fPz9kI8s5GwAq1Qioto9fnEQt1aKGSQSm8xV6+DIdBSgcCShoHqfKnhv" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="css/globals.css">
 <link rel="stylesheet" href="css/nav.css">
 <link rel="stylesheet" href="css/hero.css">
@@ -19,6 +26,7 @@
 <link rel="stylesheet" href="css/shared.css">
 <link rel="stylesheet" href="css/timeline.css">
 <link rel="stylesheet" href="css/community.css">
+<link rel="stylesheet" href="css/team.css">
 <link rel="stylesheet" href="css/gallery.css">
 <link rel="stylesheet" href="css/rp.css">
 <script defer src="js/coordinator.js"></script>
@@ -29,6 +37,7 @@
 <script defer src="js/factions.js"></script>
 <script defer src="js/timeline.js"></script>
 <script defer src="js/gallery.js"></script>
+<script defer src="js/team.js"></script>
 <script defer src="js/rp.js"></script>
 <script defer src="js/main.js"></script>
 </head>
@@ -48,7 +57,7 @@
       </a>
       <a href="#novel" class="nav-link tab-link" data-s="novel">
         <div class="nav-link-bg"></div>
-        <div class="button-label">The Novel</div>
+        <div class="button-label">The Graphic Novel</div>
       </a>
       <a href="#factions" class="nav-link tab-link" data-s="factions">
         <div class="nav-link-bg"></div>
@@ -70,7 +79,7 @@
   </div>
 </nav>
 <div id="mm"><div class="mmi">
-  <a href="#hero">Universe</a><a href="#et">Et Tamen</a><a href="#novel">The Novel</a>
+  <a href="#hero">Universe</a><a href="#et">Et Tamen</a><a href="#novel">The Graphic Novel</a>
   <a href="#factions">Factions</a><a href="#timeline">Timeline</a><a href="#team">Team</a><a href="#community">Community</a>
 </div></div>
 
@@ -82,7 +91,7 @@
       <div class="master-hero-top-div">
         <div><h1 class="heading-405">Enter a World of<br>Myth and Apocalypse</h1></div>
         <div class="kickstarter-button-div">
-          <a href="#" class="kickstarter-button">Kickstarter &gt;</a>
+          <a href="#" class="kickstarter-button">Follow us on Kickstarter!</a>
         </div>
       </div>
       <div class="hero-bottom-div">
@@ -90,7 +99,7 @@
           <div class="graphic-div"><img src="images/08-graphic-div.png" alt=""></div>
           <div class="graphic-bottom-div"><img src="images/09-graphic-bottom-div.png" alt=""></div>
           <div class="hero-bottom-text-div">
-            <p>The world of Apokrif is dark and fantastical, braiding together elements of history, myth, and science fiction.<br>Here, human settlements band together in the shadows of old settlements, bracing against catastrophic storms,<br>vicious packs of animals, and brutal raiders, while the militaristic cult of Ex Sanguis mercilessly hunts down<br>rumors of vampiric infestations.</p>
+            <p>The world of Apokrif is dark and fantastical, braiding together elements of history, myth, and science fiction. Here, human settlements band together in the shadows of old settlements, bracing against catastrophic storms, vicious packs of animals, and brutal raiders, while the militaristic cult of Ex Sanguis mercilessly hunts down rumors of vampiric infestations.</p>
           </div>
           <div class="graphic-bottom-div"><img src="images/10-graphic-bottom-div.png" alt=""></div>
         </div>
@@ -112,12 +121,13 @@
       <div class="et-text-block">
         <div class="et-chev"><img src="images/14-et-chev.png" alt="" style="width:var(--icon-chev)"></div>
         <div class="et-body">
-          <p>Et Tamen is a PROLOGUE EPISODE we put together<br>to give you &nbsp;an idea of what you'll be helping bring<br>to life when you back us.<br>We hope you enjoy this first glimpseit!</p>
+          <p>Et Tamen is a free prologue episode we put together to give you an idea of what you'll help bring to life when you back us.</p>
+          <p>We hope you enjoy this first glimpse!</p>
         </div>
         <div class="et-chev"><img src="images/15-et-chev.png" alt="" style="width:var(--icon-chev)"></div>
       </div>
       <div class="et-cta-div">
-        <a href="#" class="et-cta">Kickstarter &gt;</a>
+        <a href="#" class="et-cta">Follow us on Kickstarter!</a>
       </div>
     </div>
     <!-- Right: comic slider -->
@@ -149,48 +159,72 @@
 <!-- All subsequent sections MUST have z-index:2 + own background -->
 <section id="novel">
   <div class="snap-panel" id="novelPanel">
-    <img class="img-cover default" src="images/23-novelpanel.jpg" alt="The Novel">
-    <img class="img-cover alt" src="images/24-img-cover.jpg" alt="Hand-drawn art">
+    <img class="img-cover default" src="images/novel1-default.webp" alt="Creating Apokrif">
+    <img class="img-cover alt" src="images/novel1-alt.webp" alt="Final Illustration">
     <!-- Layer 1: Big heading — BEHIND the character -->
     <div class="novel-heading-layer">
-      <div class="novel-heading-text s1" id="novelS1">The Novel</div>
-      <div class="novel-heading-text s2" id="novelS2">Hand-Drawn Art</div>
+      <div class="novel-heading-text s1" id="novelS1">Creating Apokrif</div>
+      <div class="novel-heading-text s2" id="novelS2">Creating Apokrif</div>
     </div>
     <!-- Layer 3: UI — description, toggle, label -->
     <div class="snap-bottom">
       <div class="novel-desc-wrap">
-        <div class="snap-desc s1" id="novelDesc1">Every page in Apokrif has been hand-crafted from concept to illustration.<br>Aron's signature style brings the world to life to stunning effect.</div>
-        <div class="snap-desc s2" id="novelDesc2">Every page in Apokrif has been hand-crafted from and onto<br>concept to illustration.<br>Aron's signature style brings the world to life.</div>
+        <div class="snap-desc s1" id="novelDesc1">Every page in Apokrif has been hand-crafted from concept to illustration, with Aron's signature style bringing the world to life to stunning effect.</div>
+        <div class="snap-desc s2" id="novelDesc2">Every page in Apokrif has been hand-crafted from concept to illustration, with Aron's signature style bringing the world to life to stunning effect.</div>
       </div>
       <div class="btn-snap" id="novelBtn">
         <div class="btn-circle" id="novelCircle"></div>
         <div class="btn-snap-visible" id="novelBtnVis"><span>Early Concept</span></div>
-        <div class="btn-snap-hidden" id="novelBtnHid"><span>Hand-drawn</span></div>
+        <div class="btn-snap-hidden" id="novelBtnHid"><span>Final Illustration</span></div>
       </div>
-      <div class="snap-label" id="novelLabel">From concept to hand-drawn art</div>
+      <div class="snap-label" id="novelLabel"></div>
     </div>
   </div>
 </section>
 <!-- THE NOVEL 2 — duplicate panel, scrolls over #novel -->
 <section id="novel2">
   <div class="snap-panel" id="novel2Panel">
-    <img class="img-cover default" src="images/25-novel2-default.png" alt="The Novel">
-    <img class="img-cover alt" src="images/26-novel2-alt.png" alt="Hand-drawn art">
+    <img class="img-cover default" src="images/novel2-default.webp" alt="Creating Apokrif">
+    <img class="img-cover alt" src="images/novel2-alt.webp" alt="Final Illustration">
     <div class="novel-heading-layer">
-      <div class="novel-heading-text s1" id="novel2S1">The Novel</div>
-      <div class="novel-heading-text s2" id="novel2S2">Hand-Drawn Art</div>
+      <div class="novel-heading-text s1" id="novel2S1">Creating Apokrif</div>
+      <div class="novel-heading-text s2" id="novel2S2">Creating Apokrif</div>
     </div>
     <div class="snap-bottom">
       <div class="novel-desc-wrap">
-        <div class="snap-desc s1" id="novel2Desc1">Every page in Apokrif has been hand-crafted from concept to illustration.<br>Aron's signature style brings the world to life to stunning effect.</div>
-        <div class="snap-desc s2" id="novel2Desc2">Every page in Apokrif has been hand-crafted from and onto<br>concept to illustration.<br>Aron's signature style brings the world to life.</div>
+        <div class="snap-desc s1" id="novel2Desc1">Every page in Apokrif has been hand-crafted from concept to illustration, with Aron's signature style bringing the world to life to stunning effect.</div>
+        <div class="snap-desc s2" id="novel2Desc2">Every page in Apokrif has been hand-crafted from concept to illustration, with Aron's signature style bringing the world to life to stunning effect.</div>
       </div>
       <div class="btn-snap" id="novel2Btn">
         <div class="btn-circle" id="novel2Circle"></div>
         <div class="btn-snap-visible" id="novel2BtnVis"><span>Early Concept</span></div>
-        <div class="btn-snap-hidden" id="novel2BtnHid"><span>Hand-drawn</span></div>
+        <div class="btn-snap-hidden" id="novel2BtnHid"><span>Final Illustration</span></div>
       </div>
-      <div class="snap-label" id="novel2Label">From concept to hand-drawn art</div>
+      <div class="snap-label" id="novel2Label"></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE NOVEL 3 — third panel, scrolls over #novel2 -->
+<section id="novel3">
+  <div class="snap-panel" id="novel3Panel">
+    <img class="img-cover default" src="images/novel3-default.webp" alt="Creating Apokrif">
+    <img class="img-cover alt" src="images/novel3-alt.webp" alt="Final Illustration">
+    <div class="novel-heading-layer">
+      <div class="novel-heading-text s1" id="novel3S1">Creating Apokrif</div>
+      <div class="novel-heading-text s2" id="novel3S2">Creating Apokrif</div>
+    </div>
+    <div class="snap-bottom">
+      <div class="novel-desc-wrap">
+        <div class="snap-desc s1" id="novel3Desc1">Every page in Apokrif has been hand-crafted from concept to illustration, with Aron's signature style bringing the world to life to stunning effect.</div>
+        <div class="snap-desc s2" id="novel3Desc2">Every page in Apokrif has been hand-crafted from concept to illustration, with Aron's signature style bringing the world to life to stunning effect.</div>
+      </div>
+      <div class="btn-snap" id="novel3Btn">
+        <div class="btn-circle" id="novel3Circle"></div>
+        <div class="btn-snap-visible" id="novel3BtnVis"><span>Early Concept</span></div>
+        <div class="btn-snap-hidden" id="novel3BtnHid"><span>Final Illustration</span></div>
+      </div>
+      <div class="snap-label" id="novel3Label"></div>
     </div>
   </div>
 </section>
@@ -205,7 +239,7 @@
 
   <!-- Közös front kép (clip-path reveal animációval vált) -->
   <div class="fac-front-wrap" id="facFrontWrap">
-    <img id="facFrontA" class="fac-front-img" src="images/gallerybg1.webp" alt="Ex Sanguis warrior">
+    <img id="facFrontA" class="fac-front-img" src="images/faction-ex-sanguis.webp" alt="Ex Sanguis warrior">
     <img id="facFrontB" class="fac-front-img" src="images/gallerybg1.webp" alt="" style="opacity:0">
   </div>
 
@@ -213,7 +247,7 @@
   <div id="facPanel">
     <div class="div-block-14">
       <div class="div-block-10">
-        <h3 class="meta-title" id="facTitle">Ex<br>Sanguis</h3>
+        <h2 class="meta-title" id="facTitle">Ex<br>Sanguis</h2>
       </div>
       <div class="div-block-11" id="facDots">
         <div><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c737_apokrif_web_landing_4_factions_layered19.png" alt=""></div>
@@ -225,7 +259,7 @@
       <img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c730_apokrif_web_landing_4_factions_layere12.png" alt="">
     </div>
     <div class="div-block-15">
-      <div class="meta-desc" id="facDesc">Ex Sanguis is a religious cult founded during the madness of the Purge that has sworn to destroy all of vampirekind. The Peace provides sustenance and spiritual guidance to all who seek it, while the warlike knights and Inquisitors of the Path hunt down every vampiric whisper, stopping at nothing to cleanse the world of their corruption.</div>
+      <div class="meta-desc" id="facDesc">Ex Sanguis is a religious cult that has sworn to destroy all of vampirekind. The group is split into two main disciplines: the Peace provides sustenance and spiritual guidance to all who seek it, while the warlike knights and Inquisitors of the Path hunt down every vampiric whisper, stopping at nothing to cleanse the world of their corruption.</div>
     </div>
     <div class="div-block-12">
       <div class="top-indicator" id="facLogo">
@@ -297,17 +331,97 @@
           <div class="card-content">
             <span class="year">2059</span>
             <h3 class="title">Our Dying World</h3>
-            <p class="description">Facing worsening storms, and mass migration, a coalition of governments and corporations send FLARE drones into deep space to search for a new home.</p>
+            <p class="description">Facing worsening storms and mass migration, a coalition of governments and corporations send FLARE drones into deep space to search for a new home.</p>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 2 — 2125: Betrayal -->
+    <!-- SLIDE 2 — 2097: Joy from the Dark -->
     <div class="timeline-slide">
       <div class="card-pair">
         <div class="timeline-image">
-          <img src="images/gallerybg2.webp" alt="Betrayal, 2125" loading="lazy">
+          <img src="images/gallerybg2.webp" alt="Joy from the Dark, 2097" loading="lazy">
+        </div>
+        <div class="timeline-card">
+          <div class="card-content">
+            <span class="year">2097</span>
+            <h3 class="title">Joy from the Dark</h3>
+            <p class="description">A FLARE drone signals home that a distant planet is habitable. In response, governments agree to reserve Earth&rsquo;s dwindling natural resources for a project known only as &ldquo;Hope&rdquo;.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 — 2099: Project HOPE -->
+    <div class="timeline-slide">
+      <div class="card-pair">
+        <div class="timeline-image">
+          <img src="images/gallerybg3.webp" alt="Project HOPE, 2099" loading="lazy">
+        </div>
+        <div class="timeline-card">
+          <div class="card-content">
+            <span class="year">2099</span>
+            <h3 class="title">Project HOPE</h3>
+            <p class="description">Project Hope is revealed to the world. It&rsquo;s a colony ship designed to take a small portion of humanity to this new home. A worldwide drive towards its development and construction is set up, with volunteers entered into a lottery for a berth on the great ship.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 — 2104: Construction Begins Worldwide -->
+    <div class="timeline-slide">
+      <div class="card-pair">
+        <div class="timeline-image">
+          <img src="images/gallerybg1.webp" alt="Construction Begins Worldwide, 2104" loading="lazy">
+        </div>
+        <div class="timeline-card">
+          <div class="card-content">
+            <span class="year">2104</span>
+            <h3 class="title">Construction Begins Worldwide</h3>
+            <p class="description">The Hope is to be built in modules, with parts launching separately before locking together in Earth&rsquo;s orbit. She&rsquo;s scheduled to finish assembly in 2124, and depart in 2126.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 — 2118: Early Success -->
+    <div class="timeline-slide">
+      <div class="card-pair">
+        <div class="timeline-image">
+          <img src="images/gallerybg2.webp" alt="Early Success, 2118" loading="lazy">
+        </div>
+        <div class="timeline-card">
+          <div class="card-content">
+            <span class="year">2118</span>
+            <h3 class="title">Early Success</h3>
+            <p class="description">The Hope&rsquo;s first module, Australia&rsquo;s engineering and fabrication module, is successfully launched and placed in geostationary orbit.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 — 2122: Connecting the Pieces -->
+    <div class="timeline-slide">
+      <div class="card-pair">
+        <div class="timeline-image">
+          <img src="images/gallerybg3.webp" alt="Connecting the Pieces, 2122" loading="lazy">
+        </div>
+        <div class="timeline-card">
+          <div class="card-content">
+            <span class="year">2122</span>
+            <h3 class="title">Connecting the Pieces</h3>
+            <p class="description">Work now continues aboard the ship, with engineers and scientists working inside its massive hull to connect and test its systems. Departure is now just four years away.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 — 2125: Betrayal -->
+    <div class="timeline-slide">
+      <div class="card-pair">
+        <div class="timeline-image">
+          <img src="images/gallerybg1.webp" alt="Betrayal, 2125" loading="lazy">
         </div>
         <div class="timeline-card">
           <div class="card-content">
@@ -320,17 +434,34 @@
       </div>
     </div>
 
-    <!-- SLIDE 3 -->
+    <!-- SLIDE 8 — 2145: The Purge -->
     <div class="timeline-slide">
       <div class="card-pair">
         <div class="timeline-image">
-          <img src="images/gallerybg3.webp" alt="Timeline slide 3" loading="lazy">
+          <img src="images/gallerybg2.webp" alt="The Purge, 2145" loading="lazy">
         </div>
         <div class="timeline-card">
           <div class="card-content">
-            <span class="year">[ YEAR ]</span>
-            <h3 class="title">Coming Soon</h3>
-            <p class="description">The next chapter of the Apokrif universe is being written. Stay tuned.</p>
+            <span class="year">2145</span>
+            <h3 class="title">The Purge</h3>
+            <p class="description">For over twenty years, vampires have been hunted relentlessly across the world. These vigilante groups reinterpret religious texts and historical texts to forge an identity of their own. They name themselves Ex Sanguis &mdash; from blood &mdash; and take up arms with renewed purpose. Through brute force and guile, they put entire vampiric clans and their familiars to death. But Ex Sanguis&rsquo; zeal runs deep and wild: in the melee, they murder hundreds of thousands of innocents, too.</p>
+            <p class="description">In time, the people will come to fear Ex Sanguis just as much as the vampires who inspired their creation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 9 — 2177: Today -->
+    <div class="timeline-slide">
+      <div class="card-pair">
+        <div class="timeline-image">
+          <img src="images/gallerybg3.webp" alt="Today, 2177" loading="lazy">
+        </div>
+        <div class="timeline-card">
+          <div class="card-content">
+            <span class="year">2177</span>
+            <h3 class="title">Today</h3>
+            <p class="description">Over fifty years have passed since the Hope&rsquo;s disappearance. On the American continent, large parts of the land have become uninhabitable, ravaged by storms and civil unrest that has forced survivors north. Here, the vampiric threat has been largely wiped out, while Ex Sanguis still patrols the lands with their same uncompromising zeal.</p>
           </div>
         </div>
       </div>
@@ -346,23 +477,42 @@
     </div>
   </div>
 </section>
-<section id="team" class="section-after gallery-section">
-  <div class="gallery-inner">
-    <div class="gallery-header">
-      <h2 class="gallery-title">Gallery<br>Print Quality</h2>
-      <p class="gallery-desc">Pictures from Aron and the team goes here</p>
-    </div>
-    <div class="gallery-imgs">
-      <div class="gi gi-1"><img src="images/book1.webp" alt="Book 1 spine" loading="lazy"></div>
-      <div class="gi gi-2"><img src="images/book2.webp" alt="Book 2 cover" loading="lazy"></div>
-      <div class="gi gi-3"><img src="images/book2.webp" alt="Book 2 detail" loading="lazy"></div>
+<section id="team" class="section-after team-section">
+  <div class="team-bg" aria-hidden="true"></div>
+  <div class="team-overlay" aria-hidden="true"></div>
+  <div class="team-inner">
+    <h2 class="team-heading">Meet the Team</h2>
+    <div class="team-grid">
+
+      <article class="team-card">
+        <div class="team-photo">
+          <img src="images/team-aron.webp" alt="Aron Elekes" loading="lazy">
+        </div>
+        <div class="team-info">
+          <h3 class="team-name">Aron Elekes</h3>
+          <p class="team-role">Co-Creator / Illustrator</p>
+          <p class="team-bio">Aron Elekes is a visual developer with fine art roots and over 10 years of experience in game development&mdash;a so called 'veteran' but with a vibrant, youthful spirit. He has contributed to a wide spectrum of games and collaborated with leading companies, including Legends of Runeterra, League of Legends, Spellslingers, Mortal Kombat, Riot Games, Netflix, Wizards of the Coast, and Niantic Inc., to mention some. Beyond his creative endeavors, Aron occasionally believes he can surf (jury's still out on that) and has discovered he can't live without the comfort of palm trees.</p>
+        </div>
+      </article>
+
+      <article class="team-card">
+        <div class="team-photo">
+          <img src="images/team-conor.webp" alt="Conor Sheehy" loading="lazy">
+        </div>
+        <div class="team-info">
+          <h3 class="team-name">Conor Sheehy</h3>
+          <p class="team-role">Co-Creator / Writer</p>
+          <p class="team-bio">Conor is a British Emmy award-winning writer with over fifteen years of experience in the games industry. His credits include VALORANT, Arcane, and Legends of Runeterra, where he and Aron first worked together. Outside of writing, Conor is bad at music, mediocre at cooking, and excellent at self deprecation.</p>
+        </div>
+      </article>
+
     </div>
   </div>
 </section>
 <section id="community" class="section-after">
   <div class="content-wrapper">
     <h2 class="community-heading">Join the Community. Shape the Story</h2>
-    <p class="community-description">Our higher tier Kickstarter backers will play a role in helping shape the world of Apokrif, voting on concept art options that will impact and shape environments and characters you meet in the graphic novel. Our highest tier backers will have the option to be added into the world itself, with specific characters from all factions reserved for your likeness and name.</p>
+    <p class="community-description">Our higher tier Kickstarter backers will play a role in helping shape the world of Apokrif, voting on environment and character concept art options that will impact and shape the graphic novel. Our highest tier backers will have the option to be added into the world itself, with specific characters from all factions reserved for your likeness and name.</p>
     <div class="social-bar">
       <a href="https://instagram.com/apokrif.graphicnovel" target="_blank" rel="noopener noreferrer" class="social-profile" aria-label="Follow @apokrif.graphicnovel on Instagram">
         <div class="icon" aria-hidden="true">A</div>

@@ -1,12 +1,37 @@
 :{$PORT} {
     root * /srv
-    encode gzip
+    encode gzip zstd
     try_files {path} /index.html
     file_server
 
     header {
+        # MIME type sniffing protection
         X-Content-Type-Options nosniff
+
+        # Clickjacking protection
         X-Frame-Options DENY
+
+        # Referrer privacy
         Referrer-Policy strict-origin-when-cross-origin
+
+        # HSTS — force HTTPS for 1 year, include subdomains, allow preload
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+        # Disable unused browser features
+        Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=(), interest-cohort=()"
+
+        # Cross-origin isolation / leak protection
+        Cross-Origin-Opener-Policy same-origin
+        Cross-Origin-Resource-Policy same-origin
+
+        # Content Security Policy — locks script/style/img/font sources
+        # - GSAP loaded from cdnjs.cloudflare.com (SRI-pinned)
+        # - Google Fonts CSS from fonts.googleapis.com, font files from fonts.gstatic.com
+        # - Faction UI icons from cdn.prod.website-files.com (Webflow CDN)
+        # - 'unsafe-inline' on style-src needed for GSAP-generated inline styles during animations
+        Content-Security-Policy "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://cdn.prod.website-files.com; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+
+        # Remove server fingerprint
+        -Server
     }
 }

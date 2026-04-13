@@ -13,6 +13,9 @@ window.apokrif.register(function() {
     var d = document.createElement('button');
     d.className = 'slide-dot' + (i === 0 ? ' active' : '');
     d.dataset.i = i;
+    d.setAttribute('type', 'button');
+    d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    d.setAttribute('aria-current', i === 0 ? 'true' : 'false');
     d.addEventListener('click', function() {goTo(parseInt(this.dataset.i, 10))});
     dotsC.appendChild(d);
   }
@@ -21,7 +24,10 @@ window.apokrif.register(function() {
   function goTo(n) {
     cur = ((n % total) + total) % total; // wrap around consistently
     track.style.transform = 'translateX(-' + (cur * 100) + '%)';
-    allDots.forEach(function(d, i) {d.classList.toggle('active', i === cur)});
+    allDots.forEach(function(d, i) {
+      d.classList.toggle('active', i === cur);
+      d.setAttribute('aria-current', i === cur ? 'true' : 'false');
+    });
   }
 
   document.getElementById('sPrev').addEventListener('click', function() {etStopAuto(); goTo(cur - 1); etStartAuto()});

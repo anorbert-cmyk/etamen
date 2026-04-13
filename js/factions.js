@@ -27,24 +27,24 @@ window.apokrif.register(function() {
     var facData = [
       {
         title: 'Ex<br>Sanguis',
-        desc: 'Ex Sanguis is a religious cult founded during the madness of the Purge that has sworn to destroy all of vampirekind. The Peace provides sustenance and spiritual guidance to all who seek it, while the warlike knights and Inquisitors of the Path hunt down every vampiric whisper, stopping at nothing to cleanse the world of their corruption.',
+        desc: 'Ex Sanguis is a religious cult that has sworn to destroy all of vampirekind. The group is split into two main disciplines: the Peace provides sustenance and spiritual guidance to all who seek it, while the warlike knights and Inquisitors of the Path hunt down every vampiric whisper, stopping at nothing to cleanse the world of their corruption.',
         logo: 'https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c731_apokrif_web_landing_4_factions_layere13.png',
-        front: 'images/gallerybg1.webp',
+        front: 'images/faction-ex-sanguis.webp',
         frontAlt: 'Ex Sanguis warrior'
       },
       {
         title: 'Cradle',
         desc: 'A small settlement nestled in the ageing shell of a hydroelectric dam, Cradle is home to a few thousand survivors whose days are spent sourcing the food, energy, and materials they need to get through the day. Life isn\'t easy here, but they\'ve found a sense of community and camaraderie here that has made this place home.',
         logo: 'images/cradle.png',
-        front: 'images/gallerybg2.webp',
+        front: 'images/faction-cradle.webp',
         frontAlt: 'Cradle warrior'
       },
       {
-        title: 'House<br>Mallat',
-        desc: 'An ancient aristocratic house that once ruled over all the vampiric bloodlines, House Mallat has been left grasping the dregs of their former glory, having been unseated by the great Emperor Kastus, then decimated during the Purge. Now, they have vacated the small holding they maintained in North America, and seem to be in the midst of an exodus to the north of the continent.',
-        logo: 'images/mallat.png',
-        front: 'images/gallerybg3.webp',
-        frontAlt: 'House Mallat warrior'
+        title: 'House<br>Matani',
+        desc: 'An ancient aristocratic house that once ruled over all the vampiric bloodlines, House Matani has been left grasping the dregs of their former glory, having been unseated by the great Emperor Kastus, then decimated during the Purge. Now, they have vacated the small holding they maintained in North America, and seem to be in the midst of an exodus to the north of the continent.',
+        logo: 'images/matani.png',
+        front: 'images/faction-matani.webp',
+        frontAlt: 'House Matani warrior'
       }
     ];
 

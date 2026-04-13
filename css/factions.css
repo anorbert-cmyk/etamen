@@ -20,9 +20,9 @@
   filter:blur(6px);-webkit-filter:blur(6px);
   z-index:0;pointer-events:none;
 }
-.fac-bg.ex::before{background-image:url('../images/gallerybg1.webp')}
-.fac-bg._2::before{background-image:url('../images/gallerybg2.webp')}
-.fac-bg._3::before{background-image:url('../images/gallerybg3.webp')}
+.fac-bg.ex::before{background-image:url('../images/faction-ex-sanguis.webp')}
+.fac-bg._2::before{background-image:url('../images/faction-cradle.webp')}
+.fac-bg._3::before{background-image:url('../images/faction-matani.webp')}
 .fac-bg::after{
   content:'';position:absolute;inset:0;
   z-index:1;pointer-events:none;opacity:0;
@@ -62,8 +62,8 @@
 }
 .div-block-10{width:75px;height:86px;overflow:visible}
 .meta-title{
-  color:#DEA468;font-size:40px;font-family:Queering,Arial,sans-serif;
-  font-weight:400;line-height:38px;letter-spacing:-1px;margin:0;
+  color:#DEA468;font-size:48px;font-family:Queering,Arial,sans-serif;
+  font-weight:400;line-height:46px;letter-spacing:-1px;margin:0;
 }
 /* PONT INDIKÁTOROK */
 .div-block-11{display:flex;flex-direction:row;gap:2px;align-items:center}
@@ -74,15 +74,15 @@
 /* LEÍRÓ SZÖVEG */
 .div-block-15{flex:1;height:148px;margin:0 40px;overflow:hidden;display:flex;align-items:center}
 .meta-desc{
-  color:#ADA47F;font-size:20px;font-family:Queering,Arial,sans-serif;
-  font-weight:400;line-height:24px;margin:0;
+  color:#ADA47F;font-size:24px;font-family:Queering,Arial,sans-serif;
+  font-weight:400;line-height:30px;margin:0;
 }
 /* JOBB PANEL: indikátor + nyilak */
 .div-block-12{
   display:flex;flex-direction:column;width:85px;height:148px;
   gap:18px;flex-shrink:0;
 }
-.top-indicator img{width:85px;height:96px;display:block}
+.top-indicator img{width:100px;height:110px;display:block}
 .div-block-13{
   display:flex;flex-direction:row;gap:7px;justify-content:space-around;
   align-items:center;height:34px;
@@ -98,31 +98,31 @@
   #facPanel{height:auto;min-height:120px;top:70px;left:20px;right:20px;gap:12px;padding:12px 16px}
   .div-block-14{width:56px;margin-right:16px;gap:4px}
   .div-block-10{width:56px;height:72px}
-  .meta-title{font-size:28px;line-height:28px;letter-spacing:-0.5px}
+  .meta-title{font-size:34px;line-height:34px;letter-spacing:-0.5px}
   .fac-divider-col img{height:100px}
   .div-block-15{margin:0 16px;height:auto}
-  .meta-desc{font-size:16px;line-height:22px}
+  .meta-desc{font-size:19px;line-height:26px}
   .div-block-12{width:80px;height:auto;gap:14px}
-  .top-indicator img{width:80px;height:90px}
+  .top-indicator img{width:96px;height:108px}
   .fac-front-wrap{top:220px}
 }
 @media(max-width:768px){
   #facPanel{top:0;left:0;right:0;height:auto;max-height:none;padding:14px 20px 10px;display:flex;flex-direction:column;align-items:center;gap:8px}
   .div-block-12{order:0;width:100%;height:auto;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:0}
-  .top-indicator img{width:56px;height:64px;display:block}
+  .top-indicator img{width:68px;height:76px;display:block}
   .div-block-13{display:flex;flex-direction:row;gap:8px;align-items:center;min-width:auto;min-height:auto;height:auto;justify-content:flex-end}
   .div-block-14{order:1;width:100%;margin-right:0;display:flex;flex-direction:column;align-items:center;gap:6px}
   .div-block-10{width:auto;height:auto;overflow:visible;text-align:center}
-  .meta-title{font-size:32px;line-height:30px;letter-spacing:-0.5px;text-align:center}
+  .meta-title{font-size:38px;line-height:36px;letter-spacing:-0.5px;text-align:center}
   .div-block-11{justify-content:center}
   .fac-divider-col{display:none}
   .div-block-15{order:2;width:100%;height:auto;margin:0;display:flex;align-items:center;justify-content:center;padding:0 4px;overflow:visible}
-  .meta-desc{font-size:12px;line-height:17px;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .meta-desc{font-size:14px;line-height:20px;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .fac-front-wrap{position:absolute;top:185px;left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom,10px));height:auto}
 }
 @media(max-width:480px){
   #facPanel{padding:10px 14px 8px;gap:6px}
-  .top-indicator img{width:44px;height:50px}
-  .meta-title{font-size:26px;line-height:24px}
-  .meta-desc{font-size:11px;line-height:16px}
+  .top-indicator img{width:52px;height:60px}
+  .meta-title{font-size:32px;line-height:28px}
+  .meta-desc{font-size:13px;line-height:19px}
   .fac-front-wrap{top:165px;left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom,8px))}
