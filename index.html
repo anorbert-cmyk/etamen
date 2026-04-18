@@ -163,8 +163,8 @@
 <!-- All subsequent sections MUST have z-index:2 + own background -->
 <section id="novel">
   <div class="snap-panel" id="novelPanel">
-    <img class="img-cover default" src="images/novel1-default.webp" alt="Creating Apokrif">
-    <img class="img-cover alt" src="images/novel1-alt.webp" alt="Final Illustration">
+    <img class="img-cover default" src="images/novel1-alt.webp" alt="Final Illustration">
+    <img class="img-cover alt" src="images/novel1-default.webp" alt="Early Concept">
     <div class="novel-index" aria-hidden="true"><span>01</span><span class="sep">/</span><span class="total">03</span></div>
     <!-- Layer 1: Big heading — BEHIND the character -->
     <div class="novel-heading-layer">
@@ -179,8 +179,8 @@
       </div>
       <div class="btn-snap" id="novelBtn">
         <div class="btn-circle" id="novelCircle"></div>
-        <div class="btn-snap-visible" id="novelBtnVis"><span>Early Concept</span></div>
-        <div class="btn-snap-hidden" id="novelBtnHid"><span>Final Illustration</span></div>
+        <div class="btn-snap-visible" id="novelBtnVis"><span>Final Illustration</span></div>
+        <div class="btn-snap-hidden" id="novelBtnHid"><span>Early Concept</span></div>
       </div>
       <div class="snap-label" id="novelLabel"></div>
     </div>
@@ -189,8 +189,8 @@
 <!-- THE NOVEL 2 — duplicate panel, scrolls over #novel -->
 <section id="novel2">
   <div class="snap-panel" id="novel2Panel">
-    <img class="img-cover default" src="images/novel2-default.webp" alt="Creating Apokrif">
-    <img class="img-cover alt" src="images/novel2-alt.webp" alt="Final Illustration">
+    <img class="img-cover default" src="images/novel2-alt.webp" alt="Final Illustration">
+    <img class="img-cover alt" src="images/novel2-default.webp" alt="Early Concept">
     <div class="novel-index" aria-hidden="true"><span>02</span><span class="sep">/</span><span class="total">03</span></div>
     <div class="novel-heading-layer">
       <div class="novel-heading-text s1" id="novel2S1">Creating Apokrif</div>
@@ -203,8 +203,8 @@
       </div>
       <div class="btn-snap" id="novel2Btn">
         <div class="btn-circle" id="novel2Circle"></div>
-        <div class="btn-snap-visible" id="novel2BtnVis"><span>Early Concept</span></div>
-        <div class="btn-snap-hidden" id="novel2BtnHid"><span>Final Illustration</span></div>
+        <div class="btn-snap-visible" id="novel2BtnVis"><span>Final Illustration</span></div>
+        <div class="btn-snap-hidden" id="novel2BtnHid"><span>Early Concept</span></div>
       </div>
       <div class="snap-label" id="novel2Label"></div>
     </div>
@@ -214,8 +214,8 @@
 <!-- THE NOVEL 3 — third panel, scrolls over #novel2 -->
 <section id="novel3">
   <div class="snap-panel" id="novel3Panel">
-    <img class="img-cover default" src="images/novel3-default.webp" alt="Creating Apokrif">
-    <img class="img-cover alt" src="images/novel3-alt.webp" alt="Final Illustration">
+    <img class="img-cover default" src="images/novel3-alt.webp" alt="Final Illustration">
+    <img class="img-cover alt" src="images/novel3-default.webp" alt="Early Concept">
     <div class="novel-index" aria-hidden="true"><span>03</span><span class="sep">/</span><span class="total">03</span></div>
     <div class="novel-heading-layer">
       <div class="novel-heading-text s1" id="novel3S1">Creating Apokrif</div>
@@ -228,8 +228,8 @@
       </div>
       <div class="btn-snap" id="novel3Btn">
         <div class="btn-circle" id="novel3Circle"></div>
-        <div class="btn-snap-visible" id="novel3BtnVis"><span>Early Concept</span></div>
-        <div class="btn-snap-hidden" id="novel3BtnHid"><span>Final Illustration</span></div>
+        <div class="btn-snap-visible" id="novel3BtnVis"><span>Final Illustration</span></div>
+        <div class="btn-snap-hidden" id="novel3BtnHid"><span>Early Concept</span></div>
       </div>
       <div class="snap-label" id="novel3Label"></div>
     </div>
@@ -486,7 +486,7 @@
     </div>
   </div>
 </section>
-<!-- TEAM — Green scroll-linked section with crossfading environment backdrops -->
+<!-- TEAM — Unified green scroll section with intro + Aron + Conor -->
 <section id="team" class="section-after team-section" aria-label="Meet the Team">
   <!-- Three backdrops crossfade as the user scrolls through the section -->
   <div class="team-bg-layers" aria-hidden="true">
@@ -497,46 +497,48 @@
   <div class="team-tint" aria-hidden="true"></div>
   <div class="team-noise" aria-hidden="true"></div>
 
-  <div class="team-inner">
+  <div class="team-container">
 
-    <!-- Panel 1: Intro -->
-    <div class="team-panel panel-intro">
-      <p class="team-intro">
-        Emmy award-winning writer <strong>Conor Sheehy</strong>, veteran artist <strong>Aron Elekes</strong> bring the world of Apokrif to life through a fully realized world, with complex characters, compelling storylines, and gorgeous illustrations throughout.
-      </p>
+    <!-- Frame 1: Intro paragraph -->
+    <div class="team-frame team-frame-intro">
+      <div class="tf-art">
+        <img src="images/huxley.webp" alt="" loading="lazy">
+      </div>
+      <div class="tf-content">
+        <p class="tf-intro">
+          Emmy award-winning writer <strong>Conor Sheehy</strong>, veteran artist <strong>Aron Elekes</strong> bring the world of Apokrif to life through a fully realized world, with complex characters, compelling storylines, and gorgeous illustrations throughout.
+        </p>
+        <div class="tf-chevron" aria-hidden="true"></div>
+      </div>
     </div>
 
-    <!-- Panel 2: Aron -->
-    <article class="team-panel panel-member" id="panel-aron">
-      <div class="member-role-banner">Concept Artist and Illustrator</div>
-      <h2 class="member-name">Aron Elekes</h2>
-      <div class="member-grid">
-        <div class="member-photo">
-          <img src="images/team-aron.webp" alt="Aron Elekes" loading="lazy">
-        </div>
-        <div class="member-body">
-          <p class="member-bio">Aron Elekes is a visual developer with fine art roots and over 10 years of experience in game development, a so-called 'veteran' with a vibrant, youthful spirit. He has contributed to a wide spectrum of games and collaborated with leading companies, including Legends of Runeterra, League of Legends, Spellslingers, Mortal Kombat, Riot Games, Netflix, Wizards of the Coast, and Niantic Inc. Beyond his creative endeavors, Aron occasionally believes he can surf (jury's still out on that) and has discovered he can't live without the comfort of palm trees.</p>
-          <div class="member-work">
-            <img src="images/novel1-default.webp" alt="Aron Elekes concept art" loading="lazy">
-          </div>
-        </div>
+    <!-- Frame 2: Aron -->
+    <article class="team-frame team-frame-member">
+      <div class="tf-art">
+        <img src="images/huxley.webp" alt="" loading="lazy">
+      </div>
+      <div class="tf-content">
+        <div class="tf-pill">Concept Artist and Illustrator</div>
+        <h2 class="tf-name">Aron Elekes</h2>
+        <div class="tf-chevron" aria-hidden="true"></div>
+        <img class="tf-portrait" src="images/team-aron.webp" alt="Aron Elekes" loading="lazy">
+        <p class="tf-bio">Aron Elekes is a visual developer with fine art roots and over 10 years of experience in game development, a so-called veteran with a vibrant, youthful spirit. He has contributed to a wide spectrum of games and collaborated with leading companies, including Legends of Runeterra, League of Legends, Spellslingers, Mortal Kombat, Riot Games, Netflix, Wizards of the Coast, and Niantic Inc.</p>
+        <div class="tf-work"><img src="images/faction-matani.webp" alt="Aron Elekes concept art" loading="lazy"></div>
       </div>
     </article>
 
-    <!-- Panel 3: Conor -->
-    <article class="team-panel panel-member" id="panel-conor">
-      <div class="member-role-banner">Co-Creator and Writer</div>
-      <h2 class="member-name">Conor Sheehy</h2>
-      <div class="member-grid">
-        <div class="member-photo">
-          <img src="images/team-conor.webp" alt="Conor Sheehy" loading="lazy">
-        </div>
-        <div class="member-body">
-          <p class="member-bio">Conor is a British Emmy award-winning writer with over fifteen years of experience in the games industry. His credits include VALORANT, Arcane, and Legends of Runeterra, where he and Aron first worked together. Outside of writing, Conor is bad at music, mediocre at cooking, and excellent at self deprecation.</p>
-          <div class="member-work">
-            <img src="images/novel2-default.webp" alt="Conor Sheehy writing sample" loading="lazy">
-          </div>
-        </div>
+    <!-- Frame 3: Conor -->
+    <article class="team-frame team-frame-member">
+      <div class="tf-art">
+        <img src="images/huxley.webp" alt="" loading="lazy">
+      </div>
+      <div class="tf-content">
+        <div class="tf-pill">Co-Creator and Writer</div>
+        <h2 class="tf-name">Conor Sheehy</h2>
+        <div class="tf-chevron" aria-hidden="true"></div>
+        <img class="tf-portrait" src="images/team-conor.webp" alt="Conor Sheehy" loading="lazy">
+        <p class="tf-bio">Conor is a British Emmy award-winning writer with over fifteen years of experience in the games industry. His credits include VALORANT, Arcane, and Legends of Runeterra, where he and Aron first worked together. Outside of writing, Conor is bad at music, mediocre at cooking, and excellent at self deprecation.</p>
+        <div class="tf-work"><img src="images/faction-cradle.webp" alt="Conor Sheehy writing sample" loading="lazy"></div>
       </div>
     </article>
 
