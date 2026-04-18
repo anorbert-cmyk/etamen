@@ -154,13 +154,13 @@
 }
 .card-content .description+.description{margin-top:12px;}
 
-/* Progress bar — spans card-pair width, with dots at both ends */
+/* Progress bar — spans the usable horizontal area with dots at both ends */
 .timeline-progress-bar{
   position:absolute;
   bottom:8vh;
   left:50%;
   transform:translateX(-50%);
-  width:min(1100px, calc(100vw - 10vw));
+  width:min(1600px, calc(100vw - 8vw));
   height:16px;
   display:flex;align-items:center;
   z-index:15;pointer-events:none;
@@ -181,12 +181,15 @@
   transform:translate(-50%,-50%);
   width:14px;height:14px;border-radius:50%;
   background-color:var(--brand-green);
-  box-shadow:0 0 10px rgba(168,216,48,0.6);
+  box-shadow:0 0 6px rgba(168,216,48,0.4);
   z-index:2;
 }
+/* End caps sit slightly smaller so the moving dot reads distinctly at both extremes */
+.progress-dot.start,
+.progress-dot.end{width:10px;height:10px;opacity:0.85;box-shadow:none;}
 .progress-dot.start{left:0%;}
 .progress-dot.end{left:100%;}
-.progress-dot.moving{left:0%;}
+.progress-dot.moving{left:0%;z-index:3;}
 
 /* Mobile — single column, no scroll animation */
 @media(max-width:767px){

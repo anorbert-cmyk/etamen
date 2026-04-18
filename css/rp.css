@@ -3,7 +3,7 @@
 /* ═══════ REVEAL PARALLAX / BASE SECTION (rp-) — Dark theme ═══════ */
 .rp-section{
   position:relative;overflow:clip;z-index:4;
-  background-color:#0a0710;
+  background-color:#140e0c;
   padding:clamp(56px,8vw,120px) 0 clamp(80px,12vw,176px);
 }
 /* Subtle noise for texture */
@@ -29,7 +29,7 @@
   font-size:clamp(44px,7vw,96px);
   line-height:0.95;color:#ffffff;margin:0;letter-spacing:-0.01em;
 }
-.rp-top-right{flex:1;max-width:clamp(300px,42vw,640px);text-align:right;padding-top:clamp(12px,1.5vw,24px);}
+.rp-top-right{flex:1;max-width:clamp(300px,38vw,560px);text-align:right;padding-top:clamp(12px,1.5vw,24px);}
 .rp-eyebrow{
   font-family:'Oswald',sans-serif;font-size:clamp(11px,0.9vw,13px);
   text-transform:uppercase;letter-spacing:0.18em;color:rgba(168,216,48,0.9);line-height:1.4;
@@ -67,9 +67,9 @@
 }
 .rp-imgs{width:100%;display:flex;flex-direction:column}
 .rp-bsi{
-  border-radius:6px;overflow:hidden;will-change:transform;
+  border-radius:6px;overflow:hidden;
   border:1px solid rgba(255,255,255,0.08);
-  box-shadow:0 16px 48px rgba(0,0,0,0.55);
+  box-shadow:0 20px 60px rgba(120,60,20,0.22), 0 16px 48px rgba(0,0,0,0.55);
 }
 .rp-bsi img{width:100%;height:100%;object-fit:cover;display:block}
 .rp-bsi-lg{width:clamp(280px,26vw,414px);aspect-ratio:1/1}
@@ -99,7 +99,13 @@
   .rp-bsi-lg{width:min(75vw,280px)}
   .rp-bsi-sm{width:min(55vw,200px)}
   .rp-bsi-vt{width:min(60vw,220px)}
-  .rp-bsi{will-change:auto}
+}
+/* Parallax hints only on viewports that actually run the parallax animation */
+@media(min-width:769px){
+  .rp-bsi{will-change:transform;}
+}
+@media(max-width:360px){
+  .rp-heading{font-size:32px;hyphens:manual;}
 }
 @media(max-width:480px){
   .rp-card{width:90vw}

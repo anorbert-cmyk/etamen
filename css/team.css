@@ -3,7 +3,7 @@
 #team.team-section{
   position:relative;z-index:4;
   width:100%;
-  background-color:#A8D830;
+  background-color:#1a1520;
   overflow:hidden;
 }
 
@@ -24,11 +24,11 @@
 .team-bg-layer._2{background-image:url("../images/gallerybg2.webp");opacity:0;}
 .team-bg-layer._3{background-image:url("../images/gallerybg3.webp");opacity:0;}
 
-/* Green tint overlay — gives the signature green wash over the backdrop */
+/* Green tint overlay — gives the signature green wash without muddying the photography */
 .team-tint{
   position:absolute;inset:0;z-index:1;
-  background-color:rgba(168,216,48,0.55);
-  mix-blend-mode:multiply;
+  background-color:rgba(168,216,48,0.62);
+  mix-blend-mode:screen;
   pointer-events:none;
 }
 
@@ -88,7 +88,7 @@
 .member-role-banner{
   align-self:center;
   display:inline-block;
-  padding:6px 18px;
+  padding:6px 28px;
   background:#ffffff;
   color:#1a1520;
   font-family:'Oswald',sans-serif;
@@ -96,8 +96,7 @@
   font-size:clamp(11px,0.95vw,14px);
   letter-spacing:0.22em;
   text-transform:uppercase;
-  clip-path:polygon(5% 0, 95% 0, 100% 50%, 95% 100%, 5% 100%, 0 50%);
-  padding-left:28px;padding-right:28px;
+  border-radius:999px;
 }
 
 .member-name{
@@ -113,7 +112,6 @@
   padding:clamp(10px,1.2vw,18px) clamp(32px,4vw,60px);
   align-self:center;
   max-width:90%;
-  box-shadow:0 8px 24px rgba(0,0,0,0.25);
 }
 
 .member-grid{
@@ -134,7 +132,7 @@
 .member-photo img{
   width:100%;height:100%;
   object-fit:cover;display:block;
-  filter:grayscale(0.2) contrast(1.05);
+  filter:grayscale(1) contrast(1.08);
 }
 
 .member-body{
@@ -144,16 +142,12 @@
 }
 
 .member-bio{
-  font-family:'Crimson Text',Georgia,serif;
+  font-family:'Oswald',sans-serif;
+  font-weight:300;
   font-size:clamp(15px,1.15vw,18px);
   line-height:1.65;
   color:#1a1520;
   margin:0;
-  background:rgba(255,255,255,0.6);
-  padding:clamp(18px,2vw,28px);
-  border-left:3px solid #1a1520;
-  backdrop-filter:blur(4px);
-  -webkit-backdrop-filter:blur(4px);
 }
 
 .member-work{
@@ -186,7 +180,7 @@
   .member-name{font-size:clamp(44px,12vw,72px);padding:10px 20px;}
   .member-grid{grid-template-columns:1fr;gap:20px;}
   .member-photo{max-width:320px;margin:0 auto;aspect-ratio:4/5;}
-  .member-bio{font-size:15px;padding:18px;}
+  .member-bio{font-size:15px;}
 }
 
 @media(max-width:480px){
@@ -194,10 +188,12 @@
   .team-intro{font-size:18px;}
   .member-name{font-size:40px;padding:8px 16px;}
   .member-photo{max-width:260px;}
-  .member-bio{font-size:14px;padding:14px;}
+  .member-bio{font-size:14px;}
 }
 
-/* Respect reduced motion — static first background */
+/* Respect reduced motion — freeze on the first backdrop so nothing crossfades */
 @media(prefers-reduced-motion:reduce){
-  .team-bg-layer{transition:none !important;}
+  .team-bg-layer._1{opacity:1 !important;}
+  .team-bg-layer._2,
+  .team-bg-layer._3{opacity:0 !important;}
 }

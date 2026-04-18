@@ -7,18 +7,19 @@ window.apokrif.register(function() {
   if (!layers.length) return;
 
   var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  // Skip the crossfade on small viewports — panels compress so progress finishes
+  // in a couple hundred pixels and the effect has no room to breathe.
+  var isDesktop = window.matchMedia('(min-width:769px)').matches;
 
-  // Crossfade backdrop layers based on scroll progress through the section.
-  // Works on every viewport size; no pinning, so mobile keeps native scroll feel.
-  if (!reduce && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+  if (!reduce && isDesktop && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    // Map scroll progress 1:1 to the section so crossfade boundaries line up
+    // with the three panels: [0 → 0.5] = panel 1→2, [0.5 → 1] = panel 2→3.
     ScrollTrigger.create({
       trigger: section,
-      start: 'top bottom',
-      end: 'bottom top',
+      start: 'top top',
+      end: 'bottom bottom',
       scrub: 0.6,
       onUpdate: function(self) {
-        // self.progress: 0 → 1 as section moves through the viewport.
-        // Map to 3 bands: [0, 0.5] → layer1→layer2, [0.5, 1] → layer2→layer3
         var p = self.progress;
         var l1, l2, l3;
         if (p < 0.5) {
