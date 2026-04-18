@@ -1,10 +1,12 @@
-/* === team.css — Green scroll section with unified intro + Aron + Conor === */
+/* === team.css — BASE-style green scroll section with team content ===
+   Reuses the original #rp sticky-text + parallax-images pattern so the
+   section behaves like the design the team signed off on, with the
+   backdrop-layer crossfade added on top. */
 
 #team.team-section{
-  position:relative;z-index:4;
-  width:100%;
-  background-color:#1a1520;
-  overflow:hidden;
+  position:relative;overflow:clip;z-index:4;
+  background-color:#A8D830;
+  padding:clamp(56px,8vw,120px) 0 clamp(80px,12vw,176px);
 }
 
 /* Three backdrops crossfade as the user scrolls through the section */
@@ -18,78 +20,58 @@
 .team-bg-layer._2{background-image:url("../images/gallerybg2.webp");opacity:0;}
 .team-bg-layer._3{background-image:url("../images/gallerybg3.webp");opacity:0;}
 
-/* Green wash over the backdrop */
+/* Green wash over the backdrop — keeps the signature green look */
 .team-tint{
   position:absolute;inset:0;z-index:1;
-  background-color:rgba(168,216,48,0.62);
+  background-color:rgba(168,216,48,0.58);
   mix-blend-mode:screen;
   pointer-events:none;
 }
-.team-noise{
-  position:absolute;inset:0;z-index:2;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity:0.15;mix-blend-mode:overlay;pointer-events:none;
-}
 
-/* Container for all three frames */
-.team-container{
+/* Top tile: intro paragraph top-right matches mock */
+.team-top-tile{
   position:relative;z-index:3;
-  width:100%;
-  max-width:1500px;
-  margin:0 auto;
+  display:flex;justify-content:flex-end;align-items:flex-start;
+  max-width:1400px;margin:0 auto;
   padding:0 clamp(24px,5vw,80px);
-  display:flex;
-  flex-direction:column;
+  margin-bottom:clamp(80px,14vw,240px);
 }
-
-/* Shared frame grid: big character art left, content right */
-.team-frame{
-  position:relative;
-  display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);
-  gap:clamp(24px,4vw,72px);
-  align-items:center;
-  min-height:100vh;
-  padding:clamp(64px,10vh,128px) 0;
-}
-
-/* Left column — large character art */
-.tf-art{
-  position:relative;
-  width:100%;
-  max-width:520px;
-}
-.tf-art img{
-  width:100%;
-  height:auto;
-  display:block;
-  filter:drop-shadow(0 20px 40px rgba(0,0,0,0.35));
-}
-
-/* Right column — stacks text + portrait vertically */
-.tf-content{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:clamp(14px,1.6vw,24px);
-  text-align:center;
-}
-
-/* Intro frame (first frame) — paragraph top-right, minimal chrome */
-.team-frame-intro .tf-content{align-items:flex-start;text-align:left;}
-.tf-intro{
+.team-intro{
+  max-width:clamp(300px,48vw,680px);
   font-family:'Oswald',sans-serif;
   font-weight:300;
   font-size:clamp(20px,2.2vw,32px);
   line-height:1.35;
   color:#1a1520;
   margin:0;
-  max-width:640px;
+  text-align:right;
 }
-.tf-intro strong{color:#ffffff;font-weight:500;}
+.team-intro strong{color:#ffffff;font-weight:500;}
 
-/* Role pill */
-.tf-pill{
+/* Master scroll zone with sticky center cards + parallax images */
+.team-master{
+  position:relative;z-index:3;
+  height:3000px;overflow:visible;
+  max-width:1400px;margin:0 auto;
+  padding:0 clamp(24px,5vw,80px);
+}
+.team-sticky{
+  position:sticky;top:50vh;height:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:10;transform:translateY(-50%);
+}
+
+/* Each card = role pill + white name banner + chevron, centered */
+.team-card{
+  position:absolute;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:clamp(10px,1.4vw,18px);
+  opacity:0;
+  width:clamp(260px,40vw,620px);
+  text-align:center;
+}
+.team-card-pill{
   display:inline-block;
   padding:7px 28px;
   background:#ffffff;
@@ -100,110 +82,105 @@
   letter-spacing:0.22em;
   text-transform:uppercase;
   border-radius:999px;
+  opacity:0;transform:translateY(10px);
 }
-
-/* Big white name banner (flat rectangle per mock) */
-.tf-name{
+.team-card-name{
   font-family:'Queering','Oswald',Arial,sans-serif;
   font-weight:400;
   font-size:clamp(44px,7.5vw,112px);
-  line-height:1;
-  letter-spacing:-0.5px;
+  line-height:1;letter-spacing:-0.5px;
   margin:0;
-  background:#ffffff;
-  color:#1a1520;
+  background:#ffffff;color:#1a1520;
   padding:clamp(8px,1.2vw,16px) clamp(28px,4vw,56px);
   max-width:100%;
 }
-
-/* Chevron separator under the name */
-.tf-chevron{
-  display:flex;flex-direction:column;align-items:center;
-  gap:2px;color:#1a1520;
-  margin:clamp(4px,0.8vw,10px) 0;
+.team-card-chevron{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  margin-top:clamp(4px,0.8vw,10px);
 }
-.tf-chevron::before,
-.tf-chevron::after{
-  content:"";
-  width:0;height:0;
+.team-card-chevron::before,
+.team-card-chevron::after{
+  content:"";width:0;height:0;
   border-left:10px solid transparent;
   border-right:10px solid transparent;
   border-top:10px solid #1a1520;
 }
-.tf-chevron::after{margin-top:-6px;opacity:0.6;}
+.team-card-chevron::after{margin-top:-6px;opacity:0.6;}
 
-/* Portrait — B&W, square, white border */
-.tf-portrait{
-  width:clamp(180px,22vw,280px);
-  aspect-ratio:1/1;
-  object-fit:cover;
+/* Parallax images — portraits + work thumbnails */
+.team-imgs{width:100%;display:flex;flex-direction:column;}
+.team-img{
+  position:relative;
+  overflow:hidden;
+  will-change:transform;
   border:2px solid #ffffff;
-  filter:grayscale(1) contrast(1.08);
   box-shadow:0 16px 40px rgba(0,0,0,0.25);
 }
+.team-img img{width:100%;height:100%;object-fit:cover;display:block;}
 
-/* Bio text under portrait */
-.tf-bio{
-  font-family:'Oswald',sans-serif;
-  font-weight:300;
-  font-size:clamp(14px,1.05vw,16px);
-  line-height:1.6;
-  color:#1a1520;
-  max-width:520px;
-  margin:clamp(4px,1vw,12px) 0 0;
+/* Portraits — square, B&W */
+.team-img-portrait{
+  width:clamp(200px,22vw,300px);
+  aspect-ratio:1/1;
 }
+.team-img-portrait img{filter:grayscale(1) contrast(1.08);}
 
-/* Small supporting work thumbnail at the bottom of each member frame */
-.tf-work{
-  width:clamp(140px,16vw,200px);
+/* Work thumbs — portrait aspect */
+.team-img-work{
+  width:clamp(160px,16vw,220px);
   aspect-ratio:3/4;
-  overflow:hidden;
-  border:1px solid rgba(26,21,32,0.4);
-  box-shadow:0 8px 24px rgba(0,0,0,0.25);
-  margin-top:clamp(8px,1.2vw,16px);
 }
-.tf-work img{
-  width:100%;height:100%;object-fit:cover;display:block;
-  filter:saturate(1.05);
-}
+
+/* Stagger each image around the sticky center */
+.team-img-portrait._1{margin-left:5%;}
+.team-img-work._1{margin-left:72%;margin-top:-80px;}
+.team-img-portrait._2{margin-left:68%;margin-top:clamp(180px,20vw,320px);}
+.team-img-work._2{margin-left:8%;margin-top:-60px;}
 
 /* ═══ Tablet (≤1024px) ═══ */
 @media(max-width:1024px){
-  .team-frame{grid-template-columns:minmax(0,0.85fr) minmax(0,1.15fr);gap:32px;}
-  .tf-art{max-width:360px;}
-  .tf-name{font-size:clamp(40px,9vw,80px);}
-  .tf-intro{font-size:clamp(18px,2.4vw,26px);}
+  .team-intro{font-size:clamp(18px,2.4vw,26px);}
+  .team-master{height:2600px;}
 }
 
-/* ═══ Mobile (≤768px) — single column, centered ═══ */
+/* ═══ Mobile (≤768px) — cards always visible, images stack ═══ */
 @media(max-width:768px){
-  .team-frame{
-    grid-template-columns:1fr;
-    min-height:auto;
-    padding:clamp(48px,9vh,80px) 0;
-    gap:24px;
+  #team.team-section{padding:clamp(40px,6vw,80px) 0 clamp(60px,10vw,120px);}
+  .team-top-tile{padding:0 var(--pad);margin-bottom:40px;}
+  .team-intro{text-align:left;max-width:100%;font-size:18px;}
+  .team-master{
+    height:auto;padding:0 var(--pad);
+    display:flex;flex-direction:column;gap:clamp(28px,6vw,40px);align-items:center;
   }
-  .tf-art{max-width:280px;margin:0 auto;}
-  .team-frame-intro .tf-content{align-items:center;text-align:center;}
-  .tf-intro{font-size:18px;max-width:560px;margin:0 auto;}
-  .tf-pill{padding:6px 20px;font-size:11px;letter-spacing:0.18em;}
-  .tf-name{font-size:clamp(38px,10vw,64px);padding:8px 20px;}
-  .tf-portrait{width:clamp(160px,50vw,220px);}
-  .tf-work{width:clamp(120px,36vw,170px);}
-  .tf-bio{font-size:15px;}
+  .team-sticky{
+    position:relative;top:auto;height:auto;transform:none;
+    display:flex;flex-direction:column;gap:28px;width:100%;align-items:center;
+  }
+  .team-card{
+    position:relative;opacity:1;width:100%;align-items:center;
+  }
+  .team-card-pill{opacity:1;transform:none;padding:6px 20px;font-size:11px;letter-spacing:0.18em;}
+  .team-card-name{font-size:clamp(38px,10vw,64px);padding:8px 20px;}
+  .team-imgs{display:flex;flex-direction:column;align-items:center;gap:20px;width:100%;}
+  .team-img-portrait._1,
+  .team-img-portrait._2,
+  .team-img-work._1,
+  .team-img-work._2{margin:0;}
+  .team-img-portrait{width:min(55vw,240px);}
+  .team-img-work{width:min(48vw,200px);}
+  .team-img{will-change:auto;}
 }
 
 @media(max-width:480px){
-  .team-container{padding:0 16px;}
-  .tf-art{max-width:240px;}
-  .tf-name{font-size:clamp(32px,11vw,48px);padding:6px 16px;}
-  .tf-intro{font-size:17px;}
-  .tf-bio{font-size:14px;}
+  .team-intro{font-size:17px;}
+  .team-card-name{font-size:clamp(32px,11vw,48px);padding:6px 20px;}
 }
 
-/* Respect reduced motion — freeze on the first backdrop */
+/* Respect reduced motion — freeze on the first backdrop, show all cards */
 @media(prefers-reduced-motion:reduce){
   .team-bg-layer._1{opacity:1 !important;}
   .team-bg-layer._2,
   .team-bg-layer._3{opacity:0 !important;}
+  .team-card{opacity:1 !important;}
+  .team-card-pill{opacity:1 !important;transform:none !important;}
 }
