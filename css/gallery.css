@@ -55,3 +55,4 @@
 }
 @media(max-width:480px){
   .gi{height:clamp(220px,52vw,340px)}
+}

@@ -1,44 +1,68 @@
-/* === team.js === */
+/* === team.js — Green scroll-linked backdrop with crossfading layers === */
 window.apokrif.register(function() {
-  // Team section entrance animations
-  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  var section = document.getElementById('team');
+  if (!section) return;
 
-  gsap.from('.team-heading', {
-    opacity: 0,
-    y: 40,
-    duration: 0.9,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '#team',
-      start: 'top 75%',
-      once: true
-    }
-  });
+  var layers = section.querySelectorAll('.team-bg-layer');
+  if (!layers.length) return;
 
-  ScrollTrigger.batch('.team-card', {
-    start: 'top 85%',
-    onEnter: function(els) {
-      gsap.from(els, {
-        opacity: 0,
-        y: 50,
-        scale: 0.97,
-        duration: 0.85,
-        stagger: 0.18,
-        ease: 'power2.out'
-      });
-    },
-    once: true
-  });
+  var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-  // Subtle background parallax
-  gsap.to('.team-bg', {
-    y: '12%',
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '#team',
+  // Crossfade backdrop layers based on scroll progress through the section.
+  // Works on every viewport size; no pinning, so mobile keeps native scroll feel.
+  if (!reduce && typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    ScrollTrigger.create({
+      trigger: section,
       start: 'top bottom',
       end: 'bottom top',
-      scrub: 1.5
-    }
-  });
+      scrub: 0.6,
+      onUpdate: function(self) {
+        // self.progress: 0 → 1 as section moves through the viewport.
+        // Map to 3 bands: [0, 0.5] → layer1→layer2, [0.5, 1] → layer2→layer3
+        var p = self.progress;
+        var l1, l2, l3;
+        if (p < 0.5) {
+          var t = p / 0.5;
+          l1 = 1 - t;
+          l2 = t;
+          l3 = 0;
+        } else {
+          var t2 = (p - 0.5) / 0.5;
+          l1 = 0;
+          l2 = 1 - t2;
+          l3 = t2;
+        }
+        layers[0].style.opacity = l1.toFixed(3);
+        if (layers[1]) layers[1].style.opacity = l2.toFixed(3);
+        if (layers[2]) layers[2].style.opacity = l3.toFixed(3);
+      }
+    });
+
+    // Member entrance animations — name slides up, photo reveals, bio fades in
+    gsap.matchMedia().add('(min-width:769px)', function() {
+      gsap.utils.toArray('.panel-member').forEach(function(panel) {
+        var name = panel.querySelector('.member-name');
+        var banner = panel.querySelector('.member-role-banner');
+        var photo = panel.querySelector('.member-photo');
+        var bio = panel.querySelector('.member-bio');
+        var work = panel.querySelector('.member-work');
+
+        var trig = {trigger: panel, start: 'top 70%', once: true};
+
+        if (banner) gsap.from(banner, {opacity: 0, y: 20, duration: 0.6, ease: 'power2.out', scrollTrigger: trig});
+        if (name) gsap.from(name, {opacity: 0, y: 40, duration: 0.9, ease: 'power3.out', scrollTrigger: trig, delay: 0.1});
+        if (photo) gsap.from(photo, {opacity: 0, x: -40, duration: 0.9, ease: 'power3.out', scrollTrigger: trig, delay: 0.25});
+        if (bio) gsap.from(bio, {opacity: 0, y: 30, duration: 0.85, ease: 'power2.out', scrollTrigger: trig, delay: 0.35});
+        if (work) gsap.from(work, {opacity: 0, y: 30, duration: 0.85, ease: 'power2.out', scrollTrigger: trig, delay: 0.5});
+      });
+
+      var intro = document.querySelector('.team-intro');
+      if (intro) {
+        gsap.from(intro, {
+          opacity: 0, y: 40, duration: 1, ease: 'power3.out',
+          scrollTrigger: {trigger: '.panel-intro', start: 'top 75%', once: true}
+        });
+      }
+    });
+  }
 });

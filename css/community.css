@@ -167,3 +167,4 @@
 @media(max-width:480px){
   .follow-button{font-size:var(--fs-nav)}
   .gallery-item{max-width:100%}
+}
