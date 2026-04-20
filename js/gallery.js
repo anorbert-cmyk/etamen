@@ -4,7 +4,6 @@ window.apokrif.register(function() {
   (function() {
     var dots = document.querySelectorAll('.gallery-dot');
     if (!dots.length) return;
-
     dots.forEach(function(dot) {
       dot.addEventListener('click', function() {
         dots.forEach(function(d) {
@@ -17,30 +16,36 @@ window.apokrif.register(function() {
     });
   })();
 
-  // Gallery Print Quality — clip-path reveal (desktop)
+  // Gallery Print Quality — Image Reveal (overlay slide + scale zoom-out)
   (function() {
-    var mm = gsap.matchMedia();
-    mm.add('(min-width:769px)', function() {
-      var gis = document.querySelectorAll('.gallery-section .gi');
-      if (!gis.length) return;
-      gsap.set(gis, {clipPath: 'inset(0 0 100% 0)'});
-      gsap.set('.gallery-section .gi img', {scale: 1.12, transformOrigin: 'center center'});
-      ScrollTrigger.batch(gis, {
-        start: 'top 88%',
-        onEnter: function(els) {
-          gsap.to(els, {clipPath: 'inset(0 0 0% 0)', duration: 1.65, ease: 'power3.inOut', stagger: .25});
-          gsap.to(Array.from(els).map(function(el) {return el.querySelector('img');}),
-            {scale: 1, duration: 1.65, ease: 'power3.inOut', stagger: .25});
-        },
-        once: true
-      });
+    var books = document.querySelectorAll('.pq-book');
+    if (!books.length) return;
+
+    books.forEach(function(book) {
+      gsap.set(book.querySelector('img'), {scale: 1.2, transformOrigin: 'center center'});
+      gsap.set(book.querySelector('.pq-overlay'), {yPercent: 0});
     });
-    mm.add('(max-width:768px)', function() {
-      document.querySelectorAll('.gallery-section .gi').forEach(function(el) {
-        el.style.clipPath = '';
-        var img = el.querySelector('img');
-        if (img) img.style.transform = '';
-      });
+
+    ScrollTrigger.batch(books, {
+      start: 'top 80%',
+      onEnter: function(els) {
+        els.forEach(function(book, i) {
+          var delay = i * 0.15;
+          gsap.to(book.querySelector('.pq-overlay'), {
+            yPercent: 100,
+            duration: 1,
+            ease: 'power3.inOut',
+            delay: delay
+          });
+          gsap.to(book.querySelector('img'), {
+            scale: 1,
+            duration: 1,
+            ease: 'power3.inOut',
+            delay: delay
+          });
+        });
+      },
+      once: true
     });
   })();
 });
