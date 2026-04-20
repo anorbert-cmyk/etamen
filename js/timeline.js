@@ -1,9 +1,11 @@
 /* === timeline.js === */
 window.apokrif.register(function() {
   // Timeline — horizontal scrub pin (9 slides, 900vw track)
-  // Progress bar lives INSIDE .timeline-track (anchored at left:50vw, width:800vw)
-  // so it travels with the track. Fill grows 0→100% of 800vw; moving dot rides it.
-  // Viewport clips overflow via #timeline { overflow:hidden }.
+  // Progress bar lives OUTSIDE .timeline-track, as a direct child of #timeline.
+  // It stays anchored to the pinned viewport (left:10vw/right:10vw/bottom:8vh)
+  // and does NOT translate with the track. Only .progress-fill width and
+  // .progress-dot.moving left animate 0→100% via GSAP, scrubbed to the same
+  // ScrollTrigger window that drives the track translate.
   (function() {
     var section = document.getElementById('timeline');
     if (!section) return;
