@@ -110,4 +110,81 @@ window.apokrif.register(function() {
       });
     });
   })();
+
+  // Et Tamen — Lightbox (full-size responsive viewer)
+  (function() {
+    var lb = document.getElementById('etLightbox');
+    var img = document.getElementById('etLbImg');
+    var counter = document.getElementById('etLbCounter');
+    var closeBtn = document.getElementById('etLbClose');
+    var prevBtn = document.getElementById('etLbPrev');
+    var nextBtn = document.getElementById('etLbNext');
+    if (!lb || !img) return;
+
+    var slideImgs = track.querySelectorAll('.slide img');
+    var lbIndex = 0;
+    var lbTotal = slideImgs.length;
+    var lastFocused = null;
+
+    function setLbIndex(i) {
+      lbIndex = ((i % lbTotal) + lbTotal) % lbTotal;
+      var src = slideImgs[lbIndex].getAttribute('src');
+      var alt = slideImgs[lbIndex].getAttribute('alt') || '';
+      img.setAttribute('src', src);
+      img.setAttribute('alt', alt);
+      if (counter) counter.textContent = (lbIndex + 1) + ' / ' + lbTotal;
+    }
+
+    function openLb(i) {
+      lastFocused = document.activeElement;
+      setLbIndex(i);
+      lb.classList.add('is-open');
+      lb.setAttribute('aria-hidden', 'false');
+      document.documentElement.classList.add('lightbox-open');
+      etStopAuto();
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeLb() {
+      lb.classList.remove('is-open');
+      lb.setAttribute('aria-hidden', 'true');
+      document.documentElement.classList.remove('lightbox-open');
+      etStartAuto();
+      if (lastFocused && typeof lastFocused.focus === 'function') {
+        try { lastFocused.focus(); } catch (e) {}
+      }
+    }
+
+    slideImgs.forEach(function(el, i) {
+      el.style.cursor = 'zoom-in';
+      el.addEventListener('click', function(e) {
+        e.preventDefault();
+        openLb(i);
+      });
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeLb);
+    if (prevBtn) prevBtn.addEventListener('click', function() { setLbIndex(lbIndex - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function() { setLbIndex(lbIndex + 1); });
+
+    // Click backdrop to close (only when clicking the container itself, not children)
+    lb.addEventListener('click', function(e) { if (e.target === lb) closeLb(); });
+
+    // Keyboard: Esc close, ArrowLeft/Right nav
+    document.addEventListener('keydown', function(e) {
+      if (!lb.classList.contains('is-open')) return;
+      if (e.key === 'Escape') { e.preventDefault(); closeLb(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); setLbIndex(lbIndex - 1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); setLbIndex(lbIndex + 1); }
+    });
+
+    // Touch swipe inside lightbox
+    var lbSx = 0;
+    lb.addEventListener('touchstart', function(e) { lbSx = e.touches[0].clientX; }, {passive: true});
+    lb.addEventListener('touchend', function(e) {
+      if (!lb.classList.contains('is-open')) return;
+      var dx = lbSx - e.changedTouches[0].clientX;
+      if (Math.abs(dx) > 40) setLbIndex(lbIndex + (dx > 0 ? 1 : -1));
+    }, {passive: true});
+  })();
 });

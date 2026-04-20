@@ -53,7 +53,9 @@
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
-  will-change:opacity;
+  /* will-change intentionally omitted: opacity-only tween is cheap;
+     persistent will-change on 3 full-viewport layers creates needless
+     compositor memory pressure on mobile Safari. */
 }
 .team-bg-layer._1{background-image:url("../images/gallerybg1.webp");opacity:1;}
 .team-bg-layer._2{background-image:url("../images/gallerybg2.webp");opacity:0;}
@@ -183,7 +185,7 @@
   width:100%;height:100%;
   object-fit:cover;
   display:block;
-  will-change:transform;
+  /* will-change applied dynamically by GSAP during intro tween (force3D:true). */
 }
 
 /* ---- Person slide (sticky card + absolute thumbs) -------------------- */
@@ -233,7 +235,7 @@
   clip-path:var(--saw-polygon);
   opacity:0;
   transform:translateY(12px);
-  will-change:opacity,transform;
+  /* will-change applied only during active tween (GSAP handles) */
 }
 .team-card-name{
   display:inline-block;
@@ -250,7 +252,7 @@
   -webkit-clip-path:var(--saw-polygon);
   clip-path:var(--saw-polygon);
   opacity:0;
-  will-change:opacity;
+  /* will-change applied only during active tween (GSAP handles) */
 }
 .team-card-glyph{
   width:clamp(32px,2.8vw,44px);
@@ -264,13 +266,17 @@
 .team-thumb{
   position:absolute;
   overflow:hidden;
-  will-change:transform,clip-path;
+  /* Hint to the browser to isolate paint; avoids persistent will-change
+     (12 thumbs × 2 properties creates GPU memory pressure on iOS Safari).
+     GSAP will add will-change:transform during active tweens via force3D. */
+  contain:layout paint;
+  transform:translateZ(0);
 }
 .team-thumb img{
   width:100%;height:100%;
   object-fit:cover;
   display:block;
-  will-change:transform;
+  /* will-change applied dynamically by GSAP during scrubs (force3D:true) */
 }
 .team-thumb-portrait{
   width:clamp(200px,18vw,300px);
@@ -450,6 +456,7 @@
   .team-bg-layer._3{opacity:0 !important;}
   .team-card-pill{opacity:1 !important;transform:none !important;}
   .team-card-name{opacity:1 !important;}
+  .team-thumb{transform:none !important;}
   .team-thumb img{transform:none !important;}
   .team-hero-art img{transform:none !important;}
 }

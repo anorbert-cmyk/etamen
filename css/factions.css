@@ -39,8 +39,8 @@
 }
 .fac-front-img{
   position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:1756px;height:auto;
-  display:block;object-fit:fill;
+  width:100%;max-width:1756px;height:100%;
+  display:block;object-fit:contain;object-position:center bottom;
   will-change:transform,opacity;
 }
 
@@ -82,7 +82,7 @@
   display:flex;flex-direction:column;width:85px;height:148px;
   gap:18px;flex-shrink:0;
 }
-.top-indicator img{width:100px;height:110px;display:block}
+.top-indicator img{width:100px;height:110px;display:block;margin:0 auto;object-fit:contain}
 .div-block-13{
   display:flex;flex-direction:row;gap:7px;justify-content:space-around;
   align-items:center;height:34px;
@@ -91,7 +91,7 @@
   min-width:48px;min-height:48px;cursor:pointer;display:flex;align-items:center;justify-content:center;
   pointer-events:auto;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
 }
-.div-block-18 img,.arrow-right img{width:10px;height:20px;display:block}
+.div-block-18 img,.arrow-right img{width:14px;height:20px;display:block;object-fit:contain}
 
 /* Factions responsive */
 @media(max-width:1024px){

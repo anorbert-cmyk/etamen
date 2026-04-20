@@ -18,6 +18,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" integrity="sha384-RVPQwTb0fPz9kI8s5GwAq1Qioto9fnEQt1aKGSQSm8xV6+DIdBSgcCShoHqfKnhv" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="css/globals.css">
+<link rel="stylesheet" href="css/reading-progress.css">
 <link rel="stylesheet" href="css/nav.css">
 <link rel="stylesheet" href="css/hero.css">
 <link rel="stylesheet" href="css/et-tamen.css">
@@ -27,9 +28,9 @@
 <link rel="stylesheet" href="css/timeline.css">
 <link rel="stylesheet" href="css/community.css">
 <link rel="stylesheet" href="css/team.css">
-<link rel="stylesheet" href="css/gallery.css">
 <link rel="stylesheet" href="css/rp.css">
 <script defer src="js/coordinator.js"></script>
+<script defer src="js/reading-progress.js"></script>
 <script defer src="js/hero.js"></script>
 <script defer src="js/nav.js"></script>
 <script defer src="js/et-tamen.js"></script>
@@ -42,6 +43,9 @@
 <script defer src="js/main.js"></script>
 </head>
 <body>
+
+<!-- READING PROGRESS -->
+<div id="reading-progress" aria-hidden="true"><span></span></div>
 
 <!-- NAV -->
 <nav class="navbar">
@@ -152,6 +156,16 @@
   <div class="et-bottom">
     <div class="et-bottom-chevrons" id="etChevs"></div>
     <div class="et-bottom-stamp"><img src="images/22-etchevs.png" alt="Apokrif emblem"></div>
+  </div>
+  <!-- Et Tamen Lightbox (full-size responsive viewer) -->
+  <div class="et-lightbox" id="etLightbox" role="dialog" aria-modal="true" aria-label="Et Tamen page viewer" aria-hidden="true">
+    <button class="et-lightbox-close" id="etLbClose" aria-label="Close viewer" type="button">&times;</button>
+    <button class="et-lightbox-nav prev" id="etLbPrev" aria-label="Previous page" type="button">&#9664;</button>
+    <div class="et-lightbox-stage" id="etLbStage">
+      <img class="et-lightbox-img" id="etLbImg" src="" alt="">
+      <div class="et-lightbox-counter" id="etLbCounter" aria-live="polite"></div>
+    </div>
+    <button class="et-lightbox-nav next" id="etLbNext" aria-label="Next page" type="button">&#9654;</button>
   </div>
 </section>
 
@@ -447,15 +461,17 @@
       </div>
     </div>
 
-  </div><!-- /.timeline-track -->
-
-  <!-- Progress bar — outside the track, always visible -->
-  <div class="timeline-progress-bar" aria-hidden="true">
-    <div class="progress-track">
-      <div class="progress-fill"></div>
-      <div class="progress-dot"></div>
+    <!-- Progress bar — INSIDE the track, anchored to slide 1 center → slide 9 center -->
+    <div class="timeline-progress-bar" aria-hidden="true">
+      <div class="progress-track">
+        <div class="progress-fill"></div>
+        <div class="progress-dot start"></div>
+        <div class="progress-dot end"></div>
+        <div class="progress-dot moving"></div>
+      </div>
     </div>
-  </div>
+
+  </div><!-- /.timeline-track -->
 </section>
 <section id="team" class="section-after team-section" aria-label="Meet the Team">
   <h2 class="sr-only">Meet the Team</h2>

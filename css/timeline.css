@@ -154,27 +154,27 @@
 }
 .card-content .description+.description{margin-top:12px;}
 
-/* Progress bar — spans the usable horizontal area with dots at both ends */
+/* Progress bar — INSIDE the track. Anchored to slide 1 center (50vw) → slide 9 center.
+   Spans 800vw (8 × 100vw gaps between slide centers). Moves with the track under scroll.
+   Viewport naturally clips via #timeline { overflow:hidden }. */
 .timeline-progress-bar{
   position:absolute;
+  left:50vw;right:auto;
+  width:800vw;
   bottom:8vh;
-  left:50%;
-  transform:translateX(-50%);
-  width:min(1600px, calc(100vw - 8vw));
   height:16px;
   display:flex;align-items:center;
   z-index:15;pointer-events:none;
+  transform:translateX(0);
 }
 .progress-track{
   position:relative;width:100%;height:3px;
   background-color:var(--bar-grey);
-  border-radius:2px;
 }
 .progress-fill{
   position:absolute;top:0;left:0;
   height:100%;width:0%;
   background-color:var(--brand-green);
-  border-radius:2px;
 }
 .progress-dot{
   position:absolute;top:50%;
@@ -184,11 +184,8 @@
   box-shadow:0 0 6px rgba(168,216,48,0.4);
   z-index:2;
 }
-/* End caps sit slightly smaller so the moving dot reads distinctly at both extremes */
-.progress-dot.start,
-.progress-dot.end{width:10px;height:10px;opacity:0.85;box-shadow:none;}
-.progress-dot.start{left:0%;}
-.progress-dot.end{left:100%;}
+.progress-dot.start{left:0%;width:12px;height:12px;opacity:0.95;}
+.progress-dot.end{left:100%;width:12px;height:12px;opacity:0.95;}
 .progress-dot.moving{left:0%;z-index:3;}
 
 /* Mobile — single column, no scroll animation */
