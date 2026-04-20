@@ -91,11 +91,6 @@ window.apokrif.register(function() {
    * Reduced-motion path — set final state, no ScrollTriggers.
    * ------------------------------------------------------------------ */
   if (reduce) {
-    var bgLayers = section.querySelectorAll('.team-bg-layer');
-    if (bgLayers[0]) bgLayers[0].style.opacity = '1';
-    if (bgLayers[1]) bgLayers[1].style.opacity = '0';
-    if (bgLayers[2]) bgLayers[2].style.opacity = '0';
-
     gsap.set('#team .team-card-pill', { opacity: 1, y: 0, clearProps: 'willChange' });
     gsap.set('#team .team-card-name', { opacity: 1, y: 0, clearProps: 'willChange' });
     gsap.set('#team .team-card-glyph', { opacity: 0.9, scale: 1, rotation: 0, y: 0 });
@@ -106,45 +101,6 @@ window.apokrif.register(function() {
     gsap.set('#team .team-intro-triangles span', { opacity: 1 });
     gsap.set('#team .team-intro-label-text, #team .team-intro-arrows span', { opacity: 1, y: 0 });
     return;
-  }
-
-  /* ------------------------------------------------------------------ *
-   * Backdrop crossfade (ambience) — 3-layer opacity scrub.
-   * Cached writes: skip DOM mutation if opacity hasn't meaningfully changed.
-   * ------------------------------------------------------------------ */
-  var layers = section.querySelectorAll('.team-bg-layer');
-  if (layers.length === 3) {
-    var lastOp = [-1, -1, -1];
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: 0.5,
-      onUpdate: function(self) {
-        var p = self.progress;
-        var l1, l2, l3;
-        if (p < 0.5) {
-          var t = p / 0.5;
-          l1 = 1 - t; l2 = t; l3 = 0;
-        } else {
-          var t2 = (p - 0.5) / 0.5;
-          l1 = 0; l2 = 1 - t2; l3 = t2;
-        }
-        // Only write if changed by >0.5% — halves DOM writes during fast scroll
-        if (Math.abs(l1 - lastOp[0]) > 0.005) {
-          layers[0].style.opacity = l1.toFixed(3);
-          lastOp[0] = l1;
-        }
-        if (Math.abs(l2 - lastOp[1]) > 0.005) {
-          layers[1].style.opacity = l2.toFixed(3);
-          lastOp[1] = l2;
-        }
-        if (Math.abs(l3 - lastOp[2]) > 0.005) {
-          layers[2].style.opacity = l3.toFixed(3);
-          lastOp[2] = l3;
-        }
-      }
-    });
   }
 
   /* ------------------------------------------------------------------ *
