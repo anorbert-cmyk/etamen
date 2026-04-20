@@ -6,7 +6,7 @@ window.apokrif.register(function() {
     if (!section) return;
     var track = section.querySelector('.timeline-track');
     var fill = section.querySelector('.progress-fill');
-    var dot = section.querySelector('.progress-dot');
+    var dot = section.querySelector('.progress-dot.moving');
     if (!track) return;
 
     if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;

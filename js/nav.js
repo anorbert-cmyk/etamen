@@ -1,9 +1,8 @@
 /* === nav.js === */
 window.apokrif.register(function() {
-  // Nav scroll-progress fill
-  // 'timeline' handled separately below (GSAP pin extends scroll distance)
-  // 'factions' handled separately below — endTrigger:#rp covers the gallery dead zone
-  var tabMap = {'et': '#et', 'team': '#team'};
+  // Nav scroll-progress fill — straightforward sections
+  // 'timeline' and 'novel' are handled separately below (pin / multi-section).
+  var tabMap = {'et': '#et', 'rp': '#rp', 'factions': '#factions', 'team': '#team'};
   Object.keys(tabMap).forEach(function(key) {
     var link = document.querySelector('.nav-link.tab-link[data-s="' + key + '"]');
     var bg = link ? link.querySelector('.nav-link-bg') : null;
@@ -15,19 +14,6 @@ window.apokrif.register(function() {
       onLeaveBack: function() {bg.style.width = '0%'}
     });
   });
-
-  // Factions + Gallery(rp) combined — #rp has no nav tab, extending factions to cover it
-  (function() {
-    var link = document.querySelector('.nav-link.tab-link[data-s="factions"]');
-    var bg = link ? link.querySelector('.nav-link-bg') : null;
-    if (!link || !bg) return;
-    ScrollTrigger.create({
-      trigger: '#factions', endTrigger: '#rp', start: 'top top', end: 'bottom top',
-      onUpdate: function(self) {bg.style.width = (self.progress * 100) + '%'},
-      onLeave: function() {bg.style.width = '100%'},
-      onLeaveBack: function() {bg.style.width = '0%'}
-    });
-  })();
 
   // Timeline nav indicator — synced with GSAP pin scroll distance
   (function() {
