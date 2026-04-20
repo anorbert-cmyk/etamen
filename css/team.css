@@ -57,9 +57,9 @@
      persistent will-change on 3 full-viewport layers creates needless
      compositor memory pressure on mobile Safari. */
 }
-.team-bg-layer._1{background-image:url("../images/gallerybg1.webp");opacity:1;}
-.team-bg-layer._2{background-image:url("../images/gallerybg2.webp");opacity:0;}
-.team-bg-layer._3{background-image:url("../images/gallerybg3.webp");opacity:0;}
+.team-bg-layer._1{background-image:url("../images/team-bg.webp");opacity:1;}
+.team-bg-layer._2{background-image:url("../images/team-bg.webp");opacity:0;}
+.team-bg-layer._3{background-image:url("../images/team-bg.webp");opacity:0;}
 
 /* Green multiply wash */
 .team-tint{

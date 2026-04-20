@@ -13,6 +13,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preload" as="image" href="images/03-image.jpg" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Oswald:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -139,12 +141,21 @@
         <div class="slider-arrow prev" id="sPrev">&#9664;</div>
         <div class="slider-frame" id="sFrame">
           <div class="slide-track" id="sTrack">
-            <div class="slide"><img src="images/16-strack.jpg" alt="Cover"></div>
-            <div class="slide"><img src="images/17-slide.jpg" alt="Page 1"></div>
-            <div class="slide"><img src="images/18-slide.jpg" alt="Page 2"></div>
-            <div class="slide"><img src="images/19-slide.jpg" alt="Page 3"></div>
-            <div class="slide"><img src="images/20-slide.jpg" alt="Page 4"></div>
-            <div class="slide"><img src="images/21-slide.jpg" alt="Page 5"></div>
+            <div class="slide"><img src="images/et-tamen-01.webp" alt="Et Tamen — Cover" width="1500" height="2126" loading="eager" fetchpriority="high"></div>
+            <div class="slide"><img src="images/et-tamen-02.webp" alt="Et Tamen — Page 01" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-03.webp" alt="Et Tamen — Page 02" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-04.webp" alt="Et Tamen — Page 03" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-05.webp" alt="Et Tamen — Page 04" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-06.webp" alt="Et Tamen — Page 05" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-07.webp" alt="Et Tamen — Page 06" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-08.webp" alt="Et Tamen — Page 07" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-09.webp" alt="Et Tamen — Page 08" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-10.webp" alt="Et Tamen — Page 09" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-11.webp" alt="Et Tamen — Page 10" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-12.webp" alt="Et Tamen — Page 11" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-13.webp" alt="Et Tamen — Page 12" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-14.webp" alt="Et Tamen — Page 13" width="1500" height="2126" loading="lazy"></div>
+            <div class="slide"><img src="images/et-tamen-15.webp" alt="Et Tamen — Page 14" width="1500" height="2126" loading="lazy"></div>
           </div>
           <div class="slide-dots" id="sDots"></div>
         </div>
@@ -461,17 +472,19 @@
       </div>
     </div>
 
-    <!-- Progress bar — INSIDE the track, anchored to slide 1 center → slide 9 center -->
-    <div class="timeline-progress-bar" aria-hidden="true">
-      <div class="progress-track">
-        <div class="progress-fill"></div>
-        <div class="progress-dot start"></div>
-        <div class="progress-dot end"></div>
-        <div class="progress-dot moving"></div>
-      </div>
-    </div>
-
   </div><!-- /.timeline-track -->
+
+  <!-- Progress bar — OUTSIDE the track, anchored to the pinned #timeline viewport.
+       Does NOT translate with the track. Only .progress-fill width and
+       .progress-dot.moving left animate 0%→100% via GSAP. -->
+  <div class="timeline-progress-bar" aria-hidden="true">
+    <div class="progress-track">
+      <div class="progress-fill"></div>
+      <div class="progress-dot start"></div>
+      <div class="progress-dot end"></div>
+      <div class="progress-dot moving"></div>
+    </div>
+  </div>
 </section>
 <section id="team" class="section-after team-section" aria-label="Meet the Team">
   <h2 class="sr-only">Meet the Team</h2>
@@ -561,10 +574,10 @@
     </div>
     <div class="community-divider" aria-hidden="true"></div>
     <div class="gallery-grid">
-      <div class="gallery-item"><img src="images/17-slide.jpg" alt="Community concept art 1" loading="lazy"></div>
-      <div class="gallery-item"><img src="images/18-slide.jpg" alt="Community concept art 2" loading="lazy"></div>
-      <div class="gallery-item"><img src="images/19-slide.jpg" alt="Community concept art 3" loading="lazy"></div>
-      <div class="gallery-item"><img src="images/20-slide.jpg" alt="Community concept art 4" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/faction-ex-sanguis.webp" alt="Ex Sanguis concept art" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/faction-matani.webp" alt="House Matani concept art" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/faction-cradle.webp" alt="Cradle concept art" loading="lazy"></div>
+      <div class="gallery-item"><img src="images/huxley.webp" alt="Huxley character concept art" loading="lazy"></div>
     </div>
     <div class="gallery-dots" role="group" aria-label="Gallery navigation">
       <button class="gallery-dot active" aria-label="Image 1" aria-current="true"></button>

@@ -24,7 +24,7 @@ window.apokrif.register(function() {
     if (!link || !target) return;
 
     // 'novel' spans 3 consecutive sections — end on #novel3 instead of #novel.
-    var endTrigger = (key === 'novel') ? '#novel3' : null;
+    var endTrigger = (key === 'novel') ? document.querySelector('#novel3') : null;
 
     // 'timeline' uses pin-distance = track scrollWidth - viewport.
     if (key === 'timeline') {
@@ -45,15 +45,46 @@ window.apokrif.register(function() {
       trigger: target,
       endTrigger: endTrigger || target,
       start: 'top 40%',
-      end: endTrigger ? 'bottom 40%' : 'bottom 40%',
+      end: 'bottom 40%',
       toggleClass: { targets: link, className: 'active' }
     });
   });
 
-  // ── Smooth scroll on anchor click with dynamic offset ────────────────
+  // ── Mobile menu helpers ──────────────────────────────────────────────
   var mm = document.getElementById('mm');
   var hb = document.querySelector('.hb');
 
+  // Initial ARIA wiring (idempotent — safe if attributes already present).
+  if (hb) {
+    hb.setAttribute('aria-expanded', 'false');
+    if (mm && mm.id && !hb.getAttribute('aria-controls')) hb.setAttribute('aria-controls', mm.id);
+    if (!hb.getAttribute('type')) hb.setAttribute('type', 'button');
+  }
+  if (mm) {
+    mm.setAttribute('role', 'dialog');
+    mm.setAttribute('aria-modal', 'false'); // non-modal overlay
+    mm.setAttribute('aria-hidden', 'true');
+  }
+
+  function openMenu() {
+    if (!mm || !hb) return;
+    mm.classList.add('open');
+    hb.classList.add('active');
+    hb.setAttribute('aria-expanded', 'true');
+    mm.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('mm-open');
+  }
+
+  function closeMenu() {
+    if (!mm || !hb) return;
+    mm.classList.remove('open');
+    hb.classList.remove('active');
+    hb.setAttribute('aria-expanded', 'false');
+    mm.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('mm-open');
+  }
+
+  // ── Smooth scroll on anchor click with dynamic offset ────────────────
   document.querySelectorAll('a[href^="#"]').forEach(function(a) {
     var href = a.getAttribute('href');
     if (!href || href === '#') return; // skip bare "#" (Kickstarter placeholder)
@@ -62,20 +93,40 @@ window.apokrif.register(function() {
       var t;
       try { t = document.querySelector(href); } catch (ex) { return; }
       if (!t) return;
+      // Close menu BEFORE measuring, so the offset reflects the collapsed nav height.
+      closeMenu();
       var y = t.getBoundingClientRect().top + window.pageYOffset - scrollOffset();
       gsap.to(window, {
-        scrollTo: { y: Math.max(0, y), autoKill: false },
+        scrollTo: { y: Math.max(0, y), autoKill: true },
         duration: 0.8,
         ease: 'power2.inOut'
       });
-      if (mm) mm.classList.remove('open');
-      if (hb) hb.classList.remove('active');
     });
   });
 
   // ── Mobile menu toggle ────────────────────────────────────────────────
-  if (hb) hb.addEventListener('click', function() {
-    this.classList.toggle('active');
-    if (mm) mm.classList.toggle('open');
+  if (hb) hb.addEventListener('click', function(e) {
+    e.stopPropagation();
+    if (mm && mm.classList.contains('open')) closeMenu();
+    else openMenu();
   });
+
+  // Close on ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && mm && mm.classList.contains('open')) closeMenu();
+  });
+
+  // Close on outside click (tap outside menu + hamburger)
+  document.addEventListener('click', function(e) {
+    if (!mm || !mm.classList.contains('open')) return;
+    var t = e.target;
+    if (mm.contains(t) || (hb && hb.contains(t))) return;
+    closeMenu();
+  });
+
+  // Close if viewport grows past the mobile breakpoint while menu is open.
+  var mqDesktop = window.matchMedia('(min-width: 1025px)');
+  var onMqChange = function(ev) { if (ev.matches) closeMenu(); };
+  if (mqDesktop.addEventListener) mqDesktop.addEventListener('change', onMqChange);
+  else if (mqDesktop.addListener) mqDesktop.addListener(onMqChange); // legacy Safari
 });
