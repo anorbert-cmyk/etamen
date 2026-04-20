@@ -232,6 +232,25 @@
   </div>
 </section>
 
+<!-- ═══════ GALLERY — PRINT QUALITY ═══════ -->
+<section id="rp" class="section-after pq-section" aria-label="Gallery — Print Quality">
+  <img class="pq-bg" src="images/05-image.jpg" alt="" aria-hidden="true" loading="lazy">
+  <div class="pq-books">
+    <div class="pq-book">
+      <div class="pq-overlay"></div>
+      <img src="images/book1.webp" alt="Et Tamen — book spine" loading="lazy">
+    </div>
+    <div class="pq-book pq-book--mid">
+      <div class="pq-overlay"></div>
+      <img src="images/book2.webp" alt="Et Tamen — book cover" loading="lazy">
+    </div>
+    <div class="pq-book">
+      <div class="pq-overlay"></div>
+      <img src="images/24-img-cover.jpg" alt="Et Tamen — detail" loading="lazy">
+    </div>
+  </div>
+</section>
+
 <section id="factions" class="section-3" aria-label="Factions">
   <div class="scroll-container">
     <!-- Háttér rétegek (csak blur bg + color overlay) -->
@@ -272,25 +291,6 @@
         <div class="div-block-18" id="facPrev"><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c735_apokrif_web_landing_4_factions_layered17.png" alt="Previous"></div>
         <div class="arrow-right" id="facNext"><img src="https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c736_apokrif_web_landing_4_factions_layered18.png" alt="Next"></div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ GALLERY — PRINT QUALITY ═══════ -->
-<section id="rp" class="section-after pq-section" aria-label="Gallery — Print Quality">
-  <img class="pq-bg" src="images/05-image.jpg" alt="" aria-hidden="true" loading="lazy">
-  <div class="pq-books">
-    <div class="pq-book">
-      <div class="pq-overlay"></div>
-      <img src="images/book1.webp" alt="Et Tamen — book spine" loading="lazy">
-    </div>
-    <div class="pq-book pq-book--mid">
-      <div class="pq-overlay"></div>
-      <img src="images/book2.webp" alt="Et Tamen — book cover" loading="lazy">
-    </div>
-    <div class="pq-book">
-      <div class="pq-overlay"></div>
-      <img src="images/24-img-cover.jpg" alt="Et Tamen — detail" loading="lazy">
     </div>
   </div>
 </section>
@@ -458,35 +458,65 @@
     </div>
   </div>
 </section>
-<section id="team" class="section-after team-section">
-  <div class="team-bg" aria-hidden="true"></div>
-  <div class="team-overlay" aria-hidden="true"></div>
-  <div class="team-inner">
-    <h2 class="team-heading">Meet the Team</h2>
-    <div class="team-grid">
+<section id="team" class="section-after team-section" aria-label="Meet the Team">
+  <h2 class="sr-only">Meet the Team</h2>
+  <div class="team-bg-layers" aria-hidden="true">
+    <div class="team-bg-layer _1"></div>
+    <div class="team-bg-layer _2"></div>
+    <div class="team-bg-layer _3"></div>
+  </div>
+  <div class="team-tint" aria-hidden="true"></div>
 
-      <article class="team-card">
-        <div class="team-photo">
-          <img src="images/team-aron.webp" alt="Aron Elekes" loading="lazy">
-        </div>
-        <div class="team-info">
-          <h3 class="team-name">Aron Elekes</h3>
-          <p class="team-role">Co-Creator / Illustrator</p>
-          <p class="team-bio">Aron Elekes is a visual developer with fine art roots and over 10 years of experience in game development&mdash;a so called 'veteran' but with a vibrant, youthful spirit. He has contributed to a wide spectrum of games and collaborated with leading companies, including Legends of Runeterra, League of Legends, Spellslingers, Mortal Kombat, Riot Games, Netflix, Wizards of the Coast, and Niantic Inc., to mention some. Beyond his creative endeavors, Aron occasionally believes he can surf (jury's still out on that) and has discovered he can't live without the comfort of palm trees.</p>
-        </div>
-      </article>
+  <!-- Intro tile -->
+  <div class="team-intro-tile">
+    <figure class="team-hero-art">
+      <img src="images/huxley.webp" alt="" loading="eager" fetchpriority="high">
+    </figure>
+    <div class="team-intro-text">
+      <p class="team-intro">
+        Emmy award-winning writer <strong>Conor Sheehy</strong>, veteran artist <strong>Aron Elekes</strong> bring the world of Apokrif to life through a fully realized world, with complex characters, compelling storylines, and gorgeous illustrations throughout.
+      </p>
+      <div class="team-intro-chev" aria-hidden="true"></div>
+    </div>
+  </div>
 
-      <article class="team-card">
-        <div class="team-photo">
-          <img src="images/team-conor.webp" alt="Conor Sheehy" loading="lazy">
-        </div>
-        <div class="team-info">
-          <h3 class="team-name">Conor Sheehy</h3>
-          <p class="team-role">Co-Creator / Writer</p>
-          <p class="team-bio">Conor is a British Emmy award-winning writer with over fifteen years of experience in the games industry. His credits include VALORANT, Arcane, and Legends of Runeterra, where he and Aron first worked together. Outside of writing, Conor is bad at music, mediocre at cooking, and excellent at self deprecation.</p>
-        </div>
-      </article>
+  <!-- Aron slide -->
+  <div class="team-slide" id="teamAron">
+    <div class="team-slide-sticky">
+      <div class="team-card">
+        <span class="team-card-pill">Concept Artist and Illustrator</span>
+        <h3 class="team-card-name">Aron Elekes</h3>
+        <div class="team-card-chevron" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="team-thumb team-thumb-work pos-tl">
+      <img src="images/faction-matani.webp" alt="" loading="lazy">
+    </div>
+    <div class="team-thumb team-thumb-portrait pos-right">
+      <img src="images/team-aron.webp" alt="" loading="lazy">
+    </div>
+    <div class="team-thumb team-thumb-work pos-bc">
+      <img src="images/faction-ex-sanguis.webp" alt="" loading="lazy">
+    </div>
+  </div>
 
+  <!-- Conor slide -->
+  <div class="team-slide" id="teamConor">
+    <div class="team-slide-sticky">
+      <div class="team-card">
+        <span class="team-card-pill">Co-Creator and Writer</span>
+        <h3 class="team-card-name">Conor Sheehy</h3>
+        <div class="team-card-chevron" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="team-thumb team-thumb-work pos-tr">
+      <img src="images/faction-cradle.webp" alt="" loading="lazy">
+    </div>
+    <div class="team-thumb team-thumb-portrait pos-left">
+      <img src="images/team-conor.webp" alt="" loading="lazy">
+    </div>
+    <div class="team-thumb team-thumb-work pos-bl">
+      <img src="images/13-et-ep0-img.png" alt="" loading="lazy">
     </div>
   </div>
 </section>
