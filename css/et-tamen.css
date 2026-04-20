@@ -146,3 +146,86 @@
   .slider-arrow{font-size:1.5rem;min-width:var(--touch);min-height:var(--touch);padding:0 4px}
   .slider-arrow.prev{margin-right:-6px}.slider-arrow.next{margin-left:-6px}
 }
+
+/* ═══════ ET TAMEN — LIGHTBOX (full-size responsive viewer) ═══════ */
+
+/* Make slide images appear clickable */
+#sTrack .slide img{cursor:zoom-in}
+
+/* Body scroll lock when lightbox is open */
+html.lightbox-open,html.lightbox-open body{overflow:hidden;touch-action:none}
+
+/* Lightbox container */
+.et-lightbox{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(10,7,16,0.96);
+  display:none;align-items:center;justify-content:center;
+  padding:clamp(16px,4vw,48px);
+  opacity:0;transition:opacity .3s ease;
+}
+.et-lightbox.is-open,.et-lightbox[aria-hidden="false"]{display:flex;opacity:1}
+
+/* Stage (image + counter) */
+.et-lightbox-stage{
+  flex:1;max-width:100%;max-height:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;
+}
+.et-lightbox-img{
+  max-width:min(100%,92vw);max-height:min(100%,82vh);
+  object-fit:contain;display:block;
+  border:2px solid rgba(255,255,255,0.08);
+  box-shadow:0 20px 60px rgba(0,0,0,0.7);
+}
+.et-lightbox-counter{
+  font-family:Oswald,Arial,sans-serif;font-weight:400;
+  font-size:14px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,0.7);
+}
+
+/* Close button */
+.et-lightbox-close{
+  position:absolute;top:clamp(16px,3vw,32px);right:clamp(16px,3vw,32px);
+  width:48px;height:48px;
+  border:none;background:rgba(255,255,255,0.08);color:#fff;
+  font-size:32px;line-height:1;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  z-index:2;
+  transition:background .2s,transform .2s;
+}
+.et-lightbox-close:hover{background:rgba(255,255,255,0.18);transform:scale(1.08)}
+.et-lightbox-close:focus-visible{outline:2px solid #A8D830;outline-offset:2px}
+
+/* Prev / Next nav buttons */
+.et-lightbox-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:56px;height:56px;
+  background:rgba(255,255,255,0.08);border:none;color:#fff;
+  border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  z-index:2;
+  transition:background .2s,transform .2s;
+}
+.et-lightbox-nav:hover{background:rgba(255,255,255,0.18);transform:translateY(-50%) scale(1.08)}
+.et-lightbox-nav:focus-visible{outline:2px solid #A8D830;outline-offset:2px}
+.et-lightbox-nav.prev{left:clamp(16px,3vw,40px)}
+.et-lightbox-nav.next{right:clamp(16px,3vw,40px)}
+
+/* Mobile tuning */
+@media(max-width:768px){
+  .et-lightbox{padding:clamp(8px,3vw,20px)}
+  .et-lightbox-close{width:40px;height:40px;font-size:26px;top:10px;right:10px}
+  .et-lightbox-nav{width:48px;height:48px;font-size:16px}
+  .et-lightbox-nav.prev{left:10px}
+  .et-lightbox-nav.next{right:10px}
+  .et-lightbox-img{max-width:96vw;max-height:78vh}
+  .et-lightbox-counter{font-size:12px}
+}
+
+/* Reduced motion: disable fade transition */
+@media(prefers-reduced-motion:reduce){
+  .et-lightbox,.et-lightbox-close,.et-lightbox-nav{transition:none}
+}

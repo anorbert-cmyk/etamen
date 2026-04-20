@@ -1,0 +1,24 @@
+/* === reading-progress.css === */
+/* Top-of-page reading progress indicator.
+   Sits above nav (z-index:1000 > nav:999) but below mobile menu (#mm z-index is raised
+   separately if needed). The bar is 3px tall at top:0 and cannot overlap any dropdown
+   that starts below the navbar, so this z-index is purely defensive. */
+
+#reading-progress{
+  position:fixed; top:0; left:0; right:0;
+  height:3px;
+  z-index:1000;
+  background-color:rgba(255,255,255,0.08);
+  pointer-events:none;
+}
+#reading-progress span{
+  display:block; height:100%; width:0%;
+  background-color:#A8D830;
+  box-shadow:0 0 8px rgba(168,216,48,0.6);
+  transform-origin:left center;
+  will-change:width;
+}
+
+@media (prefers-reduced-motion:reduce){
+  #reading-progress span{ transition:none; }
+}

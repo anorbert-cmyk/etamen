@@ -36,7 +36,7 @@
 .graphic-div{padding-left:var(--sp-xs)}
 .graphic-div img{width:var(--icon-star);height:auto}
 .graphic-bottom-div img{width:var(--icon-chev);height:auto}
-.hero-bottom-text-div p{color:var(--lt);letter-spacing:.5px;font-family:Queering,Arial,sans-serif;font-size:var(--fs-body);font-weight:400;line-height:1.5}
+.hero-bottom-text-div p{color:var(--lt);letter-spacing:.5px;font-family:Queering,Arial,sans-serif;font-size:var(--fs-body);font-weight:400;line-height:1.5;max-width:400px}
 .hero-bottom-right-div{flex-shrink:0}
 .hero-bottom-right-div img{width:var(--icon-seal);height:auto}
 

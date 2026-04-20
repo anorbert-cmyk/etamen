@@ -1,6 +1,9 @@
 /* === timeline.js === */
 window.apokrif.register(function() {
-  // Timeline — vertical crossfade / horizontal scrub pin
+  // Timeline — horizontal scrub pin (9 slides, 900vw track)
+  // Progress bar lives INSIDE .timeline-track (anchored at left:50vw, width:800vw)
+  // so it travels with the track. Fill grows 0→100% of 800vw; moving dot rides it.
+  // Viewport clips overflow via #timeline { overflow:hidden }.
   (function() {
     var section = document.getElementById('timeline');
     if (!section) return;
