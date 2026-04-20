@@ -1,10 +1,7 @@
-/* === team.js — cinematic team section (intro reveal + per-slide scroll drama) ===
- * Performance-tuned: single scrub-timeline per thumb (clip+parallax merged),
- * no persistent will-change, force3D globally, cached backdrop opacity writes.
- * ScrollTrigger budget: 1 (bg) + 1 (intro) + 2×(1 card + 3 thumb-scrubs + 3 clip-reveals)
- *   Wait — we merged parallax+breath into one scrub per thumb and use `immediateRender:false`
- *   to piggyback the clip-path reveal onto a single ScrollTrigger per thumb where feasible.
- *   Final desktop budget: 1 bg + 1 intro + 2 cards + 2×3 thumb scrubs = 10.
+/* === team.js — cinematic team section (intro reveal + per-slide entrance) ===
+ * Performance-tuned: one ScrollTrigger per slide (once:true), no scrub parallax,
+ * no persistent will-change, force3D globally.
+ * Desktop ScrollTrigger budget: 1 intro + 2 slide entries = 3 triggers total.
  */
 window.apokrif.register(function() {
   var section = document.getElementById('team');
@@ -24,9 +21,6 @@ window.apokrif.register(function() {
   // Splits an element's innerHTML into per-character <span class="char">,
   // preserving <strong> tags (chars inside gain .char--strong) and whitespace.
   // Returns the collected array of .char spans.
-  // NOTE: We intentionally do NOT set will-change on chars — GSAP adds it per tween
-  // via force3D, and clears it on completion. Persistent will-change on 150+ spans
-  // is a major perf footgun on mobile Safari.
   function splitChars(el) {
     if (!el) return [];
     var chars = [];
@@ -38,7 +32,6 @@ window.apokrif.register(function() {
       for (var i = 0; i < text.length; i++) {
         var ch = text.charAt(i);
         if (ch === ' ' || ch === '\u00a0') {
-          // preserve spaces as real whitespace so wrapping works naturally
           frag.appendChild(document.createTextNode(ch));
           continue;
         }
@@ -53,7 +46,6 @@ window.apokrif.register(function() {
     }
 
     function walk(node, strong) {
-      // collect childNodes into array first (live list mutates during replace)
       var kids = Array.prototype.slice.call(node.childNodes);
       for (var i = 0; i < kids.length; i++) {
         var n = kids[i];
@@ -94,6 +86,7 @@ window.apokrif.register(function() {
     gsap.set('#team .team-card-pill', { opacity: 1, y: 0, clearProps: 'willChange' });
     gsap.set('#team .team-card-name', { opacity: 1, y: 0, clearProps: 'willChange' });
     gsap.set('#team .team-card-glyph', { opacity: 0.9, scale: 1, rotation: 0, y: 0 });
+    gsap.set('#team .team-card-portrait', { clipPath: 'none', opacity: 1, clearProps: 'willChange' });
     gsap.set('#team .team-thumb', { clipPath: 'none', opacity: 1, y: 0, clearProps: 'transform,willChange' });
     gsap.set('#team .team-thumb img', { scale: 1, rotation: 0, clearProps: 'willChange' });
     gsap.set('#team .team-hero-art img', { clipPath: 'none', scale: 1, clearProps: 'willChange' });
@@ -170,7 +163,6 @@ window.apokrif.register(function() {
               duration: 0.85,
               ease: 'power3.out',
               stagger: 0.012,
-              // Release compositor layers after animation — avoid permanent GPU layers on 150+ spans
               onComplete: function() { gsap.set(paraChars, { clearProps: 'willChange' }); }
             }, 0.45);
 
@@ -208,16 +200,24 @@ window.apokrif.register(function() {
       });
     }
 
-    /* -- Per-slide animations (Aron + Conor) ------------------------- */
+    /* -- Per-slide ONE-SHOT entrance timeline (Aron + Conor) --------- */
     var slides = section.querySelectorAll('.team-slide');
     slides.forEach(function(slide) {
-      var card = slide.querySelector('.team-card');
       var nameEl = slide.querySelector('.team-card-name');
       var pill = slide.querySelector('.team-card-pill');
       var glyph = slide.querySelector('.team-card-glyph');
+      var portrait = slide.querySelector('.team-card-portrait');
+      var work1 = slide.querySelector('.team-work-1');
+      var work2 = slide.querySelector('.team-work-2');
 
-      // Name: split chars with 3D tilt. Parent stays opacity:0 (set in CSS) to prevent
-      // pre-hydration FOUC of the saw-tooth banner, then unmask at timeline start.
+      // Portrait wipes from the side it sits on:
+      //   - Aron: portrait is on the LEFT half → wipe from 'left'
+      //   - Conor: portrait is on the RIGHT half → wipe from 'right'
+      var portraitDir = slide.id === 'teamConor' ? 'right' : 'left';
+      // Works cluster on the OPPOSITE side → wipe from the opposite direction
+      var worksDir = slide.id === 'teamConor' ? 'left' : 'right';
+
+      // Pre-state: name chars split + hidden, pill + glyph hidden, clip-paths closed.
       var nameChars = nameEl ? splitChars(nameEl) : [];
       if (nameChars.length) {
         gsap.set(nameEl, { perspective: 600 });
@@ -232,15 +232,43 @@ window.apokrif.register(function() {
       if (pill) gsap.set(pill, { y: 15, opacity: 0 });
       if (glyph) gsap.set(glyph, { scale: 0.5, y: -20, opacity: 0, transformOrigin: '50% 50%' });
 
-      // ONE ScrollTrigger per slide for the card (was: 1 here — already optimal)
+      if (portrait) {
+        var portraitInsets = revealInset(portraitDir);
+        gsap.set(portrait, { clipPath: portraitInsets.from });
+      }
+      if (work1) {
+        var w1Insets = revealInset(worksDir);
+        gsap.set(work1, { clipPath: w1Insets.from });
+        var w1Img = work1.querySelector('img');
+        if (w1Img) gsap.set(w1Img, { scale: 1.1 });
+      }
+      if (work2) {
+        var w2Insets = revealInset(worksDir);
+        gsap.set(work2, { clipPath: w2Insets.from });
+        var w2Img = work2.querySelector('img');
+        if (w2Img) gsap.set(w2Img, { scale: 1.1 });
+      }
+
+      // ONE ScrollTrigger per slide — all reveals fire from a single timeline.
       ScrollTrigger.create({
         trigger: slide,
-        start: 'top 55%',
+        start: 'top 60%',
         once: true,
         onEnter: function() {
-          var tl = gsap.timeline({ defaults: { force3D: true } });
+          var tl = gsap.timeline({ defaults: { force3D: true, ease: 'power3.out' } });
+
+          // 0.0s — pill fade + slide-up
+          if (pill) {
+            tl.to(pill, {
+              y: 0,
+              opacity: 1,
+              duration: 0.6
+            }, 0.0);
+          }
+
+          // 0.2s — name char-split
           if (nameEl) {
-            tl.set(nameEl, { opacity: 1 }, 0);
+            tl.set(nameEl, { opacity: 1 }, 0.2);
           }
           if (nameChars.length) {
             tl.to(nameChars, {
@@ -251,16 +279,56 @@ window.apokrif.register(function() {
               ease: 'power4.out',
               stagger: 0.02,
               onComplete: function() { gsap.set(nameChars, { clearProps: 'willChange' }); }
-            }, 0);
+            }, 0.2);
           }
-          if (pill) {
-            tl.to(pill, {
-              y: 0,
-              opacity: 1,
-              duration: 0.6,
-              ease: 'power3.out'
-            }, 0.3);
+
+          // 0.4s — portrait clip-path reveal (from the creator's own side)
+          if (portrait) {
+            var portraitTo = revealInset(portraitDir).to;
+            tl.to(portrait, {
+              clipPath: portraitTo,
+              duration: 1.0,
+              ease: 'power3.inOut'
+            }, 0.4);
           }
+
+          // 0.5s — work1 clip-path reveal (opposite side from portrait)
+          if (work1) {
+            var w1To = revealInset(worksDir).to;
+            tl.to(work1, {
+              clipPath: w1To,
+              duration: 1.1,
+              ease: 'power3.inOut'
+            }, 0.5);
+            var w1ImgInner = work1.querySelector('img');
+            if (w1ImgInner) {
+              tl.to(w1ImgInner, {
+                scale: 1.0,
+                duration: 1.4,
+                ease: 'power3.out'
+              }, 0.5);
+            }
+          }
+
+          // 0.6s — work2 clip-path reveal (same direction as work1)
+          if (work2) {
+            var w2To = revealInset(worksDir).to;
+            tl.to(work2, {
+              clipPath: w2To,
+              duration: 1.1,
+              ease: 'power3.inOut'
+            }, 0.6);
+            var w2ImgInner = work2.querySelector('img');
+            if (w2ImgInner) {
+              tl.to(w2ImgInner, {
+                scale: 1.0,
+                duration: 1.4,
+                ease: 'power3.out'
+              }, 0.6);
+            }
+          }
+
+          // 0.8s — glyph fade/scale-in
           if (glyph) {
             tl.to(glyph, {
               scale: 1,
@@ -268,67 +336,8 @@ window.apokrif.register(function() {
               opacity: 1,
               duration: 0.8,
               ease: 'back.out(1.8)'
-            }, 0.6);
+            }, 0.8);
           }
-        }
-      });
-
-      /* -- Thumbs: clip-path reveal (one-shot) + parallax (scrub) ----
-       *  Per-thumb triggers reduced from 3 → 2:
-       *    1) Clip-path reveal (once, fires on enter)
-       *    2) Parallax drift + subtle inner-img scale/rotate MERGED into one scrub timeline
-       *  Dropped the separate inner-img ScrollTrigger entirely.
-       */
-      var thumbs = slide.querySelectorAll('.team-thumb');
-      var driftSpeeds = [-18, 24, -14];
-      thumbs.forEach(function(thumb, i) {
-        var dir = thumb.getAttribute('data-reveal') || 'bottom';
-        var insets = revealInset(dir);
-        var img = thumb.querySelector('img');
-
-        // Initial clipped state
-        gsap.set(thumb, { clipPath: insets.from });
-        if (img) gsap.set(img, { scale: 1.12 }); // mild pre-zoom; no rotation (dropped)
-
-        // 1) Clip-path reveal (once) — intentionally separate because it's a one-shot
-        //    and must not be scrubbed with scroll position.
-        gsap.to(thumb, {
-          clipPath: insets.to,
-          duration: 1.2,
-          ease: 'power3.inOut',
-          force3D: true,
-          scrollTrigger: {
-            trigger: thumb,
-            start: 'top 82%',
-            once: true
-          }
-        });
-
-        // 2) MERGED scrub timeline: outer yPercent parallax + gentle inner-img scale relax.
-        //    Previous code had 2 separate scrub triggers (outer parallax + inner scale+rotate).
-        //    Consolidation → 1 scrub trigger per thumb. Rotation dropped entirely (GPU flair
-        //    with minimal visual payoff, measurable composite cost).
-        var scrubTl = gsap.timeline({
-          defaults: { ease: 'none', force3D: true },
-          scrollTrigger: {
-            trigger: thumb,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 1.2, // slight lag smooths perceived parallax
-            invalidateOnRefresh: true
-          }
-        });
-        scrubTl.fromTo(thumb,
-          { yPercent: 0 },
-          { yPercent: driftSpeeds[i % 3] },
-          0
-        );
-        if (img) {
-          scrubTl.fromTo(img,
-            { scale: 1.12 },
-            { scale: 1.0 },
-            0
-          );
         }
       });
     });
@@ -346,6 +355,8 @@ window.apokrif.register(function() {
     slides.forEach(function(slide) {
       var nameEl = slide.querySelector('.team-card-name');
       var glyph = slide.querySelector('.team-card-glyph');
+      var portrait = slide.querySelector('.team-card-portrait');
+      if (portrait) gsap.set(portrait, { clipPath: 'none', opacity: 0, y: 16 });
       if (nameEl) {
         gsap.set(nameEl, { opacity: 0, y: 24 });
         ScrollTrigger.create({
@@ -354,6 +365,9 @@ window.apokrif.register(function() {
           once: true,
           onEnter: function() {
             gsap.to(nameEl, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', force3D: true });
+            if (portrait) {
+              gsap.to(portrait, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.1, force3D: true });
+            }
             if (glyph) {
               gsap.fromTo(glyph,
                 { opacity: 0, scale: 0.7 },
@@ -385,8 +399,10 @@ window.apokrif.register(function() {
     if (introTile) {
       var heroImg = introTile.querySelector('.team-hero-art img');
       var introPara = introTile.querySelector('.team-intro');
+      var teaseImgs = introTile.querySelectorAll('.team-intro-tease img');
       if (heroImg) gsap.set(heroImg, { opacity: 0, scale: 1.05 });
       if (introPara) gsap.set(introPara, { opacity: 0, y: 20 });
+      if (teaseImgs.length) gsap.set(teaseImgs, { opacity: 0, y: 16 });
       ScrollTrigger.create({
         trigger: introTile,
         start: 'top 80%',
@@ -394,6 +410,7 @@ window.apokrif.register(function() {
         onEnter: function() {
           if (heroImg) gsap.to(heroImg, { opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out', force3D: true });
           if (introPara) gsap.to(introPara, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.15, force3D: true });
+          if (teaseImgs.length) gsap.to(teaseImgs, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', delay: 0.25, stagger: 0.1, force3D: true });
         }
       });
     }

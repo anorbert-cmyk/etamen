@@ -1,9 +1,9 @@
 /* === team.css =========================================================
-   Team section: Frame 1 intro tile + two sticky "slide" panels (Aron / Conor)
-   with three absolutely-positioned parallax thumbs each. Signature saw-tooth
-   "torn paper" banners match the nav tab graphic language. Clean hard
-   rectangles on imagery (no borders, no drop shadows). Crossfading backdrop
-   layers under a soft green multiply tint.
+   Team section: CSS-Grid bento layout.
+   - Intro tile: 12-col grid with 4 images (hero + 2 teases + deco).
+   - Aron / Conor poster frames: 12-col × 4-row grid inside a 200vh
+     sticky track (100vh poster frame per creator). Name + portrait
+     share a vertical band; 2 works cluster opposite.
    ======================================================================= */
 
 /* ---- Design tokens ---------------------------------------------------- */
@@ -67,22 +67,29 @@
   pointer-events:none;
 }
 
-/* ---- Intro tile (Frame 1) -------------------------------------------- */
+/* ---- Intro tile (Frame 1) — 12-col CSS Grid ------------------------- */
 .team-intro-tile{
   position:relative;
   z-index:3;
   min-height:100vh;
   min-height:100dvh;
+  display:grid;
+  grid-template-columns:repeat(12, 1fr);
+  grid-template-rows:auto auto 1fr auto;
+  grid-template-areas:
+    "label label label .     text  text  text  text  text  text  text  text"
+    "hero  hero  hero  hero  hero  hero  tease1 tease1 tease1 tease1 tease2 tease2"
+    "hero  hero  hero  hero  hero  hero  tease1 tease1 tease1 tease1 tease2 tease2"
+    "hero  hero  hero  hero  hero  hero  deco   deco   deco   deco   tease2 tease2";
+  gap:clamp(12px, 1.5vw, 20px);
+  padding:clamp(60px, 8vh, 100px) clamp(24px, 5vw, 80px);
   max-width:1600px;
   margin:0 auto;
-  padding:0 clamp(24px,4vw,80px);
 }
 
 /* Top-left eyebrow label + down chevrons */
 .team-intro-label{
-  position:absolute;
-  top:clamp(80px,11vh,140px);
-  left:clamp(24px,4vw,60px);
+  grid-area:label;
   display:flex;
   flex-direction:column;
   gap:clamp(12px,2vh,22px);
@@ -117,10 +124,7 @@
 
 /* Top-right display paragraph */
 .team-intro-text{
-  position:absolute;
-  top:clamp(80px,15vh,180px);
-  right:clamp(24px,4vw,60px);
-  max-width:clamp(320px,52vw,780px);
+  grid-area:text;
   text-align:right;
   z-index:4;
 }
@@ -140,11 +144,11 @@
     0 0 8px rgba(0,0,0,0.35);
 }
 .team-intro-deco{
+  grid-area:deco;
   display:flex;
   justify-content:flex-end;
   align-items:center;
   gap:clamp(12px,1.8vw,24px);
-  margin-top:clamp(24px,4vh,40px);
 }
 .team-intro-glyph{
   width:clamp(28px,2.4vw,38px);
@@ -166,13 +170,12 @@
   opacity:0.7;
 }
 
-/* Bottom-left hero art — clean rectangle, no border, no shadow */
+/* Hero art — clean rectangle, no border, no shadow */
 .team-hero-art{
-  position:absolute;
-  left:clamp(40px,8vw,120px);
-  bottom:clamp(40px,6vh,80px);
-  width:clamp(280px,36vw,560px);
-  aspect-ratio:1/1.12;
+  grid-area:hero;
+  width:100%;
+  height:100%;
+  min-height:clamp(300px,50vh,640px);
   margin:0;
   z-index:3;
   overflow:hidden;
@@ -185,7 +188,22 @@
   /* will-change applied dynamically by GSAP during intro tween (force3D:true). */
 }
 
-/* ---- Person slide (sticky card + absolute thumbs) -------------------- */
+/* New: 2 tease images in the intro grid */
+.team-intro-tease{
+  margin:0;
+  overflow:hidden;
+  isolation:isolate;
+}
+.team-intro-tease.tease1{ grid-area:tease1; }
+.team-intro-tease.tease2{ grid-area:tease2; }
+.team-intro-tease img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* ---- Person slide (sticky poster frame) ------------------------------ */
 .team-slide{
   position:relative;
   z-index:3;
@@ -198,26 +216,44 @@
   top:0;
   height:100vh;
   height:100dvh;
-  display:flex;
+  display:grid;
+  grid-template-columns:repeat(12, 1fr);
+  grid-template-rows:repeat(4, minmax(0, 1fr));
+  gap:clamp(16px, 2vw, 32px);
+  padding:clamp(80px, 10vh, 120px) clamp(24px, 5vw, 80px) clamp(60px, 8vh, 100px);
   align-items:center;
-  justify-content:center;
+  justify-items:start;
   z-index:5;
   pointer-events:none;
 }
 
-/* Centered card */
+/* Aron — portrait band on LEFT, works cluster on RIGHT */
+#teamAron .team-slide-sticky{
+  grid-template-areas:
+    "pill     pill     pill     pill     pill     .        work1 work1 work1 work1 work1 work1"
+    "name     name     name     name     name     name     work1 work1 work1 work1 work1 work1"
+    "portrait portrait portrait portrait portrait glyph    work2 work2 work2 work2 work2 work2"
+    "portrait portrait portrait portrait portrait glyph    work2 work2 work2 work2 work2 work2";
+}
+
+/* Conor — mirrored: works on LEFT, portrait band on RIGHT */
+#teamConor .team-slide-sticky{
+  grid-template-areas:
+    "work1 work1 work1 work1 work1 work1 .        pill     pill     pill     pill     pill"
+    "work1 work1 work1 work1 work1 work1 name     name     name     name     name     name"
+    "work2 work2 work2 work2 work2 work2 glyph    portrait portrait portrait portrait portrait"
+    "work2 work2 work2 work2 work2 work2 glyph    portrait portrait portrait portrait portrait";
+}
+
+/* Card: display:contents promotes pill/name/portrait/glyph into the
+   outer sticky grid so the `grid-template-areas` mappings work directly. */
 .team-card{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:clamp(14px,1.8vw,24px);
-  text-align:center;
-  pointer-events:auto;
+  display:contents;
 }
 
 /* ---- Signature torn / saw-tooth banners ------------------------------ */
 .team-card-pill{
+  grid-area:pill;
   display:inline-block;
   background:var(--team-paper);
   color:var(--team-ink);
@@ -232,9 +268,12 @@
   clip-path:var(--saw-polygon);
   opacity:0;
   transform:translateY(12px);
-  /* will-change applied only during active tween (GSAP handles) */
+  align-self:center;
+  justify-self:start;
+  pointer-events:auto;
 }
 .team-card-name{
+  grid-area:name;
   display:inline-block;
   background:var(--team-paper);
   color:var(--team-ink);
@@ -249,25 +288,43 @@
   -webkit-clip-path:var(--saw-polygon);
   clip-path:var(--saw-polygon);
   opacity:0;
-  /* will-change applied only during active tween (GSAP handles) */
+  align-self:center;
+  justify-self:start;
+  pointer-events:auto;
 }
 .team-card-glyph{
+  grid-area:glyph;
   width:clamp(32px,2.8vw,44px);
   height:auto;
   display:block;
-  margin-top:clamp(4px,0.8vw,10px);
   opacity:0.9;
+  align-self:center;
+  justify-self:center;
+  pointer-events:auto;
 }
 
-/* ---- Parallax thumbs -------------------------------------------------- */
+/* ---- Portrait (inside card, sharing name's vertical band) ----------- */
+.team-card-portrait{
+  grid-area:portrait;
+  width:100%;
+  height:100%;
+  max-height:clamp(320px, 50vh, 540px);
+  object-fit:cover;
+  object-position:center;
+  -webkit-filter:grayscale(1) contrast(1.08);
+  filter:grayscale(1) contrast(1.08);
+  display:block;
+  align-self:start;
+  justify-self:center;
+  pointer-events:auto;
+}
+
+/* ---- Work thumbs (clustered opposite the portrait band) ------------- */
 .team-thumb{
-  position:absolute;
   overflow:hidden;
-  /* Hint to the browser to isolate paint; avoids persistent will-change
-     (12 thumbs × 2 properties creates GPU memory pressure on iOS Safari).
-     GSAP will add will-change:transform during active tweens via force3D. */
   contain:layout paint;
   transform:translateZ(0);
+  pointer-events:auto;
 }
 .team-thumb img{
   width:100%;height:100%;
@@ -275,129 +332,81 @@
   display:block;
   /* will-change applied dynamically by GSAP during scrubs (force3D:true) */
 }
-.team-thumb-portrait{
-  width:clamp(200px,18vw,300px);
-  aspect-ratio:1/1.2;
-}
-.team-thumb-portrait img{
-  -webkit-filter:grayscale(1) contrast(1.08);
-  filter:grayscale(1) contrast(1.08);
-}
 .team-thumb-work{
-  width:clamp(200px,22vw,360px);
-  aspect-ratio:3/4;
+  margin:0;
+  width:100%;
+  height:100%;
+  max-height:75vh;
 }
-
-/* Aron — bleed offsets */
-#teamAron .pos-tl{
-  top:-8vh; left:-5vw;
-  width:clamp(260px,32vw,520px);
-  height:clamp(400px,60vh,720px);
-  aspect-ratio:auto;
-}
-#teamAron .pos-right{
-  top:20vh; right:-4vw;
-  width:clamp(200px,18vw,320px);
-  height:clamp(380px,55vh,620px);
-  aspect-ratio:auto;
-}
-#teamAron .pos-bc{
-  top:135vh; left:42vw;
-  width:clamp(130px,11vw,190px);
-  aspect-ratio:3/4;
-}
-
-/* Conor — mirrored bleed offsets */
-#teamConor .pos-tr{
-  top:-8vh; right:-5vw;
-  width:clamp(260px,32vw,520px);
-  height:clamp(400px,60vh,720px);
-  aspect-ratio:auto;
-}
-#teamConor .pos-left{
-  top:20vh; left:-4vw;
-  width:clamp(200px,18vw,320px);
-  height:clamp(380px,55vh,620px);
-  aspect-ratio:auto;
-}
-#teamConor .pos-bl{
-  top:135vh; left:12vw;
-  width:clamp(130px,11vw,190px);
-  aspect-ratio:3/4;
-}
+.team-slide-sticky > .team-work-1{ grid-area:work1; }
+.team-slide-sticky > .team-work-2{ grid-area:work2; }
 
 /* ---- Tablet ----------------------------------------------------------- */
 @media (max-width:1024px){
   .team-intro{font-size:clamp(20px,2.8vw,28px);}
-  .team-slide{height:180vh;}
+  .team-slide{height:auto;}
+  .team-slide-sticky{
+    position:static;
+    height:auto;
+    padding:60px 32px;
+  }
   .team-card-name{font-size:clamp(44px,9vw,92px);}
-  .team-thumb-portrait{width:clamp(170px,16vw,260px);}
-  .team-thumb-work{width:clamp(170px,19vw,300px);}
-
-  #teamAron .pos-tl,
-  #teamConor .pos-tr{
-    width:clamp(220px,28vw,440px);
-    height:clamp(340px,54vh,620px);
-  }
-  #teamAron .pos-right,
-  #teamConor .pos-left{
-    width:clamp(170px,16vw,270px);
-    height:clamp(320px,50vh,540px);
-  }
 }
 
 /* ---- Mobile ----------------------------------------------------------- */
 @media (max-width:768px){
   .team-intro-tile{
-    display:flex;
-    flex-direction:column;
+    grid-template-columns:1fr;
+    grid-template-rows:auto;
+    grid-template-areas:
+      "label"
+      "text"
+      "hero"
+      "tease1"
+      "tease2"
+      "deco";
     min-height:auto;
     padding:clamp(100px,12vh,140px) 20px 40px;
-    gap:28px;
+    gap:22px;
   }
   .team-intro-label{
-    position:relative;
-    top:auto;left:auto;
-    align-self:flex-start;
     gap:14px;
   }
   .team-intro-arrows{
     flex-direction:row;
-    align-self:flex-start;
     gap:6px;
   }
   .team-intro-text{
-    position:relative;
-    top:auto;right:auto;
-    max-width:100%;
     text-align:left;
   }
   .team-intro{font-size:clamp(17px,4.8vw,20px);}
   .team-intro-deco{
     justify-content:flex-start;
-    margin-top:20px;
   }
   .team-hero-art{
-    position:relative;
-    left:auto;bottom:auto;
-    width:min(80vw,360px);
-    aspect-ratio:1/1;
-    margin:24px auto 0;
+    width:100%;
+    min-height:clamp(240px,46vh,420px);
+    margin:0;
+  }
+  .team-intro-tease{
+    width:100%;
+    min-height:clamp(200px,34vh,320px);
   }
 
-  .team-slide{
-    height:auto;
+  /* Slides: collapse to single column, natural stack */
+  #teamAron .team-slide-sticky,
+  #teamConor .team-slide-sticky{
+    grid-template-columns:1fr;
+    grid-template-rows:auto;
+    grid-template-areas:
+      "pill"
+      "name"
+      "portrait"
+      "work1"
+      "work2"
+      "glyph";
+    gap:22px;
     padding:50px 20px;
-    display:flex;
-    flex-direction:column;
-    gap:28px;
-    align-items:center;
-  }
-  .team-slide-sticky{
-    position:relative;
-    top:auto;
-    height:auto;
-    pointer-events:auto;
   }
   .team-card-pill{
     opacity:1;
@@ -405,25 +414,26 @@
     padding:8px 22px;
     font-size:11px;
     letter-spacing:0.2em;
+    justify-self:center;
   }
   .team-card-name{
     font-size:clamp(40px,12vw,76px);
     padding:10px 28px;
+    justify-self:center;
   }
-  .team-thumb{
-    position:relative !important;
-    top:auto !important;
-    left:auto !important;
-    right:auto !important;
-    bottom:auto !important;
-    width:min(70vw,320px);
-    height:auto !important;
+  .team-card-portrait{
+    width:min(85vw,360px);
+    height:auto;
+    max-height:none;
+    aspect-ratio:4/5;
+    justify-self:center;
+  }
+  .team-thumb-work{
+    width:min(92vw,420px);
+    height:auto;
+    max-height:none;
     aspect-ratio:3/4;
-    will-change:auto;
-  }
-  .team-thumb-portrait{
-    width:min(70vw,300px);
-    aspect-ratio:1/1.1;
+    justify-self:center;
   }
   .team-thumb img{
     transform:none;
@@ -442,8 +452,10 @@
     padding:7px 18px;
     letter-spacing:0.18em;
   }
-  .team-thumb{width:min(80vw,280px);}
-  .team-thumb-portrait{width:min(80vw,280px);}
+  .team-card-portrait{ width:85vw; }
+  .team-thumb-work{ width:92vw; }
+  #teamAron .team-slide-sticky,
+  #teamConor .team-slide-sticky{ gap:18px; }
 }
 
 /* ---- Reduced motion -------------------------------------------------- */
@@ -453,4 +465,5 @@
   .team-thumb{transform:none !important;}
   .team-thumb img{transform:none !important;}
   .team-hero-art img{transform:none !important;}
+  .team-card-portrait{clip-path:none !important;}
 }
