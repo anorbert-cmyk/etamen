@@ -52,8 +52,8 @@
 }
 .et-cta:hover{filter:brightness(1.1)}
 
-/* Right column: slider — centered in its column */
-.et-right{flex:1;overflow:visible;min-width:0;min-height:0;display:flex;justify-content:center}
+/* Right column: slider + dots stacked — centered in its column */
+.et-right{flex:1;overflow:visible;min-width:0;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(10px,1.4vh,18px)}
 .slider-wrap{
   position:relative;display:flex;align-items:center;gap:0;
   max-width:fit-content;margin:0;
@@ -85,11 +85,15 @@
 .slider-arrow.next{margin-left:-20px}
 
 
-/* Slide dots — down-pointing sawtooth (design match) */
+/* Slide dots — down-pointing sawtooth, rendered BELOW the frame */
 .slide-dots{
   display:flex;gap:6px;justify-content:center;align-items:flex-end;
-  padding-top:var(--sp-xs);
-  position:absolute;bottom:8px;left:0;right:0;
+  position:relative;
+  margin-top:clamp(8px,1.2vh,14px);
+  padding:0;
+  width:auto;
+  flex-wrap:wrap;
+  max-width:min(100%, 540px);
 }
 .slide-dot{
   width:clamp(14px,1.6vw,20px);height:clamp(14px,1.6vw,20px);
@@ -170,33 +174,45 @@
 /* Body scroll lock when lightbox is open */
 html.lightbox-open,html.lightbox-open body{overflow:hidden;touch-action:none}
 
-/* Lightbox container */
+/* Lightbox container — visibility+opacity transition (display:none breaks fade) */
 .et-lightbox{
   position:fixed;inset:0;z-index:9999;
   background:rgba(10,7,16,0.96);
-  display:none;align-items:center;justify-content:center;
+  display:flex;align-items:center;justify-content:center;
   padding:clamp(16px,4vw,48px);
-  opacity:0;transition:opacity .3s ease;
+  visibility:hidden;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease, visibility 0s linear .3s;
 }
-.et-lightbox.is-open,.et-lightbox[aria-hidden="false"]{display:flex;opacity:1}
+.et-lightbox.is-open,.et-lightbox[aria-hidden="false"]{
+  visibility:visible;
+  opacity:1;
+  pointer-events:auto;
+  transition:opacity .3s ease;
+}
 
-/* Stage (image + counter) — passive centering layer, no flex:1 */
+/* Stage — image takes full height; counter overlays at bottom via absolute */
 .et-lightbox-stage{
   width:100%;height:100%;min-width:0;min-height:0;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:16px;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
 }
 .et-lightbox-img{
   width:auto;height:auto;
-  max-width:92vw;max-height:82vh;
+  max-width:92vw;max-height:88vh;
   object-fit:contain;display:block;
   border:2px solid rgba(255,255,255,0.08);
   box-shadow:0 20px 60px rgba(0,0,0,0.7);
+  user-select:none;
 }
 .et-lightbox-counter{
+  position:absolute;left:50%;bottom:-28px;
+  transform:translateX(-50%);
   font-family:Oswald,Arial,sans-serif;font-weight:400;
   font-size:14px;letter-spacing:.2em;text-transform:uppercase;
   color:rgba(255,255,255,0.7);
+  white-space:nowrap;pointer-events:none;
 }
 
 /* Close button */

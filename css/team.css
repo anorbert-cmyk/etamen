@@ -300,7 +300,8 @@
   aspect-ratio:4/3;
 }
 #teamAron .pos-a5{
-  top:200vh; left:42vw;
+  /* moved from center (left:42vw) to right edge so it doesn't cover team-bg face */
+  top:200vh; right:clamp(150px,12vw,200px);
   width:clamp(180px,20vw,320px);
 }
 #teamAron .pos-a6{
@@ -313,7 +314,8 @@
   width:clamp(160px,17vw,260px);
 }
 #teamAron .pos-a8{
-  top:280vh; left:35vw;
+  /* moved from center (left:35vw) to left edge so it doesn't cover team-bg face */
+  top:280vh; left:clamp(150px,12vw,220px);
   width:clamp(160px,15vw,240px);
   aspect-ratio:4/5;
 }
@@ -337,7 +339,8 @@
   width:clamp(180px,18vw,300px);
 }
 #teamConor .pos-c5{
-  top:200vh; left:38vw;
+  /* moved from center (left:38vw) to right edge so it doesn't cover team-bg face */
+  top:200vh; right:clamp(150px,12vw,220px);
   width:clamp(200px,22vw,360px);
   aspect-ratio:4/5;
 }
