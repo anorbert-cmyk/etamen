@@ -1,9 +1,8 @@
 /* === team.css =========================================================
-   Team section: CSS-Grid bento layout.
-   - Intro tile: 12-col grid with 4 images (hero + 2 teases + deco).
-   - Aron / Conor poster frames: 12-col × 4-row grid inside a 200vh
-     sticky track (100vh poster frame per creator). Name + portrait
-     share a vertical band; 2 works cluster opposite.
+   Team section: sticky atmosphere + intro tile + master-scroll.
+   - Intro tile: 12-col grid (label | text | tease1 | tease2 | deco).
+   - Master scroll: single column of 9 images with a CSS-sticky
+     3-station text center; GSAP scrub drives letter-in/out.
    ======================================================================= */
 
 /* ---- Design tokens ---------------------------------------------------- */
@@ -13,8 +12,7 @@
   --team-paper:#ffffff;
   --team-tint-rgba:rgba(168,216,48,0.58);
 
-  /* Saw-tooth silhouette shared by pill + name banner.
-     Flat top/bottom, 7 teeth cut INWARD on left (0%->2%) and right (100%->98%). */
+  /* Saw-tooth silhouette (legacy token kept for potential reuse). */
   --saw-polygon:polygon(
     0% 0%, 100% 0%,
     98% 14.285%, 100% 28.571%, 98% 42.857%,
@@ -75,12 +73,11 @@
   min-height:100dvh;
   display:grid;
   grid-template-columns:repeat(12, 1fr);
-  grid-template-rows:auto auto 1fr auto;
+  grid-template-rows:auto 1fr auto;
   grid-template-areas:
-    "label label label .     text  text  text  text  text  text  text  text"
-    "hero  hero  hero  hero  hero  hero  tease1 tease1 tease1 tease1 tease2 tease2"
-    "hero  hero  hero  hero  hero  hero  tease1 tease1 tease1 tease1 tease2 tease2"
-    "hero  hero  hero  hero  hero  hero  deco   deco   deco   deco   tease2 tease2";
+    "label label label label  text   text   text   text   text   text   text   text"
+    "text2 text2 text2 text2  text2  text2  tease1 tease1 tease1 tease2 tease2 tease2"
+    "deco  deco  deco  deco   deco   tease1 tease1 tease1 tease1 tease2 tease2 tease2";
   gap:clamp(12px, 1.5vw, 20px);
   padding:clamp(60px, 8vh, 100px) clamp(24px, 5vw, 80px);
   max-width:1600px;
@@ -122,11 +119,13 @@
 .team-intro-arrows span:nth-child(2){opacity:.55;}
 .team-intro-arrows span:nth-child(3){opacity:.30;}
 
-/* Top-right display paragraph */
+/* Top-right display paragraph — now occupies the former hero band too
+   so the intro tile fills cleanly without a hero figure. */
 .team-intro-text{
   grid-area:text;
   text-align:right;
   z-index:4;
+  align-self:start;
 }
 .team-intro{
   font-family:'Oswald',sans-serif;
@@ -146,9 +145,10 @@
 .team-intro-deco{
   grid-area:deco;
   display:flex;
-  justify-content:flex-end;
+  justify-content:flex-start;
   align-items:center;
   gap:clamp(12px,1.8vw,24px);
+  align-self:end;
 }
 .team-intro-glyph{
   width:clamp(28px,2.4vw,38px);
@@ -170,29 +170,12 @@
   opacity:0.7;
 }
 
-/* Hero art — clean rectangle, no border, no shadow */
-.team-hero-art{
-  grid-area:hero;
-  width:100%;
-  height:100%;
-  min-height:clamp(300px,50vh,640px);
-  margin:0;
-  z-index:3;
-  overflow:hidden;
-  isolation:isolate;
-}
-.team-hero-art img{
-  width:100%;height:100%;
-  object-fit:cover;
-  display:block;
-  /* will-change applied dynamically by GSAP during intro tween (force3D:true). */
-}
-
-/* New: 2 tease images in the intro grid */
+/* 2 tease images in the intro grid */
 .team-intro-tease{
   margin:0;
   overflow:hidden;
   isolation:isolate;
+  min-height:clamp(260px,42vh,520px);
 }
 .team-intro-tease.tease1{ grid-area:tease1; }
 .team-intro-tease.tease2{ grid-area:tease2; }
@@ -203,154 +186,94 @@
   display:block;
 }
 
-/* ---- Person slide (sticky poster frame) ------------------------------ */
-.team-slide{
+/* ---- Master scroll section ------------------------------------------ */
+.master-scroll{
   position:relative;
+  width:100%;
+  padding:clamp(80px,12vh,160px) clamp(24px,5vw,80px);
   z-index:3;
-  height:200vh;
-  max-width:none;
-  padding:0;
 }
-.team-slide-sticky{
+.master-column{
+  display:flex;
+  flex-direction:column;
+  gap:clamp(40px,6vh,80px);
+  width:clamp(280px,28vw,420px);
+  margin:0 auto;
+  padding:50vh 0;
+}
+.mc-slot{
+  margin:0;
+  aspect-ratio:4/5;
+  overflow:hidden;
+  border-radius:4px;
+}
+.mc-slot img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* Sticky center text layer — zero-height so stations self-center */
+.text-master-scroll-center{
   position:sticky;
-  top:0;
-  height:100vh;
-  height:100dvh;
-  display:grid;
-  grid-template-columns:repeat(12, 1fr);
-  grid-template-rows:repeat(4, minmax(0, 1fr));
-  gap:clamp(16px, 2vw, 32px);
-  padding:clamp(80px, 10vh, 120px) clamp(24px, 5vw, 80px) clamp(60px, 8vh, 100px);
-  align-items:center;
-  justify-items:start;
-  z-index:5;
+  top:50%;
+  height:0;
+  z-index:6;
   pointer-events:none;
 }
-
-/* Aron — portrait band on LEFT, works cluster on RIGHT */
-#teamAron .team-slide-sticky{
-  grid-template-areas:
-    "pill     pill     pill     pill     pill     .        work1 work1 work1 work1 work1 work1"
-    "name     name     name     name     name     name     work1 work1 work1 work1 work1 work1"
-    "portrait portrait portrait portrait portrait glyph    work2 work2 work2 work2 work2 work2"
-    "portrait portrait portrait portrait portrait glyph    work2 work2 work2 work2 work2 work2";
+.ms-station{
+  position:absolute;
+  left:50%;
+  top:0;
+  transform:translate(-50%,-50%);
+  width:min(92vw,1100px);
+  text-align:center;
+  opacity:0;
+  padding:0 clamp(16px,3vw,48px);
 }
+.ms-station.ms-s1{ opacity:1; } /* seed: first station visible at rest */
 
-/* Conor — mirrored: works on LEFT, portrait band on RIGHT */
-#teamConor .team-slide-sticky{
-  grid-template-areas:
-    "work1 work1 work1 work1 work1 work1 .        pill     pill     pill     pill     pill"
-    "work1 work1 work1 work1 work1 work1 name     name     name     name     name     name"
-    "work2 work2 work2 work2 work2 work2 glyph    portrait portrait portrait portrait portrait"
-    "work2 work2 work2 work2 work2 work2 glyph    portrait portrait portrait portrait portrait";
-}
-
-/* Card: display:contents promotes pill/name/portrait/glyph into the
-   outer sticky grid so the `grid-template-areas` mappings work directly. */
-.team-card{
-  display:contents;
-}
-
-/* ---- Signature torn / saw-tooth banners ------------------------------ */
-.team-card-pill{
-  grid-area:pill;
-  display:inline-block;
-  background:var(--team-paper);
-  color:var(--team-ink);
+.ms-eyebrow{
   font-family:'Oswald',sans-serif;
   font-weight:500;
-  font-size:clamp(11px,0.95vw,14px);
   letter-spacing:0.22em;
   text-transform:uppercase;
-  padding:clamp(10px,1.2vw,14px) clamp(22px,2.4vw,36px);
-  border-radius:0;
-  -webkit-clip-path:var(--saw-polygon);
-  clip-path:var(--saw-polygon);
-  opacity:0;
-  transform:translateY(12px);
-  align-self:center;
-  justify-self:start;
-  pointer-events:auto;
+  font-size:clamp(12px,1vw,15px);
+  color:#fff;
+  margin:0 0 clamp(12px,2vh,24px);
+  opacity:0.9;
 }
-.team-card-name{
-  grid-area:name;
-  display:inline-block;
-  background:var(--team-paper);
-  color:var(--team-ink);
+.ms-name{
   font-family:'Queering','Oswald',Arial,sans-serif;
   font-weight:400;
-  font-size:clamp(48px,8.5vw,130px);
-  line-height:0.98;
+  font-size:clamp(64px,11vw,180px);
+  line-height:0.92;
   letter-spacing:-0.5px;
+  color:var(--team-ink, #1a1520);
   margin:0;
-  padding:clamp(8px,1.4vw,18px) clamp(32px,5vw,70px);
-  border-radius:0;
-  -webkit-clip-path:var(--saw-polygon);
-  clip-path:var(--saw-polygon);
-  opacity:0;
-  align-self:center;
-  justify-self:start;
-  pointer-events:auto;
+  text-shadow:0 2px 0 rgba(0,0,0,0.12);
 }
-.team-card-glyph{
-  grid-area:glyph;
-  width:clamp(32px,2.8vw,44px);
-  height:auto;
-  display:block;
-  opacity:0.9;
-  align-self:center;
-  justify-self:center;
-  pointer-events:auto;
+.ms-motto{
+  font-family:'Queering','Oswald',Arial,sans-serif;
+  font-weight:400;
+  font-size:clamp(48px,8vw,120px);
+  line-height:0.98;
+  color:#fff;
+  margin:0;
+  text-shadow:0 2px 12px rgba(0,0,0,0.25);
 }
 
-/* ---- Portrait (inside card, sharing name's vertical band) ----------- */
-.team-card-portrait{
-  grid-area:portrait;
-  width:100%;
-  height:100%;
-  max-height:clamp(320px, 50vh, 540px);
-  object-fit:cover;
-  object-position:center;
-  -webkit-filter:grayscale(1) contrast(1.08);
-  filter:grayscale(1) contrast(1.08);
-  display:block;
-  align-self:start;
-  justify-self:center;
-  pointer-events:auto;
+/* splitChars letter wrappers */
+.ms-station .char{
+  display:inline-block;
+  will-change:transform,opacity;
+  transform-origin:50% 100%;
 }
-
-/* ---- Work thumbs (clustered opposite the portrait band) ------------- */
-.team-thumb{
-  overflow:hidden;
-  contain:layout paint;
-  transform:translateZ(0);
-  pointer-events:auto;
-}
-.team-thumb img{
-  width:100%;height:100%;
-  object-fit:cover;
-  display:block;
-  /* will-change applied dynamically by GSAP during scrubs (force3D:true) */
-}
-.team-thumb-work{
-  margin:0;
-  width:100%;
-  height:100%;
-  max-height:75vh;
-}
-.team-slide-sticky > .team-work-1{ grid-area:work1; }
-.team-slide-sticky > .team-work-2{ grid-area:work2; }
 
 /* ---- Tablet ----------------------------------------------------------- */
 @media (max-width:1024px){
   .team-intro{font-size:clamp(20px,2.8vw,28px);}
-  .team-slide{height:auto;}
-  .team-slide-sticky{
-    position:static;
-    height:auto;
-    padding:60px 32px;
-  }
-  .team-card-name{font-size:clamp(44px,9vw,92px);}
 }
 
 /* ---- Mobile ----------------------------------------------------------- */
@@ -361,7 +284,6 @@
     grid-template-areas:
       "label"
       "text"
-      "hero"
       "tease1"
       "tease2"
       "deco";
@@ -369,101 +291,63 @@
     padding:clamp(100px,12vh,140px) 20px 40px;
     gap:22px;
   }
-  .team-intro-label{
-    gap:14px;
-  }
-  .team-intro-arrows{
-    flex-direction:row;
-    gap:6px;
-  }
-  .team-intro-text{
-    text-align:left;
-  }
-  .team-intro{font-size:clamp(17px,4.8vw,20px);}
-  .team-intro-deco{
-    justify-content:flex-start;
-  }
-  .team-hero-art{
-    width:100%;
-    min-height:clamp(240px,46vh,420px);
-    margin:0;
-  }
+  .team-intro-label{ gap:14px; }
+  .team-intro-arrows{ flex-direction:row; gap:6px; }
+  .team-intro-text{ text-align:left; }
+  .team-intro{ font-size:clamp(17px,4.8vw,20px); }
+  .team-intro-deco{ justify-content:flex-start; }
   .team-intro-tease{
     width:100%;
     min-height:clamp(200px,34vh,320px);
   }
 
-  /* Slides: collapse to single column, natural stack */
-  #teamAron .team-slide-sticky,
-  #teamConor .team-slide-sticky{
-    grid-template-columns:1fr;
-    grid-template-rows:auto;
-    grid-template-areas:
-      "pill"
-      "name"
-      "portrait"
-      "work1"
-      "work2"
-      "glyph";
-    gap:22px;
-    padding:50px 20px;
+  /* Release master-scroll on mobile */
+  .master-scroll{
+    padding:clamp(40px,8vh,80px) clamp(16px,4vw,32px);
   }
-  .team-card-pill{
-    opacity:1;
-    transform:none;
-    padding:8px 22px;
-    font-size:11px;
-    letter-spacing:0.2em;
-    justify-self:center;
+  .master-column{
+    width:100%;
+    padding:0;
+    gap:clamp(24px,4vh,48px);
   }
-  .team-card-name{
-    font-size:clamp(40px,12vw,76px);
-    padding:10px 28px;
-    justify-self:center;
-  }
-  .team-card-portrait{
-    width:min(85vw,360px);
+  .text-master-scroll-center{
+    position:static;
     height:auto;
-    max-height:none;
-    aspect-ratio:4/5;
-    justify-self:center;
+    margin:clamp(32px,5vh,56px) 0;
   }
-  .team-thumb-work{
-    width:min(92vw,420px);
-    height:auto;
-    max-height:none;
-    aspect-ratio:3/4;
-    justify-self:center;
-  }
-  .team-thumb img{
+  .ms-station{
+    position:static;
     transform:none;
-    will-change:auto;
+    opacity:1 !important;
+    margin:clamp(32px,5vh,64px) auto;
+    width:100%;
   }
+  .ms-name{ font-size:clamp(44px,12vw,80px); }
+  .ms-motto{ font-size:clamp(36px,10vw,64px); }
 }
 
 /* ---- Small mobile ---------------------------------------------------- */
 @media (max-width:480px){
   .team-intro{font-size:clamp(16px,4.6vw,17px);}
-  .team-card-name{
-    font-size:clamp(34px,12vw,56px);
-    padding:8px 22px;
-  }
-  .team-card-pill{
-    padding:7px 18px;
-    letter-spacing:0.18em;
-  }
-  .team-card-portrait{ width:85vw; }
-  .team-thumb-work{ width:92vw; }
-  #teamAron .team-slide-sticky,
-  #teamConor .team-slide-sticky{ gap:18px; }
+  .ms-name{ font-size:clamp(40px,13vw,64px); }
+  .ms-motto{ font-size:clamp(32px,10vw,52px); }
 }
 
 /* ---- Reduced motion -------------------------------------------------- */
 @media (prefers-reduced-motion:reduce){
-  .team-card-pill{opacity:1 !important;transform:none !important;}
-  .team-card-name{opacity:1 !important;}
-  .team-thumb{transform:none !important;}
-  .team-thumb img{transform:none !important;}
-  .team-hero-art img{transform:none !important;}
-  .team-card-portrait{clip-path:none !important;}
+  .master-scroll{ min-height:auto; }
+  .text-master-scroll-center{
+    position:static;
+    height:auto;
+  }
+  .ms-station{
+    position:static;
+    transform:none;
+    opacity:1 !important;
+    margin:clamp(40px,8vh,80px) 0;
+  }
+  .ms-station .char{
+    transform:none !important;
+    opacity:1 !important;
+  }
 }
