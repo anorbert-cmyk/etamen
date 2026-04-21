@@ -223,6 +223,20 @@ window.apokrif.register(function() {
         y: 0, opacity: 1, rotationX: 0,
         duration: 0.12, stagger: { each: 0.006 }, ease: 'power3.out',
       }, 0.68);
+
+      // Lazy images extend the column height after first paint — refresh once all have decoded.
+      const mcImgs = masterScroll.querySelectorAll('.mc-slot img');
+      let pending = mcImgs.length;
+      const maybeRefresh = () => { if (--pending === 0) ScrollTrigger.refresh(); };
+      mcImgs.forEach(img => {
+        if (img.complete && img.naturalWidth > 0) maybeRefresh();
+        else {
+          img.addEventListener('load', maybeRefresh, { once: true });
+          img.addEventListener('error', maybeRefresh, { once: true });
+        }
+      });
+      // Failsafe: also refresh on window 'load' in case of cache quirks.
+      window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
     }
   });
 

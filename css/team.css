@@ -203,6 +203,8 @@
 }
 .mc-slot{
   margin:0;
+  width:100%;
+  min-height:1px;
   aspect-ratio:4/5;
   overflow:hidden;
   border-radius:4px;
@@ -245,23 +247,29 @@
   opacity:0.9;
 }
 .ms-name{
-  font-family:'Queering','Oswald',Arial,sans-serif;
-  font-weight:400;
-  font-size:clamp(64px,11vw,180px);
-  line-height:0.92;
+  display:inline-block;
+  font-family:'Queering','Oswald',Arial,sans-serif; font-weight:400;
+  font-size:clamp(56px, 10vw, 160px); line-height:0.95;
   letter-spacing:-0.5px;
-  color:var(--team-ink, #1a1520);
+  color:var(--team-ink);
+  background:var(--team-paper);
+  padding:clamp(14px, 2.6vh, 36px) clamp(28px, 4.5vw, 72px);
+  -webkit-clip-path:var(--saw-polygon);
+          clip-path:var(--saw-polygon);
   margin:0;
-  text-shadow:0 2px 0 rgba(0,0,0,0.12);
 }
+
 .ms-motto{
-  font-family:'Queering','Oswald',Arial,sans-serif;
-  font-weight:400;
-  font-size:clamp(48px,8vw,120px);
-  line-height:0.98;
-  color:#fff;
+  display:inline-block;
+  font-family:'Queering','Oswald',Arial,sans-serif; font-weight:400;
+  font-size:clamp(44px, 8vw, 116px); line-height:1;
+  color:#ffffff;
+  background:rgba(26,21,32,0.78);
+  padding:clamp(14px, 2.2vh, 30px) clamp(24px, 4vw, 60px);
+  -webkit-clip-path:var(--saw-polygon);
+          clip-path:var(--saw-polygon);
   margin:0;
-  text-shadow:0 2px 12px rgba(0,0,0,0.25);
+  text-shadow:none;
 }
 
 /* splitChars letter wrappers */
@@ -322,8 +330,14 @@
     margin:clamp(32px,5vh,64px) auto;
     width:100%;
   }
-  .ms-name{ font-size:clamp(44px,12vw,80px); }
-  .ms-motto{ font-size:clamp(36px,10vw,64px); }
+  .ms-name{
+    font-size:clamp(44px,12vw,80px);
+    padding:clamp(10px, 2vh, 22px) clamp(18px, 5vw, 36px);
+  }
+  .ms-motto{
+    font-size:clamp(36px,10vw,64px);
+    padding:clamp(10px, 2vh, 22px) clamp(18px, 5vw, 36px);
+  }
 }
 
 /* ---- Small mobile ---------------------------------------------------- */
