@@ -279,60 +279,60 @@
   aspect-ratio:3/4;
 }
 
-/* ---- Aron — bled thumb positions (distributed across 320vh) --------- */
+/* ---- Aron — thumb positions (distributed across 320vh, 150px+ edge safe) */
 #teamAron .pos-a1{
-  top:8vh;  left:-4vw;
+  top:8vh;   left:clamp(150px,12vw,200px);
   width:clamp(200px,22vw,360px);
 }
 #teamAron .pos-a2{
-  top:14vh; right:-3vw;
+  top:12vh;  right:clamp(150px,12vw,200px);
   width:clamp(200px,18vw,300px);
   aspect-ratio:1/1.2;
 }
 #teamAron .pos-a3{
-  top:105vh; right:4vw;
+  top:95vh;  right:clamp(150px,12vw,200px);
   width:clamp(180px,20vw,320px);
 }
 #teamAron .pos-a4{
-  top:120vh; left:2vw;
+  top:110vh; left:clamp(150px,12vw,200px);
   width:clamp(160px,16vw,260px);
   aspect-ratio:4/3;
 }
 #teamAron .pos-a5{
-  top:210vh; left:42vw;
+  top:200vh; left:42vw;
   width:clamp(180px,20vw,320px);
 }
 #teamAron .pos-a6{
-  top:220vh; right:-3vw;
+  top:215vh; right:clamp(150px,12vw,200px);
   width:clamp(200px,20vw,340px);
 }
 #teamAron .pos-a7{
   /* Scarecrow: visible in top-left from the start of Aron composition */
-  top:18vh; left:-2vw;
+  top:18vh;  left:clamp(150px,12vw,220px);
   width:clamp(160px,17vw,260px);
 }
 #teamAron .pos-a8{
-  top:285vh; left:35vw;
+  top:280vh; left:35vw;
   width:clamp(160px,15vw,240px);
   aspect-ratio:4/5;
 }
 
-/* ---- Conor — mirrored bled positions (across 260vh) ----------------- */
+/* ---- Conor — mirrored positions (across 260vh, 150px+ edge safe) ---- */
 #teamConor .pos-c1{
-  top:8vh;  right:-4vw;
+  top:8vh;   right:clamp(150px,12vw,200px);
   width:clamp(200px,22vw,360px);
 }
 #teamConor .pos-c2{
-  top:14vh; left:-3vw;
+  top:12vh;  left:clamp(150px,12vw,200px);
   width:clamp(200px,18vw,300px);
   aspect-ratio:1/1.2;
 }
 #teamConor .pos-c3{
-  top:105vh; left:4vw;
+  top:100vh; left:clamp(150px,12vw,200px);
   width:clamp(180px,20vw,320px);
 }
 #teamConor .pos-c4{
-  top:125vh; right:2vw;
+  top:120vh; right:clamp(150px,12vw,200px);
   width:clamp(180px,18vw,300px);
 }
 #teamConor .pos-c5{

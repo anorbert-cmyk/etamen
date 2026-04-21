@@ -3,6 +3,34 @@ window.apokrif.register(function () {
   var section = document.getElementById('team');
   if (!section) return;
 
+  /* ---------- aggressive image preload -------------------------------- */
+  // Force all team thumbs to start loading IMMEDIATELY at page load, and
+  // pre-decode so they paint instantly when revealed. This pairs with the
+  // scrub-tied reveal below: the animation only looks "buttery" if the
+  // bitmap is already decoded before the clip-path starts interpolating.
+  function preloadTeamImages() {
+    var imgs = section.querySelectorAll('.team-thumb img, .team-bg img');
+    imgs.forEach(function (img) {
+      if (img.loading === 'lazy') img.loading = 'eager';
+      if (typeof img.decode === 'function' && !img.complete) {
+        img.decode().catch(function () {});
+      }
+    });
+  }
+  preloadTeamImages();
+
+  // Belt-and-suspenders: re-kick decode well before the viewport reaches
+  // the section, in case the browser deferred anything on first pass.
+  if (window.ScrollTrigger) {
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top 300%',
+      once: true,
+      onEnter: preloadTeamImages,
+      onRefresh: preloadTeamImages
+    });
+  }
+
   var reduce = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
   /* ---------- helpers ------------------------------------------------- */
@@ -167,13 +195,26 @@ window.apokrif.register(function () {
         // keep the parallax + image breath treatment below.
         var isScarecrow = thumb.classList.contains('pos-a7');
         if (!isScarecrow) {
-          gsap.set(thumb, { clipPath: insets.from });
+          // Scrub-tied reveal — the clip-path, opacity, and small y-offset
+          // all interpolate with scroll position. Scrolling down reveals the
+          // thumb; scrolling up hides it symmetrically. No once:true here.
+          gsap.set(thumb, { clipPath: insets.from, opacity: 0, y: 30 });
           gsap.to(thumb, {
             clipPath: insets.to,
-            duration: 1.2, ease: 'power3.inOut',
-            scrollTrigger: { trigger: thumb, start: 'top 88%', once: true }
+            opacity: 1,
+            y: 0,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: thumb,
+              start: 'top 95%',   // begin reveal as thumb enters viewport bottom
+              end:   'top 55%',   // fully revealed near viewport middle
+              scrub: 0.8,          // smooth follow — matches slow-scroll feel
+              invalidateOnRefresh: true
+            }
           });
         } else {
+          // Scarecrow (.pos-a7) sits in the initial Áron composition and
+          // must be visible from the moment #teamAron mounts.
           gsap.set(thumb, { clipPath: 'none', opacity: 1 });
         }
 
