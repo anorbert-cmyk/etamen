@@ -280,43 +280,48 @@
   aspect-ratio:3/4;
 }
 
-/* ---- Aron — thumb positions (distributed across 320vh, 150px+ edge safe) */
+/* ---- Aron — thumb positions (320vh, face-safe)
+   First row (top:6-10vh): 3 thumbs in a row above face area
+   Below: 5 thumbs alternating left/right edges, never center-horizontal */
+#teamAron .pos-a7{
+  /* Row 1 LEFT — Scarecrow */
+  top:7vh; left:clamp(150px,10vw,200px);
+  width:clamp(160px,14vw,220px);
+  aspect-ratio:3/4;
+}
 #teamAron .pos-a1{
-  top:8vh;   left:clamp(150px,12vw,200px);
-  width:clamp(200px,22vw,360px);
+  /* Row 1 CENTER — `translate` (CSS property) doesn't conflict with GSAP transform */
+  top:7vh; left:50%;
+  translate:-50% 0;
+  width:clamp(160px,14vw,220px);
+  aspect-ratio:3/4;
 }
 #teamAron .pos-a2{
-  top:12vh;  right:clamp(150px,12vw,200px);
-  width:clamp(200px,18vw,300px);
-  aspect-ratio:1/1.2;
+  /* Row 1 RIGHT */
+  top:7vh; right:clamp(150px,10vw,200px);
+  width:clamp(160px,14vw,220px);
+  aspect-ratio:3/4;
 }
 #teamAron .pos-a3{
-  top:95vh;  right:clamp(150px,12vw,200px);
-  width:clamp(180px,20vw,320px);
+  top:105vh; left:clamp(150px,10vw,200px);
+  width:clamp(180px,16vw,280px);
 }
 #teamAron .pos-a4{
-  top:110vh; left:clamp(150px,12vw,200px);
-  width:clamp(160px,16vw,260px);
+  top:130vh; right:clamp(150px,10vw,200px);
+  width:clamp(180px,16vw,280px);
   aspect-ratio:4/3;
 }
 #teamAron .pos-a5{
-  /* moved from center (left:42vw) to right edge so it doesn't cover team-bg face */
-  top:200vh; right:clamp(150px,12vw,200px);
-  width:clamp(180px,20vw,320px);
+  top:190vh; left:clamp(150px,10vw,200px);
+  width:clamp(180px,18vw,300px);
 }
 #teamAron .pos-a6{
-  top:215vh; right:clamp(150px,12vw,200px);
-  width:clamp(200px,20vw,340px);
-}
-#teamAron .pos-a7{
-  /* Scarecrow: visible in top-left from the start of Aron composition */
-  top:18vh;  left:clamp(150px,12vw,220px);
-  width:clamp(160px,17vw,260px);
+  top:215vh; right:clamp(150px,10vw,200px);
+  width:clamp(200px,18vw,320px);
 }
 #teamAron .pos-a8{
-  /* moved from center (left:35vw) to left edge so it doesn't cover team-bg face */
-  top:280vh; left:clamp(150px,12vw,220px);
-  width:clamp(160px,15vw,240px);
+  top:275vh; left:clamp(150px,10vw,220px);
+  width:clamp(180px,16vw,260px);
   aspect-ratio:4/5;
 }
 

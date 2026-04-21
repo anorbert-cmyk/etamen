@@ -168,17 +168,18 @@
     <div class="et-bottom-chevrons" id="etChevs"></div>
     <div class="et-bottom-stamp"><img src="images/22-etchevs.png" alt="Apokrif emblem" decoding="async"></div>
   </div>
-  <!-- Et Tamen Lightbox (full-size responsive viewer) -->
-  <div class="et-lightbox" id="etLightbox" role="dialog" aria-modal="true" aria-label="Et Tamen page viewer" aria-hidden="true">
-    <button class="et-lightbox-close" id="etLbClose" aria-label="Close viewer" type="button">&times;</button>
-    <button class="et-lightbox-nav prev" id="etLbPrev" aria-label="Previous page" type="button">&#9664;</button>
-    <div class="et-lightbox-stage" id="etLbStage">
-      <img class="et-lightbox-img" id="etLbImg" src="" alt="" decoding="async">
-      <div class="et-lightbox-counter" id="etLbCounter" aria-live="polite"></div>
-    </div>
-    <button class="et-lightbox-nav next" id="etLbNext" aria-label="Next page" type="button">&#9654;</button>
-  </div>
 </section>
+
+<!-- Et Tamen Lightbox — portaled OUTSIDE #et so z:9999 escapes the section's stacking context -->
+<div class="et-lightbox" id="etLightbox" role="dialog" aria-modal="true" aria-label="Et Tamen page viewer" aria-hidden="true">
+  <button class="et-lightbox-close" id="etLbClose" aria-label="Close viewer" type="button">&times;</button>
+  <button class="et-lightbox-nav prev" id="etLbPrev" aria-label="Previous page" type="button">&#9664;</button>
+  <div class="et-lightbox-stage" id="etLbStage">
+    <img class="et-lightbox-img" id="etLbImg" src="" alt="" decoding="async">
+    <div class="et-lightbox-counter" id="etLbCounter" aria-live="polite"></div>
+  </div>
+  <button class="et-lightbox-nav next" id="etLbNext" aria-label="Next page" type="button">&#9654;</button>
+</div>
 
 <!-- All subsequent sections MUST have z-index:2 + own background -->
 <section id="novel">
