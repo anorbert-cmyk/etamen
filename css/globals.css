@@ -38,4 +38,24 @@ body{background:var(--bk);color:var(--tl);font-family:'Crimson Text',Georgia,ser
 img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 a,button,[role="button"]{touch-action:manipulation}
 :focus-visible{outline:2px solid var(--g);outline-offset:3px}
+/* Explicit focus-visible for interactive elements — defensive in case any
+   element ships with inline `outline:none` or a reset stylesheet clears it. */
+button:focus-visible,
+[role="button"]:focus-visible,
+a:focus-visible{
+  outline: 2px solid var(--g);
+  outline-offset: 3px;
+}
+
+/* Skip rendering of below-fold lazy images until scrolled near.
+   Safe because <img> doesn't participate in sticky/pin chains.
+   DO NOT apply content-visibility to section containers — GSAP ScrollTrigger
+   pin/scrub effects break when section height collapses to 100vh at init. */
+@media (min-width:769px){
+  img[loading="lazy"]{
+    content-visibility: auto;
+    contain-intrinsic-size: 400px 500px;
+  }
+}
+
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}

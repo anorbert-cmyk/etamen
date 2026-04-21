@@ -56,6 +56,20 @@ window.apokrif.register(function() {
   // Register slider for centralized visibilitychange handling
   window.apokrif.registerSlider(etStopAuto, etStartAuto);
 
+  // IntersectionObserver: pause autoplay when section is off-screen
+  (function() {
+    var etSection = document.getElementById('et');
+    if (etSection && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) etStartAuto();
+          else etStopAuto();
+        });
+      }, {threshold: 0.2});
+      io.observe(etSection);
+    }
+  })();
+
   // Build bottom chevrons (14 decorative triangles)
   (function() {var c = document.getElementById('etChevs'); if (c) {for (var j = 0; j < 14; j++) {var s = document.createElement('span'); c.appendChild(s)}}})();
 
@@ -135,6 +149,26 @@ window.apokrif.register(function() {
       if (counter) counter.textContent = (lbIndex + 1) + ' / ' + lbTotal;
     }
 
+    // Focus trap: cycles Tab between focusable items inside the lightbox
+    function focusable() {
+      return lb.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+    }
+    function trapKey(e) {
+      if (e.key !== 'Tab') return;
+      var items = Array.prototype.slice.call(focusable()).filter(function(el) {
+        return !el.hasAttribute('disabled') && el.offsetParent !== null;
+      });
+      if (!items.length) return;
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+
     function openLb(i) {
       lastFocused = document.activeElement;
       setLbIndex(i);
@@ -142,10 +176,17 @@ window.apokrif.register(function() {
       lb.setAttribute('aria-hidden', 'false');
       document.documentElement.classList.add('lightbox-open');
       etStopAuto();
-      if (closeBtn) closeBtn.focus();
+      lb.addEventListener('keydown', trapKey);
+      // Focus first interactive item on open (next frame to let display:flex apply)
+      setTimeout(function() {
+        var btns = focusable();
+        if (btns.length) btns[0].focus();
+        else if (closeBtn) closeBtn.focus();
+      }, 0);
     }
 
     function closeLb() {
+      lb.removeEventListener('keydown', trapKey);
       lb.classList.remove('is-open');
       lb.setAttribute('aria-hidden', 'true');
       document.documentElement.classList.remove('lightbox-open');

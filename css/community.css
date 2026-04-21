@@ -129,29 +129,8 @@
   width:100%;height:100%;object-fit:cover;display:block;
 }
 
-/* Pagination dots — 48px touch target with 10px visual dot */
-.gallery-dots{
-  display:flex;justify-content:center;
-  gap:4px;margin-top:22px;
-}
-.gallery-dot{
-  position:relative;
-  width:48px;height:48px;
-  background-color:transparent;
-  border:none;cursor:pointer;padding:0;
-  display:inline-flex;align-items:center;justify-content:center;
-  -webkit-tap-highlight-color:transparent;
-}
-.gallery-dot::before{
-  content:'';
-  width:10px;height:10px;border-radius:50%;
-  background-color:#444444;
-  transition:background-color .2s, transform .2s;
-}
-.gallery-dot:hover::before{transform:scale(1.15);}
-.gallery-dot.active::before{background-color:var(--brand-green);}
-.gallery-dot:focus-visible{outline:none;}
-.gallery-dot:focus-visible::before{outline:2px solid var(--brand-green);outline-offset:3px;}
+/* Fake pagination dots hidden — JS no-ops, HTML markup still present but not rendered */
+.gallery-dots{display:none !important;}
 
 /* Community — mobile */
 @media(max-width:767px){
@@ -161,8 +140,6 @@
   .social-profile{width:100%;padding:8px 0}
   .follow-button{width:100%;text-align:center;display:block;box-sizing:border-box}
   .gallery-grid{grid-template-columns:repeat(2,1fr);gap:14px;padding:32px 0 24px}
-  .gallery-dot::before{width:12px;height:12px}
-  .gallery-dots{display:flex;justify-content:center;gap:6px;padding:8px 0 12px}
 }
 @media(max-width:480px){
   .follow-button{font-size:var(--fs-nav)}

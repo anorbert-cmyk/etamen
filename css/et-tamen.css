@@ -106,6 +106,13 @@
   transition:background .3s;
 }
 .slide-dot.active::after{background:#fff}
+.slide-dot:focus-visible{
+  outline: 2px solid var(--g, #9dd67c);
+  outline-offset: 3px;
+}
+.slide-dot:focus-visible::after{
+  box-shadow: 0 0 0 2px rgba(157,214,124,0.4);
+}
 
 /* ET Tamen — bottom stamp bar */
 .et-bottom{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-end;padding:0 var(--pad) var(--sp-lg);pointer-events:none;z-index:5}
@@ -191,6 +198,7 @@ html.lightbox-open,html.lightbox-open body{overflow:hidden;touch-action:none}
 .et-lightbox-close{
   position:absolute;top:clamp(16px,3vw,32px);right:clamp(16px,3vw,32px);
   width:48px;height:48px;
+  min-width:44px;min-height:44px;
   border:none;background:rgba(255,255,255,0.08);color:#fff;
   font-size:32px;line-height:1;border-radius:50%;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
@@ -221,7 +229,7 @@ html.lightbox-open,html.lightbox-open body{overflow:hidden;touch-action:none}
 /* Mobile tuning */
 @media(max-width:768px){
   .et-lightbox{padding:clamp(8px,3vw,20px)}
-  .et-lightbox-close{width:40px;height:40px;font-size:26px;top:10px;right:10px}
+  .et-lightbox-close{width:44px;height:44px;min-width:44px;min-height:44px;font-size:26px;top:10px;right:10px}
   .et-lightbox-nav{width:48px;height:48px;font-size:16px}
   .et-lightbox-nav.prev{left:10px}
   .et-lightbox-nav.next{right:10px}

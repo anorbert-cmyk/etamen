@@ -99,7 +99,15 @@ window.apokrif.register(function() {
       gsap.to(window, {
         scrollTo: { y: Math.max(0, y), autoKill: true },
         duration: 0.8,
-        ease: 'power2.inOut'
+        ease: 'power2.inOut',
+        onComplete: function() {
+          // WCAG: move screen-reader focus to the destination section.
+          // preventScroll avoids a second jump on top of the smooth scroll.
+          try {
+            t.setAttribute('tabindex', '-1');
+            t.focus({ preventScroll: true });
+          } catch (ex) { /* older browsers: no-op */ }
+        }
       });
     });
   });
@@ -129,4 +137,12 @@ window.apokrif.register(function() {
   var onMqChange = function(ev) { if (ev.matches) closeMenu(); };
   if (mqDesktop.addEventListener) mqDesktop.addEventListener('change', onMqChange);
   else if (mqDesktop.addListener) mqDesktop.addListener(onMqChange); // legacy Safari
+
+  // ── iOS orientationchange: force ScrollTrigger.refresh ───────────────
+  // iOS needs a tick after orientationchange for the viewport to settle.
+  window.addEventListener('orientationchange', function() {
+    if (window.ScrollTrigger) {
+      setTimeout(function() { ScrollTrigger.refresh(); }, 200);
+    }
+  });
 });

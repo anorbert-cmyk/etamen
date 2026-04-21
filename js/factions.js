@@ -105,9 +105,14 @@ window.apokrif.register(function() {
       cTl.to(facDesc, {opacity: 0, y: -8, duration: 0.25}, 0);
       if (facLogoImg) cTl.to(facLogoImg, {opacity: 0, scale: 0.85, duration: 0.25}, 0);
       cTl.call(function() {
-        facTitle.innerHTML = facData[next].title;
+        // Safe: build nodes instead of innerHTML (title may contain <br>)
+        facTitle.replaceChildren();
+        String(facData[next].title).split(/<br\s*\/?>/i).forEach(function(part, i, arr) {
+          facTitle.appendChild(document.createTextNode(part));
+          if (i < arr.length - 1) facTitle.appendChild(document.createElement('br'));
+        });
         facDesc.textContent = facData[next].desc;
-        if (facLogoImg) {facLogoImg.src = facData[next].logo; facLogoImg.alt = facData[next].title.replace(/<br>/g, ' ') + ' logo'}
+        if (facLogoImg) {facLogoImg.src = facData[next].logo; facLogoImg.alt = facData[next].title.replace(/<br\s*\/?>/gi, ' ') + ' logo'}
         updateDots();
       }, null, 0.28);
       cTl.to(facTitle, {opacity: 1, y: 0, duration: 0.35, ease: 'power2.out'}, 0.32);
@@ -141,6 +146,17 @@ window.apokrif.register(function() {
 
     // Register slider for centralized visibilitychange handling
     window.apokrif.registerSlider(facStopAuto, facStartAuto);
+
+    // Pause autoplay when section is off-screen (perf: avoid unseen work)
+    if (facEl && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) facStartAuto();
+          else facStopAuto();
+        });
+      }, {threshold: 0.25});
+      io.observe(facEl);
+    }
 
     // ScrollTrigger entrance
     var stConfig = {trigger: '#factions', start: 'top 75%', toggleActions: 'play none none reverse'};

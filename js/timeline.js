@@ -53,6 +53,33 @@ window.apokrif.register(function() {
           }
         });
       }
+
+      // Keyboard arrow navigation — lets keyboard-only users advance
+      // slide-by-slide through the pinned horizontal timeline. Only acts
+      // when the section is fully in view (i.e., pin is engaged).
+      document.addEventListener('keydown', function(e) {
+        var rect = section.getBoundingClientRect();
+        if (rect.top > 0 || rect.bottom < window.innerHeight) return;
+        var slides = track.querySelectorAll('.timeline-slide');
+        if (!slides.length) return;
+        var st = tl.scrollTrigger;
+        var progress = st ? st.progress : 0;
+        var idx = Math.round(progress * (slides.length - 1));
+        var next = idx;
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+          next = Math.min(idx + 1, slides.length - 1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          next = Math.max(idx - 1, 0);
+        } else {
+          return;
+        }
+        e.preventDefault();
+        var targetProgress = next / (slides.length - 1);
+        if (st) {
+          var scrollY = st.start + (st.end - st.start) * targetProgress;
+          gsap.to(window, { duration: 0.6, scrollTo: { y: scrollY }, ease: 'power2.inOut' });
+        }
+      });
     });
   })();
 });

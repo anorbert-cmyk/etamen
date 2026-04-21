@@ -12,10 +12,29 @@ window.apokrif.register(function() {
     // Entrance: lassú zoom-in homályból
     gsap.from(heroBg, {scale: 1.14, opacity: 0.55, duration: 2.8, ease: 'power3.out'});
     // Ken Burns légzés — ismétlődő lassú pan+zoom (entrance után indul)
-    gsap.to(heroBg, {
+    var kenBurns = gsap.to(heroBg, {
       scale: 1.07, x: '-1.8%', y: '-0.8%',
       duration: 16, ease: 'sine.inOut',
       repeat: -1, yoyo: true, delay: 2.8
+    });
+
+    // Pause Ken Burns when hero scrolls off-screen (battery/CPU savings)
+    if (window.ScrollTrigger) {
+      ScrollTrigger.create({
+        trigger: '#hero',
+        start: 'top bottom',
+        end: 'bottom top',
+        onEnter: function() { kenBurns.play(); },
+        onEnterBack: function() { kenBurns.play(); },
+        onLeave: function() { kenBurns.pause(); },
+        onLeaveBack: function() { kenBurns.pause(); }
+      });
+    }
+
+    // Pause when tab is hidden (coordinator may also do this; harmless if redundant)
+    document.addEventListener('visibilitychange', function() {
+      if (document.hidden) kenBurns.pause();
+      else kenBurns.play();
     });
     // Scroll parallax — a háttér lassan felfelé csúszik görgetéskor
     gsap.to(heroBg, {

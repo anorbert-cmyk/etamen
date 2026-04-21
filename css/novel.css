@@ -102,7 +102,7 @@
   padding:clamp(3px, 0.25vw, 4px);
   border-radius:999px;
   background-color:rgba(0,0,0,0.4);
-  backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   cursor:pointer;position:relative;overflow:hidden;
   width:clamp(150px, 11vw, 180px);
   height:clamp(48px, 3.3vw, 52px);

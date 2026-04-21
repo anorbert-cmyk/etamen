@@ -161,13 +161,21 @@ window.apokrif.register(function () {
       thumbs.forEach(function (thumb, i) {
         var dir = thumb.getAttribute('data-reveal') || 'bottom';
         var insets = revealInset(dir);
-        gsap.set(thumb, { clipPath: insets.from });
-
-        gsap.to(thumb, {
-          clipPath: insets.to,
-          duration: 1.2, ease: 'power3.inOut',
-          scrollTrigger: { trigger: thumb, start: 'top 88%', once: true }
-        });
+        // Scarecrow (.pos-a7) sits in the initial Áron composition
+        // (CSS: top:18vh; left:-2vw), so it must be visible from the
+        // moment #teamAron mounts. Skip the clip-path hide/reveal but
+        // keep the parallax + image breath treatment below.
+        var isScarecrow = thumb.classList.contains('pos-a7');
+        if (!isScarecrow) {
+          gsap.set(thumb, { clipPath: insets.from });
+          gsap.to(thumb, {
+            clipPath: insets.to,
+            duration: 1.2, ease: 'power3.inOut',
+            scrollTrigger: { trigger: thumb, start: 'top 88%', once: true }
+          });
+        } else {
+          gsap.set(thumb, { clipPath: 'none', opacity: 1 });
+        }
 
         gsap.fromTo(thumb,
           { yPercent: 0 },
@@ -184,6 +192,28 @@ window.apokrif.register(function () {
               scale: 1, ease: 'none',
               scrollTrigger: { trigger: thumb, start: 'top bottom', end: 'bottom top', scrub: 0.8 }
             });
+        }
+      });
+    });
+
+    /* ---- Belt-and-suspenders image force-decode on slide approach ----
+       Even though thumbnails are now loading="eager" (agent 1), late-
+       decoded images can still layout-thrash when the user scrolls in.
+       Proactively flip any lingering lazy flag and kick img.decode() so
+       bitmaps are ready before the reveal animation runs. */
+    ['teamAron', 'teamConor'].forEach(function (slideId) {
+      ScrollTrigger.create({
+        trigger: '#' + slideId,
+        start: 'top 80%',
+        once: true,
+        onEnter: function () {
+          var imgs = document.querySelectorAll('#' + slideId + ' .team-thumb img');
+          imgs.forEach(function (img) {
+            if (img.loading === 'lazy') img.loading = 'eager';
+            if (typeof img.decode === 'function' && !img.complete) {
+              img.decode().catch(function () {});
+            }
+          });
         }
       });
     });

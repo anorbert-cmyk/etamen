@@ -17,7 +17,7 @@
 .fac-bg::before{
   content:'';position:absolute;inset:-8px;
   background-size:cover;background-position:center;background-repeat:no-repeat;
-  filter:blur(6px);-webkit-filter:blur(6px);
+  filter:blur(3px);-webkit-filter:blur(3px);
   z-index:0;pointer-events:none;
 }
 .fac-bg.ex::before{background-image:url('../images/faction-ex-sanguis.webp')}
@@ -90,8 +90,15 @@
 .div-block-18,.arrow-right{
   min-width:48px;min-height:48px;cursor:pointer;display:flex;align-items:center;justify-content:center;
   pointer-events:auto;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  background:transparent;border:0;padding:0;color:inherit;font:inherit;
 }
 .div-block-18 img,.arrow-right img{width:14px;height:20px;display:block;object-fit:contain}
+.div-block-18:focus-visible,
+.arrow-right:focus-visible{
+  outline:3px solid var(--g, #9dd67c);
+  outline-offset:4px;
+  border-radius:4px;
+}
 
 /* Factions responsive */
 @media(max-width:1024px){

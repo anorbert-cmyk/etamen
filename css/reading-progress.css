@@ -7,7 +7,7 @@
 #reading-progress{
   position:fixed; top:0; left:0; right:0;
   height:3px;
-  z-index:1000;
+  z-index:1001; /* Above navbar (z:900) so scroll progress is visible at very top */
   background-color:rgba(255,255,255,0.08);
   pointer-events:none;
 }
@@ -18,6 +18,9 @@
   transform-origin:left center;
   will-change:width;
 }
+
+/* Hide progress bar when mobile menu is open — prevents overlap with full-screen menu */
+body.mm-open #reading-progress{ display:none; }
 
 @media (prefers-reduced-motion:reduce){
   #reading-progress span{ transition:none; }
