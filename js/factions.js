@@ -20,15 +20,15 @@ window.apokrif.register(function() {
     var facPrevBtn = document.getElementById('facPrev');
     var facNextBtn = document.getElementById('facNext');
 
-    var CDN_ACTIVE = 'https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c737_apokrif_web_landing_4_factions_layered19.png';
-    var CDN_INACTIVE = 'https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c734_apokrif_web_landing_4_factions_layered16.png';
+    var DOT_ACTIVE = 'images/fac-dot-active.png';
+    var DOT_INACTIVE = 'images/fac-dot.png';
 
     // Faction adatok
     var facData = [
       {
         title: 'Ex<br>Sanguis',
         desc: 'Ex Sanguis is a religious cult that has sworn to destroy all of vampirekind. The group is split into two main disciplines: the Peace provides sustenance and spiritual guidance to all who seek it, while the warlike knights and Inquisitors of the Path hunt down every vampiric whisper, stopping at nothing to cleanse the world of their corruption.',
-        logo: 'https://cdn.prod.website-files.com/69028effd790024be3c8c4fd/69028effd790024be3c8c731_apokrif_web_landing_4_factions_layere13.png',
+        logo: 'images/fac-logo.png',
         front: 'images/faction-ex-sanguis.webp',
         frontAlt: 'Ex Sanguis warrior'
       },
@@ -53,7 +53,7 @@ window.apokrif.register(function() {
       if (!facDotsEl) return;
       var imgs = facDotsEl.querySelectorAll('img');
       for (var d = 0; d < imgs.length; d++) {
-        imgs[d].src = (d === facCur) ? CDN_ACTIVE : CDN_INACTIVE;
+        imgs[d].src = (d === facCur) ? DOT_ACTIVE : DOT_INACTIVE;
       }
     }
 

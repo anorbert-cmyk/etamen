@@ -88,20 +88,25 @@
   align-items:center;height:34px;
 }
 .div-block-18,.arrow-right{
-  /* Nuke all UA button chrome — match original chromeless <div> look. */
+  /* Chromeless like original <div>. Explicit kill of UA button defaults. */
   all:unset;
+  background:transparent !important;
+  background-color:transparent !important;
+  background-image:none !important;
+  border:0 !important;
+  outline:none !important;
+  box-shadow:none !important;
   box-sizing:border-box;
   min-width:48px;min-height:48px;cursor:pointer;
   display:inline-flex;align-items:center;justify-content:center;
   pointer-events:auto;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
 }
 .div-block-18 img,.arrow-right img{width:10px;height:20px;display:block;object-fit:contain}
-/* Subtle focus-visible — glow, no chunky box */
+/* Subtle dotted focus-visible — no box-shadow that could look like white bg */
 .div-block-18:focus-visible,
 .arrow-right:focus-visible{
-  outline:none;
-  box-shadow:0 0 0 2px rgba(157,214,124,0.7);
-  border-radius:2px;
+  outline:2px dotted rgba(157,214,124,0.9) !important;
+  outline-offset:3px;
 }
 
 /* Factions responsive */
