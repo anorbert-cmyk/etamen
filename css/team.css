@@ -66,21 +66,22 @@
   pointer-events:none;
 }
 
-/* ---- Intro tile (Frame 1) — 12-col CSS Grid ------------------------- */
+/* ---- Intro tile (Frame 1) — 12-col CSS Grid -------------------------
+   Height + padding reduced: top empty space halved, space under intro
+   paragraph collapsed to content gap only (auto rows, no 1fr stretch). */
 .team-intro-tile{
   position:relative;
   z-index:3;
-  min-height:100vh;
-  min-height:100dvh;
+  min-height:55vh;
+  min-height:55dvh;
   display:grid;
   grid-template-columns:repeat(12, 1fr);
-  grid-template-rows:auto 1fr auto;
+  grid-template-rows:auto auto auto;
   grid-template-areas:
     "label label label label  text   text   text   text   text   text   text   text"
-    ".     .     .     .      text2  text2  text2  text2  text2  text2  text2  text2"
     "deco  deco  deco  deco   .      .      .      .      .      .      .      .";
   gap:clamp(12px, 1.5vw, 20px);
-  padding:clamp(60px, 8vh, 100px) clamp(24px, 5vw, 80px);
+  padding:clamp(30px, 4vh, 50px) clamp(24px, 5vw, 80px) clamp(20px, 3vh, 36px);
   max-width:1600px;
   margin:0 auto;
 }
