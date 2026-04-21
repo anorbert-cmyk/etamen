@@ -183,41 +183,38 @@ window.apokrif.register(function () {
         }
       });
 
-      /* Thumbs: clip-path reveal + parallax drift + img breath */
+      /* Thumbs: one-shot fade+slide on enter (Apple/Linear/Vercel pattern) + parallax drift + img breath */
       var thumbs = slide.querySelectorAll('.team-thumb');
       var driftSpeeds = [-18, 24, -14, 20, -12, 18, -20, 16];
-      thumbs.forEach(function (thumb, i) {
-        var dir = thumb.getAttribute('data-reveal') || 'bottom';
-        var insets = revealInset(dir);
-        // Scarecrow (.pos-a7) sits in the initial Áron composition
-        // (CSS: top:18vh; left:-2vw), so it must be visible from the
-        // moment #teamAron mounts. Skip the clip-path hide/reveal but
-        // keep the parallax + image breath treatment below.
-        var isScarecrow = thumb.classList.contains('pos-a7');
-        if (!isScarecrow) {
-          // Scrub-tied reveal — the clip-path, opacity, and small y-offset
-          // all interpolate with scroll position. Scrolling down reveals the
-          // thumb; scrolling up hides it symmetrically. No once:true here.
-          gsap.set(thumb, { clipPath: insets.from, opacity: 0, y: 30 });
-          gsap.to(thumb, {
-            clipPath: insets.to,
-            opacity: 1,
-            y: 0,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: thumb,
-              start: 'top 95%',   // begin reveal as thumb enters viewport bottom
-              end:   'top 55%',   // fully revealed near viewport middle
-              scrub: 0.8,          // smooth follow — matches slow-scroll feel
-              invalidateOnRefresh: true
-            }
-          });
-        } else {
-          // Scarecrow (.pos-a7) sits in the initial Áron composition and
-          // must be visible from the moment #teamAron mounts.
-          gsap.set(thumb, { clipPath: 'none', opacity: 1 });
-        }
 
+      // Set initial hidden state for non-Scarecrow thumbs; Scarecrow stays visible.
+      var revealables = [];
+      thumbs.forEach(function (thumb) {
+        if (thumb.classList.contains('pos-a7')) {
+          gsap.set(thumb, { clipPath: 'none', opacity: 1, y: 0 });
+        } else {
+          gsap.set(thumb, { clipPath: 'none', opacity: 0, y: 30 });
+          revealables.push(thumb);
+        }
+      });
+
+      // Batch one-shot reveal: 500ms fade+slide, 80ms stagger, once-only. No scrub.
+      if (revealables.length) {
+        ScrollTrigger.batch(revealables, {
+          start: 'top 85%',
+          once: true,
+          onEnter: function (batch) {
+            gsap.to(batch, {
+              opacity: 1, y: 0,
+              duration: 0.5, stagger: 0.08, ease: 'power2.out',
+              overwrite: 'auto'
+            });
+          }
+        });
+      }
+
+      // Parallax drift + img breath (preserved for ALL thumbs incl. Scarecrow)
+      thumbs.forEach(function (thumb, i) {
         gsap.fromTo(thumb,
           { yPercent: 0 },
           {
