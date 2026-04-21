@@ -39,3 +39,11 @@ img{max-width:100%;display:block}a{text-decoration:none;color:inherit}
 a,button,[role="button"]{touch-action:manipulation}
 :focus-visible{outline:2px solid var(--g);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*,::before,::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* Below-fold performance: skip rendering until scrolled near (saves main-thread work). */
+@media (min-width:769px){
+  #novel,#novel2,#novel3,#factions,#timeline,#team,#community,#rp{
+    content-visibility:auto;
+    contain-intrinsic-size:auto 100vh;
+  }
+}

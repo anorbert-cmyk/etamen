@@ -14,23 +14,30 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://cdn.prod.website-files.com" crossorigin>
 <link rel="preload" as="image" href="images/03-image.jpg" fetchpriority="high">
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Oswald:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,400;1,700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" integrity="sha384-RVPQwTb0fPz9kI8s5GwAq1Qioto9fnEQt1aKGSQSm8xV6+DIdBSgcCShoHqfKnhv" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Oswald:wght@400;500&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" integrity="sha384-RVPQwTb0fPz9kI8s5GwAq1Qioto9fnEQt1aKGSQSm8xV6+DIdBSgcCShoHqfKnhv" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="css/globals.css">
 <link rel="stylesheet" href="css/reading-progress.css">
 <link rel="stylesheet" href="css/nav.css">
 <link rel="stylesheet" href="css/hero.css">
 <link rel="stylesheet" href="css/et-tamen.css">
-<link rel="stylesheet" href="css/novel.css">
-<link rel="stylesheet" href="css/factions.css">
 <link rel="stylesheet" href="css/shared.css">
-<link rel="stylesheet" href="css/timeline.css">
-<link rel="stylesheet" href="css/community.css">
-<link rel="stylesheet" href="css/team.css">
-<link rel="stylesheet" href="css/rp.css">
+<link rel="preload" as="style" href="css/novel.css" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/novel.css"></noscript>
+<link rel="preload" as="style" href="css/factions.css" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/factions.css"></noscript>
+<link rel="preload" as="style" href="css/timeline.css" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/timeline.css"></noscript>
+<link rel="preload" as="style" href="css/community.css" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/community.css"></noscript>
+<link rel="preload" as="style" href="css/team.css" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/team.css"></noscript>
+<link rel="preload" as="style" href="css/rp.css" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/rp.css"></noscript>
 <script defer src="js/coordinator.js"></script>
 <script defer src="js/reading-progress.js"></script>
 <script defer src="js/hero.js"></script>
@@ -54,7 +61,7 @@
   <div class="nav-container">
     <div class="wrap-navigation-links">
       <a href="#hero" class="nav-link brand">
-        <img src="images/07-nav-link.png" alt="Apokrif">
+        <img src="images/07-nav-link.png" alt="Apokrif" width="323" height="109" decoding="async">
         <div class="button-label apokrif">Universe</div>
       </a>
       <a href="#et" class="nav-link tab-link" data-s="et">
@@ -102,14 +109,14 @@
       </div>
       <div class="hero-bottom-div">
         <div class="hero-bottom-left">
-          <div class="graphic-div"><img src="images/08-graphic-div.png" alt=""></div>
-          <div class="graphic-bottom-div"><img src="images/09-graphic-bottom-div.png" alt=""></div>
+          <div class="graphic-div"><img src="images/08-graphic-div.png" alt="" width="211" height="344" decoding="async"></div>
+          <div class="graphic-bottom-div"><img src="images/09-graphic-bottom-div.png" alt="" width="280" height="62" decoding="async"></div>
           <div class="hero-bottom-text-div">
             <p>The world of Apokrif is dark and fantastical, braiding together elements of history, myth, and science fiction. Here, human settlements band together in the shadows of old settlements, bracing against catastrophic storms, vicious packs of animals, and brutal raiders, while the militaristic cult of Ex Sanguis mercilessly hunts down rumors of vampiric infestations.</p>
           </div>
-          <div class="graphic-bottom-div"><img src="images/10-graphic-bottom-div.png" alt=""></div>
+          <div class="graphic-bottom-div"><img src="images/10-graphic-bottom-div.png" alt="" width="280" height="63" decoding="async"></div>
         </div>
-        <div class="hero-bottom-right-div"><img src="images/11-hero-bottom-right-div.png" alt=""></div>
+        <div class="hero-bottom-right-div"><img src="images/11-hero-bottom-right-div.png" alt="" width="340" height="501" decoding="async"></div>
       </div>
     </div>
   </div>
@@ -121,15 +128,15 @@
     <!-- Left: text -->
     <div class="et-left">
       <div class="et-title-wrap">
-        <img class="et-title-img" src="images/12-et.png" alt="ET TAMEN">
-        <img class="et-ep0-img" src="images/13-et-ep0-img.png" alt="— Ep. 0.">
+        <img class="et-title-img" src="images/12-et.png" alt="ET TAMEN" width="681" height="141" decoding="async">
+        <img class="et-ep0-img" src="images/13-et-ep0-img.png" alt="— Ep. 0." width="108" height="36" decoding="async">
       </div>
       <div class="et-text-block">
-        <div class="et-chev"><img src="images/14-et-chev.png" alt="" style="width:var(--icon-chev)"></div>
+        <div class="et-chev"><img src="images/14-et-chev.png" alt="" width="140" height="32" decoding="async" style="width:var(--icon-chev)"></div>
         <div class="et-body">
           <p>Et Tamen is a free prologue episode we put together to give you an idea of what you'll help bring to life when you back us.<br><br>We hope you enjoy this first glimpse!</p>
         </div>
-        <div class="et-chev"><img src="images/15-et-chev.png" alt="" style="width:var(--icon-chev)"></div>
+        <div class="et-chev"><img src="images/15-et-chev.png" alt="" width="141" height="32" decoding="async" style="width:var(--icon-chev)"></div>
       </div>
       <div class="et-cta-div">
         <a href="#" class="et-cta">Follow us on Kickstarter!</a>
@@ -141,7 +148,7 @@
         <div class="slider-arrow prev" id="sPrev">&#9664;</div>
         <div class="slider-frame" id="sFrame">
           <div class="slide-track" id="sTrack">
-            <div class="slide"><img src="images/et-tamen-01.webp" alt="Et Tamen — Cover" width="1500" height="2126" loading="eager" fetchpriority="high"></div>
+            <div class="slide"><img src="images/et-tamen-01.webp" alt="Et Tamen — Cover" width="1500" height="2126" loading="lazy" fetchpriority="low" decoding="async"></div>
             <div class="slide"><img src="images/et-tamen-02.webp" alt="Et Tamen — Page 01" width="1500" height="2126" loading="lazy"></div>
             <div class="slide"><img src="images/et-tamen-03.webp" alt="Et Tamen — Page 02" width="1500" height="2126" loading="lazy"></div>
             <div class="slide"><img src="images/et-tamen-04.webp" alt="Et Tamen — Page 03" width="1500" height="2126" loading="lazy"></div>
@@ -166,7 +173,7 @@
   <!-- Bottom bar: decorative chevrons + emblem stamp -->
   <div class="et-bottom">
     <div class="et-bottom-chevrons" id="etChevs"></div>
-    <div class="et-bottom-stamp"><img src="images/22-etchevs.png" alt="Apokrif emblem"></div>
+    <div class="et-bottom-stamp"><img src="images/22-etchevs.png" alt="Apokrif emblem" width="170" height="251" decoding="async"></div>
   </div>
   <!-- Et Tamen Lightbox (full-size responsive viewer) -->
   <div class="et-lightbox" id="etLightbox" role="dialog" aria-modal="true" aria-label="Et Tamen page viewer" aria-hidden="true">
@@ -183,8 +190,8 @@
 <!-- All subsequent sections MUST have z-index:2 + own background -->
 <section id="novel">
   <div class="snap-panel" id="novelPanel">
-    <img class="img-cover default" src="images/novel1-default.webp" alt="Creating Apokrif">
-    <img class="img-cover alt" src="images/novel1-alt.webp" alt="Final Illustration">
+    <img class="img-cover default" src="images/novel1-default.webp" alt="Creating Apokrif" width="2500" height="1401" loading="lazy" decoding="async">
+    <img class="img-cover alt" src="images/novel1-alt.webp" alt="Final Illustration" width="2500" height="1401" loading="lazy" decoding="async">
     <div class="novel-index" aria-hidden="true"><span>01</span><span class="sep">/</span><span class="total">03</span></div>
     <!-- Layer 1: Big heading — BEHIND the character -->
     <div class="novel-heading-layer">
@@ -209,8 +216,8 @@
 <!-- THE NOVEL 2 — duplicate panel, scrolls over #novel -->
 <section id="novel2">
   <div class="snap-panel" id="novel2Panel">
-    <img class="img-cover default" src="images/novel2-default.webp" alt="Creating Apokrif">
-    <img class="img-cover alt" src="images/novel2-alt.webp" alt="Final Illustration">
+    <img class="img-cover default" src="images/novel2-default.webp" alt="Creating Apokrif" width="2500" height="1250" loading="lazy" decoding="async">
+    <img class="img-cover alt" src="images/novel2-alt.webp" alt="Final Illustration" width="2500" height="1250" loading="lazy" decoding="async">
     <div class="novel-index" aria-hidden="true"><span>02</span><span class="sep">/</span><span class="total">03</span></div>
     <div class="novel-heading-layer">
       <div class="novel-heading-text s1" id="novel2S1">Creating Apokrif</div>
@@ -234,8 +241,8 @@
 <!-- THE NOVEL 3 — third panel, scrolls over #novel2 -->
 <section id="novel3">
   <div class="snap-panel" id="novel3Panel">
-    <img class="img-cover default" src="images/novel3-default.webp" alt="Creating Apokrif">
-    <img class="img-cover alt" src="images/novel3-alt.webp" alt="Final Illustration">
+    <img class="img-cover default" src="images/novel3-default.webp" alt="Creating Apokrif" width="6518" height="3258" loading="lazy" decoding="async">
+    <img class="img-cover alt" src="images/novel3-alt.webp" alt="Final Illustration" width="3470" height="1722" loading="lazy" decoding="async">
     <div class="novel-index" aria-hidden="true"><span>03</span><span class="sep">/</span><span class="total">03</span></div>
     <div class="novel-heading-layer">
       <div class="novel-heading-text s1" id="novel3S1">Creating Apokrif</div>
@@ -258,19 +265,19 @@
 
 <!-- ═══════ GALLERY — PRINT QUALITY ═══════ -->
 <section id="rp" class="section-after pq-section" aria-label="Gallery — Print Quality">
-  <img class="pq-bg" src="images/05-image.jpg" alt="" aria-hidden="true" loading="lazy">
+  <img class="pq-bg" src="images/05-image.jpg" alt="" aria-hidden="true" width="1920" height="1183" loading="lazy" decoding="async">
   <div class="pq-books">
     <div class="pq-book">
       <div class="pq-overlay"></div>
-      <img src="images/book1.webp" alt="Et Tamen — book spine" loading="lazy">
+      <img src="images/book1.webp" alt="Et Tamen — book spine" width="1548" height="1590" loading="lazy" decoding="async">
     </div>
     <div class="pq-book pq-book--mid">
       <div class="pq-overlay"></div>
-      <img src="images/book2.webp" alt="Et Tamen — book cover" loading="lazy">
+      <img src="images/book2.webp" alt="Et Tamen — book cover" width="1116" height="1582" loading="lazy" decoding="async">
     </div>
     <div class="pq-book">
       <div class="pq-overlay"></div>
-      <img src="images/24-img-cover.jpg" alt="Et Tamen — detail" loading="lazy">
+      <img src="images/24-img-cover.jpg" alt="Et Tamen — detail" width="1600" height="795" loading="lazy" decoding="async">
     </div>
   </div>
 </section>
@@ -507,7 +514,7 @@
         Emmy award-winning writer <strong>Conor Sheehy</strong>, veteran artist <strong>Aron Elekes</strong> bring the world of Apokrif to life through a fully realized world, with complex characters, compelling storylines, and gorgeous illustrations throughout.
       </p>
       <div class="team-intro-deco" aria-hidden="true">
-        <img class="team-intro-glyph" src="images/22-etchevs.png" alt="">
+        <img class="team-intro-glyph" src="images/22-etchevs.png" alt="" width="170" height="251" loading="lazy" decoding="async">
         <div class="team-intro-triangles"><span></span><span></span><span></span><span></span></div>
       </div>
     </div>
@@ -519,7 +526,7 @@
       <div class="team-card">
         <span class="team-card-pill">Concept Artist and Illustrator</span>
         <h3 class="team-card-name">Aron Elekes</h3>
-        <img class="team-card-glyph" src="images/22-etchevs.png" alt="" aria-hidden="true">
+        <img class="team-card-glyph" src="images/22-etchevs.png" alt="" aria-hidden="true" width="170" height="251" loading="lazy" decoding="async">
       </div>
     </div>
     <div class="team-thumb team-thumb-work pos-a1" data-reveal="left">
@@ -554,7 +561,7 @@
       <div class="team-card">
         <span class="team-card-pill">Co-Creator and Writer</span>
         <h3 class="team-card-name">Conor Sheehy</h3>
-        <img class="team-card-glyph" src="images/22-etchevs.png" alt="" aria-hidden="true">
+        <img class="team-card-glyph" src="images/22-etchevs.png" alt="" aria-hidden="true" width="170" height="251" loading="lazy" decoding="async">
       </div>
     </div>
     <div class="team-thumb team-thumb-work pos-c1" data-reveal="right">
