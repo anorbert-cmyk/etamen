@@ -138,20 +138,22 @@
   border-radius:2px;
   overflow:hidden;
 }
-/* Sparse diagonal stripes overlay (replaces opaque SVG triangle block) */
+/* Large diagonal sawtooth pattern inside card — 4 dark teeth across */
 .timeline-card::after{
   content:'';
   position:absolute;inset:0;
-  background-image:repeating-linear-gradient(135deg, transparent 0 40px, rgba(0,0,0,0.04) 40px 42px);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 600' preserveAspectRatio='none'%3E%3Cpath d='M0,450 L225,150 L225,600 L0,600 Z M225,450 L450,150 L450,600 L225,600 Z M450,450 L675,150 L675,600 L450,600 Z M675,450 L900,150 L900,600 L675,600 Z' fill='rgba(0,0,0,0.09)'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-size:100% 100%;
   pointer-events:none;
   z-index:0;
 }
-/* Green sawtooth top-left decoration via ::before */
+/* Green sawtooth top-left decoration via ::before — 4 larger teeth per design */
 .timeline-card::before{
   content:'';
   position:absolute;top:0;left:0;
-  width:clamp(180px,14vw,200px);height:26px;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 26' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L25,26 L25,0 L50,26 L50,0 L75,26 L75,0 L100,26 L100,0 L125,26 L125,0 L150,26 L150,0 L175,26 L175,0 L200,26 L200,0 Z' fill='%239ee37d'/%3E%3C/svg%3E");
+  width:clamp(180px,14vw,200px);height:30px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 30' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L40,30 L40,0 L80,30 L80,0 L120,30 L120,0 L160,30 L160,0 Z' fill='%239ee37d'/%3E%3C/svg%3E");
   background-repeat:no-repeat;
   background-size:100% 100%;
   filter:drop-shadow(2px 3px 3px rgba(0,0,0,0.18));

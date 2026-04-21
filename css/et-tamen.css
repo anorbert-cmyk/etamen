@@ -27,14 +27,19 @@
   padding-left:var(--sp-sm);
 }
 .et-title-wrap{display:flex;flex-direction:column;gap:var(--sp-sm)}
-.et-title-wrap .et-title-img{width:clamp(200px, 26vw, 350px);height:auto}
+.et-title-wrap .et-title-img{width:clamp(260px, 32vw, 520px);height:auto}
 .et-title-wrap .et-ep0-img{width:clamp(50px, 5vw, 80px);height:auto}
 .et-text-block{gap:var(--sp-sm);flex-flow:column;display:flex}
 .et-chev img{width:var(--icon-chev);height:auto}
 .et-body p{
-  color:var(--lt);letter-spacing:.5px;
-  font-family:Queering,Arial,sans-serif;
-  font-size:clamp(1.125rem, 0.9rem + 0.6vw, 1.5rem);font-weight:400;line-height:1.5;
+  color:var(--lt);letter-spacing:.3px;
+  font-family:'Crimson Text',Georgia,serif;
+  font-size:clamp(1.125rem, 0.9rem + 0.6vw, 1.5rem);font-weight:400;line-height:1.55;
+}
+.et-body p strong{
+  font-family:'Oswald',sans-serif;font-weight:700;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:#ffffff;
 }
 .et-cta-div{display:block}
 .et-cta{
@@ -80,14 +85,14 @@
 .slider-arrow.next{margin-left:-20px}
 
 
-/* Slide dots — shark-tooth / zigzag style */
+/* Slide dots — down-pointing sawtooth (design match) */
 .slide-dots{
-  display:flex;gap:24px;justify-content:center;align-items:flex-end;
+  display:flex;gap:6px;justify-content:center;align-items:flex-end;
   padding-top:var(--sp-xs);
   position:absolute;bottom:8px;left:0;right:0;
 }
 .slide-dot{
-  width:clamp(18px,2vw,26px);height:clamp(14px,1.6vw,20px);
+  width:clamp(14px,1.6vw,20px);height:clamp(14px,1.6vw,20px);
   border:none;border-radius:0;
   cursor:pointer;padding:0;
   background:transparent;
@@ -97,15 +102,15 @@
   box-sizing:content-box;
   transition:opacity .3s;
 }
-/* Shark-tooth triangle via clip-path */
+/* Down-pointing triangle via clip-path (was shark-tooth right) */
 .slide-dot::after{
   content:'';display:block;
-  width:clamp(12px,1.4vw,18px);height:clamp(16px,1.8vw,22px);
-  background:rgba(255,255,255,0.35);
-  clip-path:polygon(0% 0%,100% 50%,0% 100%);
+  width:clamp(12px,1.4vw,18px);height:clamp(12px,1.4vw,18px);
+  background:rgba(255,255,255,0.55);
+  clip-path:polygon(0% 0%, 100% 0%, 50% 100%);
   transition:background .3s;
 }
-.slide-dot.active::after{background:#fff}
+.slide-dot.active::after{background:#9EE37D}
 .slide-dot:focus-visible{
   outline: 2px solid var(--g, #9dd67c);
   outline-offset: 3px;
@@ -117,7 +122,7 @@
 /* ET Tamen — bottom stamp bar */
 .et-bottom{position:absolute;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:flex-end;padding:0 var(--pad) var(--sp-lg);pointer-events:none;z-index:5}
 .et-bottom-chevrons{display:flex;gap:2px;align-items:center;padding-bottom:var(--sp-xs)}
-.et-bottom-chevrons span{display:inline-block;width:0;height:0;border-left:clamp(6px,.6vw,9px) solid transparent;border-right:clamp(6px,.6vw,9px) solid transparent;border-top:clamp(8px,.8vw,12px) solid var(--tl);opacity:.6}
+.et-bottom-chevrons span{display:inline-block;width:0;height:0;border-left:clamp(6px,.6vw,9px) solid transparent;border-right:clamp(6px,.6vw,9px) solid transparent;border-top:clamp(8px,.8vw,12px) solid #A38FB5;opacity:.7}
 .et-bottom-stamp{flex-shrink:0;pointer-events:auto}
 .et-bottom-stamp img{width:clamp(3rem,5vw,5rem);height:auto}
 
