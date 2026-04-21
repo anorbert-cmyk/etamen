@@ -88,16 +88,20 @@
   align-items:center;height:34px;
 }
 .div-block-18,.arrow-right{
-  min-width:48px;min-height:48px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  /* Nuke all UA button chrome — match original chromeless <div> look. */
+  all:unset;
+  box-sizing:border-box;
+  min-width:48px;min-height:48px;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;
   pointer-events:auto;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
-  background:transparent;border:0;padding:0;color:inherit;font:inherit;
 }
-.div-block-18 img,.arrow-right img{width:14px;height:20px;display:block;object-fit:contain}
+.div-block-18 img,.arrow-right img{width:10px;height:20px;display:block;object-fit:contain}
+/* Subtle focus-visible — glow, no chunky box */
 .div-block-18:focus-visible,
 .arrow-right:focus-visible{
-  outline:3px solid var(--g, #9dd67c);
-  outline-offset:4px;
-  border-radius:4px;
+  outline:none;
+  box-shadow:0 0 0 2px rgba(157,214,124,0.7);
+  border-radius:2px;
 }
 
 /* Factions responsive */
