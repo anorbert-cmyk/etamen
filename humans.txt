@@ -1,0 +1,10 @@
+/* TEAM */
+Writer / Co-Creator: Conor Sheehy
+Artist / Illustrator: Aron Elekes
+Location: Earth, 2177
+
+/* SITE */
+Last update: 2026/04/21
+Language: English
+Standards: HTML5, CSS3, JavaScript
+Components: GSAP ScrollTrigger
