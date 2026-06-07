@@ -38,6 +38,7 @@ When the user types a slash command (e.g., `/my-command`), you **MUST**:
 | `/brainstorm` | Socratic discovery and ideation | `.agent/workflows/brainstorm.md` |
 | `/deploy` | Deploy to production | `.agent/workflows/deploy.md` |
 | `/content-loop` | Auto-generate & audit content | `.agent/workflows/content-loop.md` |
+| `/review-loop` | Iterative code review (3 reviewers, consensus gate, 3-iter cap) | `.agent/workflows/review-loop.md` |
 | `/seo` | SEO optimization workflow | `.agent/workflows/seo.md` |
 | `/ui-ux-pro-max` | Design system with 50+ styles | `.agent/workflows/ui-ux-pro-max.md` |
 | `/status` | Show current project state from task.md | `.agent/workflows/status.md` |

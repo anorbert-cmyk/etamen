@@ -1,0 +1,8 @@
+# review-loop state directory
+#
+# Per-run state lives here:
+#   state.json                            - current iteration + start ref
+#   iter-N/{security,frontend,debugger}.json  - reviewer findings
+#   iter-N/report.md                      - final report (last iter only)
+#
+# Safe to delete between runs. Each /review-loop invocation overwrites.
